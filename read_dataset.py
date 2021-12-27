@@ -39,17 +39,3 @@ def read(data_file, data_dir, min_cutoff={"Turnover": 1e4}, max_cutoff={"Turnove
     return df
 
 
-# Current targets for multivariate analysis. In case of baseline models also correspond to data features
-targets = ["FixedAssets",
-           "CurrAssets",
-           "Debtors",
-           "Cash",
-           "Capital",
-           "LTdebt",
-           "CurrLiab",
-           "WorkingCap",
-           "CurrRatio",
-           "LiqRatio",
-           "Turnover"]
-
-df = read('data_full_1.3.parquet', '.')
