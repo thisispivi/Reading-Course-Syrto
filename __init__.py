@@ -37,5 +37,16 @@ if __name__ == "__main__":
     id_azienda = list_id[0]
     #for id_azienda in list_id:
     ordinary_least_squares(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    ride_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    lasso_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    elastic_net_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    lars_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    bayesian_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    #generalized_linear_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    stochastic_gradient_descent(training[training.id == id_azienda], validation[validation.id == id_azienda])
+
+
+
+
 
 
