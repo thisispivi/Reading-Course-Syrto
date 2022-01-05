@@ -17,7 +17,7 @@ key = ["id",
        "bilancio_year"]
 
 # Change this to false if you want to import the dataset from the parquet file
-csv = False
+csv = True
 
 if __name__ == "__main__":
     if not csv:
@@ -29,3 +29,8 @@ if __name__ == "__main__":
     else:
         df = pd.read_csv("dataset/dataset.csv")
     df.info()
+
+    training, validation, test = split_dataset(df)
+
+
+
