@@ -1,5 +1,6 @@
 import read_dataset as rd
-import dataset_analysis as da
+from utils import *
+import pandas as pd
 
 targets = ["FixedAssets",
            "CurrAssets",
@@ -15,13 +16,16 @@ targets = ["FixedAssets",
 key = ["id",
        "bilancio_year"]
 
+# Change this to false if you want to import the dataset from the parquet file
+csv = False
+
 if __name__ == "__main__":
-    df = rd.read('data_full_1.3.parquet', './dataset')
-    columns = key + targets
-    df2 = df.copy()
-    df = df[columns]
-    print(df.head(10))
-    print(df.columns)
-    df.to_csv("ciao2.csv")
+    if not csv:
+        df = rd.read('data_full_1.3.parquet', 'dataset')
+        columns = key + targets
+        df = df[columns]
+        df = add_future_turnover(df)
+        df.to_csv("dataset/dataset.csv")
+    else:
+        df = pd.read_csv("dataset/dataset.csv")
     df.info()
-    da.check_dataset(df)
