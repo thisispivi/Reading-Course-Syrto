@@ -6,3 +6,5 @@ syrto/__pycache__/utils.cpython-37.pyc
 __pycache__/dataset_analysis.cpython-37.pyc
 __pycache__/read_dataset.cpython-37.pyc
 ciao.csv
+__pycache__/utils.cpython-37.pyc
+__pycache__/regressors.cpython-37.pyc
