@@ -44,6 +44,18 @@ if __name__ == "__main__":
     bayesian_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
     #generalized_linear_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
     stochastic_gradient_descent(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    passive_aggresive_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    kernel_ridge_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    support_vector_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    nearest_neighbor_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    gaussian_process_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    decision_tree_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    random_forest_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    ada_boost_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    gradient_boost_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    ensemble_method_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+    isotonic_regression(training[training.id == id_azienda], validation[validation.id == id_azienda])
+
 
 
 
