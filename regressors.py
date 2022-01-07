@@ -12,7 +12,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import sklearn.ensemble as en
 import sklearn.isotonic as i
-import seaborn as sns
+from utils import *
 
 
 """
@@ -35,7 +35,8 @@ def ordinary_least_squares(training, validation):
         training: (Dataframe) The training set
         validation: (Dataframe) The validation set
 
-    Returns: The right turnover, the predicted turnover
+    Returns:
+        The right turnover, the predicted turnover
 
     """
     y = training.future_turnover.values
@@ -152,26 +153,6 @@ def bayesian_regression(training, validation):
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
     model = lm.BayesianRidge()
-    model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
-    validation_y_pred = model.predict(x_validation)
-    validation_y_label = validation.future_turnover.values
-    return validation_y_label, validation_y_pred
-
-
-def generalized_linear_regression(training, validation):
-    """
-
-        Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
-
-        Returns: The right turnover, the predicted turnover
-
-    """
-    y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover'], axis=1).values
-    model = lm.TweedieRegressor(power=1, alpha=0.5, link='log')
     model.fit(x, y)
     x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
     validation_y_pred = model.predict(x_validation)
@@ -303,41 +284,41 @@ def gaussian_process_regression(training, validation):
 def decision_tree_regression(training, validation):
     """
         Perform the decision tree regression
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
 
-        Returns: The right turnover, the predicted turnover
-
+        Returns:
+            y_valid: (float) The right turnover
+            pred: (float) The predicted turnover
     """
-    y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover'], axis=1).values
+    x_train, y_train = split_feature_label(training)
     model = tree.DecisionTreeRegressor()
-    model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
-    validation_y_pred = model.predict(x_validation)
-    validation_y_label = validation.future_turnover.values
-    return validation_y_label, validation_y_pred
+    model.fit(x_train, y_train)
+    x_valid, y_valid = split_feature_label(validation)
+    pred = model.predict(x_valid)
+    return y_valid, pred
 
 
 def random_forest_regression(training, validation):
     """
-        Perform random forest regression
+        Perform the random forest regression
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
 
-        Returns: The right turnover, the predicted turnover
-
+        Returns:
+            y_valid: (float) The right turnover
+            pred: (float) The predicted turnover
     """
-    y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover'], axis=1).values
+    x_train, y_train = split_feature_label(training)
     model = en.RandomForestRegressor(max_depth=2, random_state=0)
-    model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
-    validation_y_pred = model.predict(x_validation)
-    validation_y_label = validation.future_turnover.values
-    return validation_y_label, validation_y_pred
+    model.fit(x_train, y_train)
+    x_valid, y_valid = split_feature_label(validation)
+    pred = model.predict(x_valid)
+    return y_valid, pred
 
 
 def ada_boost_regression(training, validation):
@@ -403,22 +384,3 @@ def ensemble_method_regression(training, validation):
     validation_y_label = validation.future_turnover.values
     return validation_y_label, validation_y_pred
 
-
-def isotonic_regression(training, validation):
-    """
-
-        Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
-
-        Returns: The right turnover, the predicted turnover
-
-    """
-    y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover'], axis=1).values
-    model = i.IsotonicRegression()
-    model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
-    validation_y_pred = model.predict(x_validation)
-    validation_y_label = validation.future_turnover.values
-    return validation_y_label, validation_y_pred
