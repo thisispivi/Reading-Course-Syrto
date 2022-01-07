@@ -15,11 +15,13 @@ import sklearn.isotonic as i
 
 """
 CORRECT
+
 Decision Tree
 """
 
 """
 FIX
+
 Ride Regressor: LinAlgWarning: Ill-conditioned matrix (rcond=5.95788e-17): result may not be accurate
 """
 
@@ -30,7 +32,9 @@ def ordinary_least_squares(training, validation):
     Args:
         training: (Dataframe) The training set
         validation: (Dataframe) The validation set
+
     Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover', 'Turnover'], axis=1).values
@@ -55,10 +59,13 @@ def ordinary_least_squares(training, validation):
 
 def ridge_regression(training, validation):
     """
+
     Args:
         training: (Dataframe) The training set
         validation: (Dataframe) The validation set
+
     Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -72,10 +79,13 @@ def ridge_regression(training, validation):
 
 def lasso_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
         """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -89,10 +99,13 @@ def lasso_regression(training, validation):
 
 def elastic_net_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -106,10 +119,13 @@ def elastic_net_regression(training, validation):
 
 def lars_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -123,10 +139,13 @@ def lars_regression(training, validation):
 
 def bayesian_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -140,10 +159,13 @@ def bayesian_regression(training, validation):
 
 def generalized_linear_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -157,10 +179,13 @@ def generalized_linear_regression(training, validation):
 
 def stochastic_gradient_descent(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -174,10 +199,13 @@ def stochastic_gradient_descent(training, validation):
 
 def passive_aggresive_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -191,10 +219,13 @@ def passive_aggresive_regression(training, validation):
 
 def kernel_ridge_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -208,10 +239,13 @@ def kernel_ridge_regression(training, validation):
 
 def support_vector_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -225,10 +259,13 @@ def support_vector_regression(training, validation):
 
 def nearest_neighbor_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -242,10 +279,13 @@ def nearest_neighbor_regression(training, validation):
 
 def gaussian_process_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -264,7 +304,9 @@ def decision_tree_regression(training, validation):
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -282,7 +324,9 @@ def random_forest_regression(training, validation):
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -296,10 +340,13 @@ def random_forest_regression(training, validation):
 
 def ada_boost_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -313,10 +360,13 @@ def ada_boost_regression(training, validation):
 
 def gradient_boost_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -331,10 +381,13 @@ def gradient_boost_regression(training, validation):
 
 def ensemble_method_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
@@ -351,10 +404,13 @@ def ensemble_method_regression(training, validation):
 
 def isotonic_regression(training, validation):
     """
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
+
         Returns: The right turnover, the predicted turnover
+
     """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values

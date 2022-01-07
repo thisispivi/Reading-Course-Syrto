@@ -4,7 +4,6 @@ import pandas as pd
 from regressors import *
 import statistics
 from sklearn.metrics import mean_squared_error, r2_score
-import seaborn as sns
 
 targets = ["FixedAssets",
            "CurrAssets",
@@ -41,11 +40,6 @@ if __name__ == "__main__":
     ols, ride, lasso, elastic, lars, bayesian, stochastic, passive, kernel, svm, nn, gauss, decision, random, ada, gradient, ensemble = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
     ols_pred, ride_pred, lasso_pred, elastic_pred, lars_pred, bayesian_pred, stochastic_pred, passive_pred, kernel_pred, svm_pred, nn_pred, gauss_pred, decision_pred, random_pred, ada_pred, gradient_pred, ensemble_pred = [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
 
-    matrix = np.triu(training.corr())
-    plt.subplots(figsize=(12, 8))
-    sns.heatmap(training.corr(), annot=True, linewidth=.01, cmap=sns.cubehelix_palette(as_cmap=True))
-    plt.show()
-
     # print(len(list_id))
     count = 0
     for company_id in list_id:
@@ -81,5 +75,4 @@ if __name__ == "__main__":
     # print("Ada " + mean_squared_error(ada, ada_pred)) + " " + r2_score(ada, ada_pred)
     # print("Gradient " + mean_squared_error(gradient, gradient_pred)) + " " + r2_score(gradient, gradient_pred)
     # print("Ensemble " + mean_squared_error(ensemble, ensemble_pred)) + " " + r2_score(ensemble, ensemble_pred)
-
 
