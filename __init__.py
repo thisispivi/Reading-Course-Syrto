@@ -65,8 +65,8 @@ if __name__ == "__main__":
         count = count + 1
 
 
-    print("Ordinary Least Square " + mean_squared_error(ols, ols_pred)) + " " + r2_score(ols, ols_pred)
-    print("Ride " + mean_squared_error(ride, ride_pred)) + " " + r2_score(ride, ride_pred)
+    print("Ordinary Least Square " + mean_squared_error(decision, decision_pred)) + " " + r2_score(decision, decision_pred)
+    print("Ride " + mean_squared_error(random, random_pred)) + " " + r2_score(random, random_pred)
     # print("Lasso " + mean_squared_error(lasso, lasso_pred)) + " " + r2_score(lasso, lasso_pred)
     # print("Elastic " + mean_squared_error(elastic, elastic_pred)) + " " + r2_score(elastic, elastic_pred)
     # print("Lars " + mean_squared_error(lars, lars_pred)) + " " + r2_score(lars, lars_pred)
