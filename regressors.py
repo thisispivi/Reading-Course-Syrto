@@ -12,6 +12,8 @@ from sklearn.metrics import mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 import sklearn.ensemble as en
 import sklearn.isotonic as i
+import seaborn as sns
+
 
 """
 CORRECT
@@ -37,10 +39,10 @@ def ordinary_least_squares(training, validation):
 
     """
     y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover', 'Turnover'], axis=1).values
+    x = training.drop(['id', 'future_turnover'], axis=1).values
     model = lm.LinearRegression()
     model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover', 'Turnover'], axis=1).values
+    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
     validation_y_pred = model.predict(x_validation)
     validation_y_label = validation.future_turnover.values
     return validation_y_label, validation_y_pred
