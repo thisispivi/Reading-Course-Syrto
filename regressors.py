@@ -1,4 +1,3 @@
-import numpy as np
 import sklearn.linear_model as lm
 import sklearn.kernel_ridge as kr
 import sklearn.svm as svm
@@ -6,18 +5,14 @@ import sklearn.neighbors as nei
 import sklearn.gaussian_process as gs
 from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel
 from sklearn import tree
-from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error, r2_score
-import matplotlib.pyplot as plt
 import sklearn.ensemble as en
-import sklearn.isotonic as i
 from utils import *
 
 
 def ordinary_least_squares(training, validation):
     """
-    Perform the linear regression
+        Perform the linear regression
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
@@ -25,7 +20,6 @@ def ordinary_least_squares(training, validation):
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
-
     """
     x_train, y_train = split_feature_label(training)
     model = lm.LinearRegression()
@@ -38,6 +32,7 @@ def ordinary_least_squares(training, validation):
 def ridge_regression(training, validation):
     """
         Perform the ridge regression
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
@@ -45,7 +40,6 @@ def ridge_regression(training, validation):
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
-
     """
     x_train, y_train = split_feature_label(training)
     model = lm.Ridge(alpha=0.5)
@@ -58,6 +52,7 @@ def ridge_regression(training, validation):
 def lasso_regression(training, validation):
     """
         Perform the lasso regression
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
@@ -77,6 +72,7 @@ def lasso_regression(training, validation):
 def elastic_net_regression(training, validation):
     """
         Perform the elastic net regression
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
@@ -124,7 +120,6 @@ def bayesian_regression(training, validation):
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
-
     """
     x_train, y_train = split_feature_label(training)
     model = lm.BayesianRidge()
@@ -136,7 +131,8 @@ def bayesian_regression(training, validation):
 
 def stochastic_gradient_descent(training, validation):
     """
-        Perform the stochastic grasient descent regression
+        Perform the stochastic gradient descent regression
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
@@ -144,7 +140,6 @@ def stochastic_gradient_descent(training, validation):
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
-
     """
     x_train, y_train = split_feature_label(training)
     model = lm.SGDRegressor(max_iter=1000, tol=1e-3)
@@ -157,6 +152,7 @@ def stochastic_gradient_descent(training, validation):
 def passive_aggresive_regression(training, validation):
     """
         Perform the passive aggressive regression
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
@@ -164,7 +160,6 @@ def passive_aggresive_regression(training, validation):
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
-
     """
     x_train, y_train = split_feature_label(training)
     model = lm.PassiveAggressiveRegressor(max_iter=100, random_state=0, tol=1e-3)
@@ -177,6 +172,7 @@ def passive_aggresive_regression(training, validation):
 def kernel_ridge_regression(training, validation):
     """
         Perform the kernel ridge regression
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
@@ -184,7 +180,6 @@ def kernel_ridge_regression(training, validation):
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
-
     """
     x_train, y_train = split_feature_label(training)
     model = kr.KernelRidge(alpha=1.0)
@@ -237,6 +232,7 @@ def nearest_neighbor_regression(training, validation):
 def gaussian_process_regression(training, validation):
     """
         Perform the gaussian process regression
+
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
@@ -244,7 +240,6 @@ def gaussian_process_regression(training, validation):
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
-
     """
     x_train, y_train = split_feature_label(training)
     kernel = DotProduct() + WhiteKernel()

@@ -21,12 +21,12 @@ csv = True
 # Select the regressors (True to select, False the opposite)
 regressors_list = {
     "ols": True,  # Ordinary Least Squares
-    "ridge": True,  # Ridge Regressor
+    "ridge": False,  # Ridge Regressor
     "lasso": False,  # Lasso Regressor
     "elastic": False,  # Elastic Net Regressor
     "lars": False,  # Lars Regressor
     "bayesian": False,  # Bayesian Regressor
-    "stochastic": True,  # Stochastic Gradient Descent Regressor
+    "stochastic": False,  # Stochastic Gradient Descent Regressor
     "passive": False,  # Passive Aggressive Regressor
     "kernel": False,  # Kernel Ridge Regressor
     "svr": False,  # Support Vector Regressor
