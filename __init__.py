@@ -24,18 +24,18 @@ regressors_list = {
     "ridge": False,  # Ridge Regressor
     "lasso": False,  # Lasso Regressor
     "elastic": False,  # Elastic Net Regressor
-    "lars": False,  # Lars Regressor
-    "bayesian": False,  # Bayesian Regressor
-    "stochastic": False,  # Stochastic Gradient Descent Regressor
+    "lars": True,  # Lars Regressor
+    "bayesian": True,  # Bayesian Regressor
+    "stochastic": True,  # Stochastic Gradient Descent Regressor
     "passive": False,  # Passive Aggressive Regressor
     "kernel": False,  # Kernel Ridge Regressor
-    "svm": False,  # Support Vector Machine Regressor
+    "svr": False,  # Support Vector Regressor
     "nn": False,  # Nearest Neighbour Regressor
     "gauss": False,  # Gaussian Process Regressor
-    "decision": True,  # Decision Tree Regressor
+    "decision": False,  # Decision Tree Regressor
     "random": False,  # Random Forest Regressor
-    "ada": False,  # Ada Boost Regressor
-    "gradient": False,  # Gradient Boost Regressor
+    "ada": True,  # Ada Boost Regressor
+    "gradient": True,  # Gradient Boost Regressor
     "ensemble": False  # Ensemble Regressor
 }
 
