@@ -26,10 +26,10 @@ regressors_list = {
     "elastic": False,  # Elastic Net Regressor
     "lars": False,  # Lars Regressor
     "bayesian": False,  # Bayesian Regressor
-    "stochastic": False,  # Stochastic Gradient Descent Regressor
+    "stochastic": True,  # Stochastic Gradient Descent Regressor
     "passive": False,  # Passive Aggressive Regressor
     "kernel": False,  # Kernel Ridge Regressor
-    "svm": False,  # Support Vector Machine Regressor
+    "svr": False,  # Support Vector Regressor
     "nn": False,  # Nearest Neighbour Regressor
     "gauss": False,  # Gaussian Process Regressor
     "decision": False,  # Decision Tree Regressor

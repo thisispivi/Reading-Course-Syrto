@@ -15,19 +15,6 @@ import sklearn.isotonic as i
 from utils import *
 
 
-"""
-CORRECT
-
-Decision Tree
-"""
-
-"""
-FIX
-
-Ride Regressor: LinAlgWarning: Ill-conditioned matrix (rcond=5.95788e-17): result may not be accurate
-"""
-
-
 def ordinary_least_squares(training, validation):
     """
     Perform the linear regression
@@ -92,7 +79,7 @@ def lasso_regression(training, validation):
         """
     y = training.future_turnover.values
     x = training.drop(['id', 'future_turnover'], axis=1).values
-    model = lm.LassoLars(alpha=0.01, normalize=False)
+    model = lm.Lasso(alpha=0.01, tol=0.0001, max_iter=10000)
     model.fit(x, y)
     x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
     validation_y_pred = model.predict(x_validation)
@@ -122,42 +109,43 @@ def elastic_net_regression(training, validation):
 
 def lars_regression(training, validation):
     """
+        Perform the least angle regression
 
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
 
-        Returns: The right turnover, the predicted turnover
-
+        Returns:
+            y_valid: (float) The right turnover
+            pred: (float) The predicted turnover
     """
-    y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover'], axis=1).values
+    x_train, y_train = split_feature_label(training)
     model = lm.Lars(n_nonzero_coefs=1, normalize=False)
-    model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
-    validation_y_pred = model.predict(x_validation)
-    validation_y_label = validation.future_turnover.values
-    return validation_y_label, validation_y_pred
+    model.fit(x_train, y_train)
+    x_valid, y_valid = split_feature_label(validation)
+    pred = model.predict(x_valid)
+    return y_valid, pred
 
 
 def bayesian_regression(training, validation):
     """
+        Perform the bayesian regression
 
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
 
-        Returns: The right turnover, the predicted turnover
+        Returns:
+            y_valid: (float) The right turnover
+            pred: (float) The predicted turnover
 
     """
-    y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover'], axis=1).values
+    x_train, y_train = split_feature_label(training)
     model = lm.BayesianRidge()
-    model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
-    validation_y_pred = model.predict(x_validation)
-    validation_y_label = validation.future_turnover.values
-    return validation_y_label, validation_y_pred
+    model.fit(x_train, y_train)
+    x_valid, y_valid = split_feature_label(validation)
+    pred = model.predict(x_valid)
+    return y_valid, pred
 
 
 def stochastic_gradient_descent(training, validation):
@@ -222,42 +210,42 @@ def kernel_ridge_regression(training, validation):
 
 def support_vector_regression(training, validation):
     """
+        Perform the Support Vector Regression
 
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
 
-        Returns: The right turnover, the predicted turnover
-
+        Returns:
+            y_valid: (float) The right turnover
+            pred: (float) The predicted turnover
     """
-    y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover'], axis=1).values
+    x_train, y_train = split_feature_label(training)
     model = svm.SVR()
-    model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
-    validation_y_pred = model.predict(x_validation)
-    validation_y_label = validation.future_turnover.values
-    return validation_y_label, validation_y_pred
+    model.fit(x_train, y_train)
+    x_valid, y_valid = split_feature_label(validation)
+    pred = model.predict(x_valid)
+    return y_valid, pred
 
 
 def nearest_neighbor_regression(training, validation):
     """
+        Perform the Nearest Neighbour regression
 
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
 
-        Returns: The right turnover, the predicted turnover
-
+        Returns:
+            y_valid: (float) The right turnover
+            pred: (float) The predicted turnover
     """
-    y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover'], axis=1).values
+    x_train, y_train = split_feature_label(training)
     model = nei.KNeighborsRegressor(n_neighbors=2)
-    model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
-    validation_y_pred = model.predict(x_validation)
-    validation_y_label = validation.future_turnover.values
-    return validation_y_label, validation_y_pred
+    model.fit(x_train, y_train)
+    x_valid, y_valid = split_feature_label(validation)
+    pred = model.predict(x_valid)
+    return y_valid, pred
 
 
 def gaussian_process_regression(training, validation):
@@ -323,43 +311,43 @@ def random_forest_regression(training, validation):
 
 def ada_boost_regression(training, validation):
     """
+        Perform ada boost regression
 
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
 
-        Returns: The right turnover, the predicted turnover
-
+        Returns:
+            y_valid: (float) The right turnover
+            pred: (float) The predicted turnover
     """
-    y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover'], axis=1).values
+    x_train, y_train = split_feature_label(training)
     model = en.AdaBoostRegressor(random_state=0, n_estimators=100)
-    model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
-    validation_y_pred = model.predict(x_validation)
-    validation_y_label = validation.future_turnover.values
-    return validation_y_label, validation_y_pred
+    model.fit(x_train, y_train)
+    x_valid, y_valid = split_feature_label(validation)
+    pred = model.predict(x_valid)
+    return y_valid, pred
 
 
 def gradient_boost_regression(training, validation):
     """
+        Perform the gradient boost regression
 
         Args:
             training: (Dataframe) The training set
             validation: (Dataframe) The validation set
 
-        Returns: The right turnover, the predicted turnover
-
+        Returns:
+            y_valid: (float) The right turnover
+            pred: (float) The predicted turnover
     """
-    y = training.future_turnover.values
-    x = training.drop(['id', 'future_turnover'], axis=1).values
+    x_train, y_train = split_feature_label(training)
     model = en.GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=1, random_state=0,
                                          loss='squared_error')
-    model.fit(x, y)
-    x_validation = validation.drop(['id', 'future_turnover'], axis=1).values
-    validation_y_pred = model.predict(x_validation)
-    validation_y_label = validation.future_turnover.values
-    return validation_y_label, validation_y_pred
+    model.fit(x_train, y_train)
+    x_valid, y_valid = split_feature_label(validation)
+    pred = model.predict(x_valid)
+    return y_valid, pred
 
 
 def ensemble_method_regression(training, validation):
