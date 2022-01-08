@@ -20,7 +20,7 @@ csv = True
 
 # Select the regressors (True to select, False the opposite)
 regressors_list = {
-    "ols": True,  # Ordinary Least Squares
+    "ols": False,  # Ordinary Least Squares
     "ridge": False,  # Ridge Regressor
     "lasso": False,  # Lasso Regressor
     "elastic": False,  # Elastic Net Regressor
@@ -32,8 +32,8 @@ regressors_list = {
     "svr": False,  # Support Vector Regressor
     "nn": False,  # Nearest Neighbour Regressor
     "gauss": False,  # Gaussian Process Regressor
-    "decision": False,  # Decision Tree Regressor
-    "random": False,  # Random Forest Regressor
+    "decision": True,  # Decision Tree Regressor
+    "random": True,  # Random Forest Regressor
     "ada": False,  # Ada Boost Regressor
     "gradient": False,  # Gradient Boost Regressor
     "ensemble": False  # Ensemble Regressor

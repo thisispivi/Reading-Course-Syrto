@@ -62,7 +62,7 @@ def lasso_regression(training, validation):
             pred: (float) The predicted turnover
         """
     x_train, y_train = split_feature_label(training)
-    model = lm.Lasso(alpha=0.01, tol=0.0001, max_iter=10000)
+    model = lm.Lasso()
     model.fit(x_train, y_train)
     x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
@@ -142,7 +142,7 @@ def stochastic_gradient_descent(training, validation):
             pred: (float) The predicted turnover
     """
     x_train, y_train = split_feature_label(training)
-    model = lm.SGDRegressor(max_iter=1000, tol=1e-3)
+    model = lm.SGDRegressor(max_iter=100000, tol=0.0001, epsilon=0.001)
     model.fit(x_train, y_train)
     x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)

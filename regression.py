@@ -1,5 +1,7 @@
+import math
+
 from regressors import *
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 
 
 def perform_regression(training, validation, regressors_list):
@@ -40,28 +42,23 @@ def perform_regression(training, validation, regressors_list):
             var = lasso_regression(training[training.id == company_id], validation[validation.id == company_id])
             lasso_right.append(var[0][0])
             lasso_pred.append(var[1][0])
-            print("Lasso")
         if regressors_list["elastic"]:
             var = elastic_net_regression(training[training.id == company_id], validation[validation.id == company_id])
             elastic_right.append(var[0][0])
             elastic_pred.append(var[1][0])
-            print("Elastic")
         if regressors_list["lars"]:
             var = lars_regression(training[training.id == company_id], validation[validation.id == company_id])
             lars_right.append(var[0][0])
             lars_pred.append(var[1][0])
-            print("Lars")
         if regressors_list["bayesian"]:
             var = bayesian_regression(training[training.id == company_id], validation[validation.id == company_id])
             bayesian_right.append(var[0][0])
             bayesian_pred.append(var[1][0])
-            print("Bayesian")
         if regressors_list["stochastic"]:
             var = stochastic_gradient_descent(training[training.id == company_id],
                                               validation[validation.id == company_id])
             stochastic_right.append(var[0][0])
             stochastic_pred.append(var[1][0])
-            print("Stochastic")
         if regressors_list["passive"]:
             var = passive_aggresive_regression(training[training.id == company_id],
                                                validation[validation.id == company_id])
@@ -98,13 +95,11 @@ def perform_regression(training, validation, regressors_list):
             var = ada_boost_regression(training[training.id == company_id], validation[validation.id == company_id])
             ada_right.append(var[0][0])
             ada_pred.append(var[1][0])
-            print("Ada")
         if regressors_list["gradient"]:
             var = gradient_boost_regression(training[training.id == company_id],
                                             validation[validation.id == company_id])
             gradient_right.append(var[0][0])
             gradient_pred.append(var[1][0])
-            print("Gradient")
         if regressors_list["ensemble"]:
             var = ensemble_method_regression(training[training.id == company_id],
                                              validation[validation.id == company_id])
@@ -113,54 +108,67 @@ def perform_regression(training, validation, regressors_list):
         count = count + 1
 
     if regressors_list["ols"]:
-        print("Ordinary Least Square " + str(mean_squared_error(ols_right, ols_pred)) + " " + str(
-            r2_score(ols_right, ols_pred)))
+        print("\nOrdinary Least Square")
+        print_metrics(ols_right, ols_pred)
     if regressors_list["ridge"]:
-        print("Ridge Regressor " + str(mean_squared_error(ridge_right, ridge_pred)) + " " + str(
-            r2_score(ridge_right, ridge_pred)))
+        print("\nRidge Regressor")
+        print_metrics(ridge_right, ridge_pred)
     if regressors_list["lasso"]:
-        print("Lasso Regressor " + str(mean_squared_error(lasso_right, lasso_pred)) + " " + str(
-            r2_score(lasso_right, lasso_pred)))
+        print("\nLasso Regressor")
+        print_metrics(lasso_right, lasso_pred)
     if regressors_list["elastic"]:
-        print("Elastic Regressor " + str(mean_squared_error(elastic_right, elastic_pred)) + " " + str(
-            r2_score(elastic_right, elastic_pred)))
+        print("\nElastic Regressor")
+        print_metrics(elastic_right, elastic_pred)
     if regressors_list["lars"]:
-        print("Lars Regressor " + str(mean_squared_error(lars_right, lars_pred)) + " " + str(
-            r2_score(lars_right, lars_pred)))
+        print("\nLars Regressor")
+        print_metrics(lars_right, lars_pred)
     if regressors_list["bayesian"]:
-        print("Bayesian Regressor " + str(mean_squared_error(bayesian_right, bayesian_pred)) + " " + str(
-            r2_score(bayesian_right, bayesian_pred)))
+        print("\nBayesian Regressor")
+        print_metrics(bayesian_right, bayesian_pred)
     if regressors_list["stochastic"]:
-        print("Stochastic Gradient Descent Regressor " + str(
-            mean_squared_error(stochastic_right, stochastic_pred)) + " " + str(
-            r2_score(stochastic_right, stochastic_pred)))
+        print("\nStochastic Gradient Descent Regressor")
+        print_metrics(stochastic_right, stochastic_pred)
     if regressors_list["passive"]:
-        print("Passive Aggressive Regressor " + str(mean_squared_error(passive_right, passive_pred)) + " " + str(
-            r2_score(passive_right, passive_pred)))
+        print("\nPassive Aggressive Regressor")
+        print_metrics(passive_right, passive_pred)
     if regressors_list["kernel"]:
-        print("Kernel Ridge Regressor " + str(mean_squared_error(kernel_right, kernel_pred)) + " " + str(
-            r2_score(kernel_right, kernel_pred)))
+        print("\nKernel Ridge Regressor")
+        print_metrics(kernel_right, kernel_pred)
     if regressors_list["svr"]:
-        print(
-            "SVR Regressor " + str(mean_squared_error(svr_right, svr_pred)) + " " + str(r2_score(svr_right, svr_pred)))
+        print("\nSVR Regressor")
+        print_metrics(svr_right, svr_pred)
     if regressors_list["nn"]:
-        print("Nearest Neighbour Regressor " + str(mean_squared_error(nn_right, nn_pred)) + " " + str(
-            r2_score(nn_right, nn_pred)))
+        print("\nNearest Neighbour Regressor")
+        print_metrics(nn_right, nn_pred)
     if regressors_list["gauss"]:
-        print("Gaussian Process Regressor " + str(mean_squared_error(gauss_right, gauss_pred)) + " " + str(
-            r2_score(gauss_right, gauss_pred)))
+        print("\nGaussian Process Regressor")
+        print_metrics(gauss_right, gauss_pred)
     if regressors_list["decision"]:
-        print("Decision Tree Regressor " + str(mean_squared_error(decision_right, decision_pred)) + " " + str(
-            r2_score(decision_right, decision_pred)))
+        print("\nDecision Tree Regressor")
+        print_metrics(decision_right, decision_pred)
     if regressors_list["random"]:
-        print("Random Forest Regressor" + str(mean_squared_error(random_right, random_pred)) + " " + str(
-            r2_score(random_right, random_pred)))
+        print("\nRandom Forest Regressor")
+        print_metrics(random_right, random_pred)
     if regressors_list["ada"]:
-        print("Ada Boost Regressor " + str(mean_squared_error(ada_right, ada_pred)) + " " + str(
-            r2_score(ada_right, ada_pred)))
+        print("\nAda Boost Regressor")
+        print_metrics(ada_right, ada_pred)
     if regressors_list["gradient"]:
-        print("Gradient Boost Regressor " + str(mean_squared_error(gradient_right, gradient_pred)) + " " + str(
-            r2_score(gradient_right, gradient_pred)))
+        print("\nGradient Boost Regressor")
+        print_metrics(gradient_right, gradient_pred)
     if regressors_list["ensemble"]:
-        print("Ensemble Regressor" + str(mean_squared_error(ensemble_right, ensemble_pred)) + " " + str(
-            r2_score(ensemble_right, ensemble_pred)))
+        print("\nEnsemble Regressor")
+        print_metrics(ensemble_right, ensemble_pred)
+
+
+def print_metrics(right, pred):
+    """
+    Print the metrics for the regressor
+
+    Args:
+        right: (list of numbers) The correct values of turnover
+        pred: (list of numbers) The predicted values of turnover
+    """
+    print("MAE: " + str(mean_absolute_error(right, pred)))
+    print("MSE: " + str(mean_squared_error(right, pred)))
+    print("RMSE: " + str(math.sqrt(mean_squared_error(right, pred))))
+    print("R2: " + str(r2_score(right, pred)))
