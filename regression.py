@@ -1,7 +1,7 @@
 import math
-
+from metrics import *
 from regressors import *
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error, mean_absolute_percentage_error
 
 
 def perform_regression(training, validation, regressors_list):
@@ -172,3 +172,5 @@ def print_metrics(right, pred):
     print("MSE: " + str(mean_squared_error(right, pred)))
     print("RMSE: " + str(math.sqrt(mean_squared_error(right, pred))))
     print("R2: " + str(r2_score(right, pred)))
+    print("MAPE: " + str(mean_absolute_percentage_error(right, pred)))
+    print("SMAPE: " + str(smape(right, pred)))

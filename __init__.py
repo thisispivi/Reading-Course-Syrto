@@ -29,11 +29,11 @@ regressors_list = {
     "stochastic": False,  # Stochastic Gradient Descent Regressor
     "passive": False,  # Passive Aggressive Regressor
     "kernel": False,  # Kernel Ridge Regressor
-    "svr": False,  # Support Vector Regressor
-    "nn": False,  # Nearest Neighbour Regressor
-    "gauss": False,  # Gaussian Process Regressor
+    "svr": True,  # Support Vector Regressor
+    "nn": True,  # Nearest Neighbour Regressor
+    "gauss": True,  # Gaussian Process Regressor
     "decision": True,  # Decision Tree Regressor
-    "random": True,  # Random Forest Regressor
+    "random": False,  # Random Forest Regressor
     "ada": False,  # Ada Boost Regressor
     "gradient": False,  # Gradient Boost Regressor
     "ensemble": False  # Ensemble Regressor
