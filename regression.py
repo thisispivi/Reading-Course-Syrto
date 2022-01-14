@@ -30,7 +30,7 @@ def perform_regression(training, validation, regressors_list):
     company_ids = list(training.groupby('id').groups.keys())
 
     count = 0
-    for company_id in company_ids[:100]:
+    for company_id in company_ids:
         print(str(count) + " / " + str(len(company_ids) - 1) + " / " + str(
             round(((count / (len(company_ids) - 1)) * 100), 2)) + "%")
         if regressors_list["ols"]:
