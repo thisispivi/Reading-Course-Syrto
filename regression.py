@@ -1,4 +1,7 @@
 import math
+
+import numpy as np
+
 from metrics import *
 from regressors import *
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error, mean_absolute_percentage_error
@@ -27,7 +30,7 @@ def perform_regression(training, validation, regressors_list):
     company_ids = list(training.groupby('id').groups.keys())
 
     count = 0
-    for company_id in company_ids:
+    for company_id in company_ids[:100]:
         print(str(count) + " / " + str(len(company_ids) - 1) + " / " + str(
             round(((count / (len(company_ids) - 1)) * 100), 2)) + "%")
         if regressors_list["ols"]:
@@ -173,4 +176,4 @@ def print_metrics(right, pred):
     print("RMSE: " + str(math.sqrt(mean_squared_error(right, pred))))
     print("R2: " + str(r2_score(right, pred)))
     print("MAPE: " + str(mean_absolute_percentage_error(right, pred)))
-    print("SMAPE: " + str(smape(right, pred)))
+    print("SMAPE: " + str(smape(np.array(right), np.array(pred))))

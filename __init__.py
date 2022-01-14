@@ -28,7 +28,7 @@ regressors_list = {
     "bayesian": False,  # Bayesian Regressor
     "stochastic": False,  # Stochastic Gradient Descent Regressor
     "passive": False,  # Passive Aggressive Regressor
-    "kernel": False,  # Kernel Ridge Regressor
+    "kernel": True,  # Kernel Ridge Regressor
     "svr": True,  # Support Vector Regressor
     "nn": True,  # Nearest Neighbour Regressor
     "gauss": True,  # Gaussian Process Regressor
