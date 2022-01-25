@@ -1,10 +1,12 @@
 import math
 
 import numpy as np
+import sklearn.metrics
 
 from metrics import *
 from regressors import *
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error, mean_absolute_percentage_error
+from sklearn.metrics import accuracy_score
 
 
 def perform_regression(training, validation, regressors_list, parameter):
@@ -30,12 +32,17 @@ def perform_regression(training, validation, regressors_list, parameter):
     # Get the ids of all the companies
     company_ids = list(training.groupby('id').groups.keys())
 
+    company_ids = company_ids[0:10]
+
+    preview_paramter_list = []
+
     count = 0
     for company_id in company_ids:
         print(str(count) + " / " + str(len(company_ids) - 1) + " / " + str(
             round(((count / (len(company_ids) - 1)) * 100), 2)) + "%")
         x_train, y_train = split_feature_label(training[training.id == company_id], parameter)
         x_valid, y_valid = split_feature_label(validation[validation.id == company_id], parameter)
+        preview_paramter_list.append(validation[validation.id == company_id].Turnover.values[0]) # da cambiare quando cambia il parametro
         if regressors_list["ols"]:
             var = ordinary_least_squares(x_train, y_train, x_valid, y_valid)
             ols_right.append(var[0][0])
@@ -157,6 +164,13 @@ def perform_regression(training, validation, regressors_list, parameter):
     if regressors_list["ensemble"]:
         print("\nEnsemble Regressor")
         print_metrics(ensemble_right, ensemble_pred)
+
+    classification_predict = []
+    classification_right = []
+    if regressors_list["ada"]:
+        classification_predict = [classfication_operation(x, y) for x, y in zip(ada_right, preview_paramter_list)]
+        classification_right = [classfication_operation(x, y) for x, y in zip(ada_pred, preview_paramter_list)]
+        print(accuracy_score(classification_right, classification_predict))
 
 
 def print_metrics(right, pred):

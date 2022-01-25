@@ -73,3 +73,10 @@ def split_feature_label(df, parameter):
     x = df.drop(['id', parameter], axis=1).values
     y = df.future_turnover.values
     return x, y
+
+
+def classfication_operation(x, y):
+    if (x-y) < 0:
+        return 0
+    else:
+        return 1
