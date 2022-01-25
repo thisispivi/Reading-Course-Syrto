@@ -7,7 +7,7 @@ from regressors import *
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error, mean_absolute_percentage_error
 
 
-def perform_regression(training, validation, regressors_list):
+def perform_regression(training, validation, regressors_list, parameter):
     """
     For each regressors with True value in the dict perform the regression using training and validation set
 
@@ -15,6 +15,7 @@ def perform_regression(training, validation, regressors_list):
         training: (Pandas Dataframe) The training set
         validation: (Pandas Dataframe) The validation set
         regressors_list: (Dict) A dict containing all the regressors. Their value means if the regressor has been chosen
+        parameter: (String) The parameter that will be predicted
     """
     # Create lists in which, for each company, the correct turnover and the prediction will be saved
     # Correct Turnover Lists
@@ -33,79 +34,74 @@ def perform_regression(training, validation, regressors_list):
     for company_id in company_ids:
         print(str(count) + " / " + str(len(company_ids) - 1) + " / " + str(
             round(((count / (len(company_ids) - 1)) * 100), 2)) + "%")
+        x_train, y_train = split_feature_label(training[training.id == company_id], parameter)
+        x_valid, y_valid = split_feature_label(validation[validation.id == company_id], parameter)
         if regressors_list["ols"]:
-            var = ordinary_least_squares(training[training.id == company_id], validation[validation.id == company_id])
+            var = ordinary_least_squares(x_train, y_train, x_valid, y_valid)
             ols_right.append(var[0][0])
             ols_pred.append(var[1][0])
         if regressors_list["ridge"]:
-            var = ridge_regression(training[training.id == company_id], validation[validation.id == company_id])
+            var = ridge_regression(x_train, y_train, x_valid, y_valid)
             ridge_right.append(var[0][0])
             ridge_pred.append(var[1][0])
         if regressors_list["lasso"]:
-            var = lasso_regression(training[training.id == company_id], validation[validation.id == company_id])
+            var = lasso_regression(x_train, y_train, x_valid, y_valid)
             lasso_right.append(var[0][0])
             lasso_pred.append(var[1][0])
         if regressors_list["elastic"]:
-            var = elastic_net_regression(training[training.id == company_id], validation[validation.id == company_id])
+            var = elastic_net_regression(x_train, y_train, x_valid, y_valid)
             elastic_right.append(var[0][0])
             elastic_pred.append(var[1][0])
         if regressors_list["lars"]:
-            var = lars_regression(training[training.id == company_id], validation[validation.id == company_id])
+            var = lars_regression(x_train, y_train, x_valid, y_valid)
             lars_right.append(var[0][0])
             lars_pred.append(var[1][0])
         if regressors_list["bayesian"]:
-            var = bayesian_regression(training[training.id == company_id], validation[validation.id == company_id])
+            var = bayesian_regression(x_train, y_train, x_valid, y_valid)
             bayesian_right.append(var[0][0])
             bayesian_pred.append(var[1][0])
         if regressors_list["stochastic"]:
-            var = stochastic_gradient_descent(training[training.id == company_id],
-                                              validation[validation.id == company_id])
+            var = stochastic_gradient_descent(x_train, y_train, x_valid, y_valid)
             stochastic_right.append(var[0][0])
             stochastic_pred.append(var[1][0])
         if regressors_list["passive"]:
-            var = passive_aggresive_regression(training[training.id == company_id],
-                                               validation[validation.id == company_id])
+            var = passive_aggresive_regression(x_train, y_train, x_valid, y_valid)
             passive_right.append(var[0][0])
             passive_pred.append(var[1][0])
         if regressors_list["kernel"]:
-            var = kernel_ridge_regression(training[training.id == company_id], validation[validation.id == company_id])
+            var = kernel_ridge_regression(x_train, y_train, x_valid, y_valid)
             kernel_right.append(var[0][0])
             kernel_pred.append(var[1][0])
         if regressors_list["svr"]:
-            var = support_vector_regression(training[training.id == company_id],
-                                            validation[validation.id == company_id])
+            var = support_vector_regression(x_train, y_train, x_valid, y_valid)
             svr_right.append(var[0][0])
             svr_pred.append(var[1][0])
         if regressors_list["nn"]:
-            var = nearest_neighbor_regression(training[training.id == company_id],
-                                              validation[validation.id == company_id])
+            var = nearest_neighbor_regression(x_train, y_train, x_valid, y_valid)
             nn_right.append(var[0][0])
             nn_pred.append(var[1][0])
         if regressors_list["gauss"]:
-            var = gaussian_process_regression(training[training.id == company_id],
-                                              validation[validation.id == company_id])
+            var = gaussian_process_regression(x_train, y_train, x_valid, y_valid)
             gauss_right.append(var[0][0])
             gauss_pred.append(var[1][0])
         if regressors_list["decision"]:
-            var = decision_tree_regression(training[training.id == company_id], validation[validation.id == company_id])
+            var = decision_tree_regression(x_train, y_train, x_valid, y_valid)
             decision_right.append(var[0][0])
             decision_pred.append(var[1][0])
         if regressors_list["random"]:
-            var = random_forest_regression(training[training.id == company_id], validation[validation.id == company_id])
+            var = random_forest_regression(x_train, y_train, x_valid, y_valid)
             random_right.append(var[0][0])
             random_pred.append(var[1][0])
         if regressors_list["ada"]:
-            var = ada_boost_regression(training[training.id == company_id], validation[validation.id == company_id])
+            var = ada_boost_regression(x_train, y_train, x_valid, y_valid)
             ada_right.append(var[0][0])
             ada_pred.append(var[1][0])
         if regressors_list["gradient"]:
-            var = gradient_boost_regression(training[training.id == company_id],
-                                            validation[validation.id == company_id])
+            var = gradient_boost_regression(x_train, y_train, x_valid, y_valid)
             gradient_right.append(var[0][0])
             gradient_pred.append(var[1][0])
         if regressors_list["ensemble"]:
-            var = ensemble_method_regression(training[training.id == company_id],
-                                             validation[validation.id == company_id])
+            var = ensemble_method_regression(x_train, y_train, x_valid, y_valid)
             ensemble_right.append(var[0][0])
             ensemble_pred.append(var[1][0])
         count = count + 1

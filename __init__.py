@@ -20,7 +20,7 @@ key = ["id",
        "bilancio_year"]
 
 # Change this to false if you want to import the dataset from the parquet file
-csv = False
+csv = True
 
 # Select the regressors (True to select, False the opposite)
 regressors_list = {
@@ -51,5 +51,5 @@ if __name__ == "__main__":
     # Check correlation between data
     correlation(df, "corr.png")
     # Perform the regression using all the regressors
-    perform_regression(training, validation, regressors_list)
+    perform_regression(training, validation, regressors_list, "future_turnover")
 

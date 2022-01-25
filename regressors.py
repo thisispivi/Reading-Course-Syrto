@@ -9,345 +9,345 @@ import sklearn.ensemble as en
 from utils import *
 
 
-def ordinary_least_squares(training, validation):
+def ordinary_least_squares(x_train, y_train, x_valid, y_valid):
     """
         Perform the linear regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = lm.LinearRegression()
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def ridge_regression(training, validation):
+def ridge_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the ridge regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = lm.Ridge(alpha=0.5)
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def lasso_regression(training, validation):
+def lasso_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the lasso regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
         """
-    x_train, y_train = split_feature_label(training)
     model = lm.Lasso()
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def elastic_net_regression(training, validation):
+def elastic_net_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the elastic net regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = lm.ElasticNet(random_state=0)
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def lars_regression(training, validation):
+def lars_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the least angle regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = lm.Lars(n_nonzero_coefs=1, normalize=False)
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def bayesian_regression(training, validation):
+def bayesian_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the bayesian regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = lm.BayesianRidge()
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def stochastic_gradient_descent(training, validation):
+def stochastic_gradient_descent(x_train, y_train, x_valid, y_valid):
     """
         Perform the stochastic gradient descent regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = lm.SGDRegressor(max_iter=100000, tol=0.0001, epsilon=0.001)
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def passive_aggresive_regression(training, validation):
+def passive_aggresive_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the passive aggressive regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = lm.PassiveAggressiveRegressor(max_iter=100, random_state=0, tol=1e-3)
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def kernel_ridge_regression(training, validation):
+def kernel_ridge_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the kernel ridge regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = kr.KernelRidge(alpha=1.0)
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def support_vector_regression(training, validation):
+def support_vector_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the Support Vector Regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = svm.SVR()
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def nearest_neighbor_regression(training, validation):
+def nearest_neighbor_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the Nearest Neighbour regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = nei.KNeighborsRegressor(n_neighbors=2)
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def gaussian_process_regression(training, validation):
+def gaussian_process_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the gaussian process regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     kernel = DotProduct() + WhiteKernel()
     model = gs.GaussianProcessRegressor(kernel=kernel, random_state=0)
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def decision_tree_regression(training, validation):
+def decision_tree_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the decision tree regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = tree.DecisionTreeRegressor()
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def random_forest_regression(training, validation):
+def random_forest_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the random forest regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = en.RandomForestRegressor(max_depth=2, random_state=0)
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def ada_boost_regression(training, validation):
+def ada_boost_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform ada boost regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = en.AdaBoostRegressor(random_state=0, n_estimators=100)
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def gradient_boost_regression(training, validation):
+def gradient_boost_regression(x_train, y_train, x_valid, y_valid):
     """
         Perform the gradient boost regression
 
         Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+            x_train: (Dataframe) The features of the training set
+            y_train: (Dataframe) The labels of the training set
+            x_valid: (Dataframe) The features of the validation set
+            y_valid: (Dataframe) The labels of the validation set
 
         Returns:
             y_valid: (float) The right turnover
             pred: (float) The predicted turnover
     """
-    x_train, y_train = split_feature_label(training)
     model = en.GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=1, random_state=0,
                                          loss='squared_error')
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 
 
-def ensemble_method_regression(training, validation):
+def ensemble_method_regression(x_train, y_train, x_valid, y_valid):
     """
 
-        Args:
-            training: (Dataframe) The training set
-            validation: (Dataframe) The validation set
+    Args:
+        x_train: (Dataframe) The features of the training set
+        y_train: (Dataframe) The labels of the training set
+        x_valid: (Dataframe) The features of the validation set
+        y_valid: (Dataframe) The labels of the validation set
 
-        Returns: The right turnover, the predicted turnover
+    Returns:
 
     """
-    x_train, y_train = split_feature_label(training)
     reg1 = en.GradientBoostingRegressor(random_state=1)
     reg2 = en.RandomForestRegressor(random_state=1)
     reg3 = lm.LinearRegression()
     model = en.VotingRegressor(estimators=[('gb', reg1), ('rf', reg2), ('lr', reg3)])
     model.fit(x_train, y_train)
-    x_valid, y_valid = split_feature_label(validation)
     pred = model.predict(x_valid)
     return y_valid, pred
 

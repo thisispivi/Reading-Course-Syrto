@@ -15,8 +15,8 @@ def import_dataset(csv, key, targets):
         df: (Pandas Dataframe) The dataset
     """
     if not csv:
-        df = rd.read('data_full_1.3.parquet', 'dataset', min_cutoff={"Turnover": 1e4, "FixedAssets": 1e4},
-                     max_cutoff={"Turnover": 1e8, "FixedAssets": 1e8})
+        df = rd.read('data_full_1.3.parquet', 'dataset', min_cutoff={"Turnover": 1e4, "FixedAssets": 1},
+                     max_cutoff={"Turnover": 1e8})
         columns = key + targets
         df = df[columns]
         df = add_future_turnover(df)
@@ -58,17 +58,18 @@ def split_dataset(df):
     return training, validation, test
 
 
-def split_feature_label(df):
+def split_feature_label(df, parameter):
     """
     Split the dataframe into label and features
 
     Args:
         df: (Pandas Dataframe) The dataset
+        parameter: (String) The parameter that will be predicted
 
     Returns:
         x: (Pandas Dataframe) Features
         y: (Pandas Dataframe) Labels
     """
-    x = df.drop(['id', 'future_turnover'], axis=1).values
+    x = df.drop(['id', parameter], axis=1).values
     y = df.future_turnover.values
     return x, y
