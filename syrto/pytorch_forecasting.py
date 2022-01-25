@@ -114,7 +114,7 @@ def tft_embedding_tensor(tft, x):
     # skip connection over temporal fusion decoder (not LSTM decoder despite the LSTM output contains
     # a skip from the variable selection network)
     output = tft.pre_output_gate_norm(output, lstm_output[:, max_encoder_length:])
-    
+
     #####
     return output
     # return tft.to_network_output(
@@ -149,20 +149,21 @@ def embedding_tensor(model, x):
     else:
         raise Exception("not implemeted")
 
-# Adapted from `predict` method of `BaseModel` 
+
+# Adapted from `predict` method of `BaseModel`
 # https://github.com/jdb78/pytorch-forecasting/blob/7e376020871b330ac7c92ca4ff68ad430adee203/pytorch_forecasting/models/base_model.py#L1005
 def predict_embeddings(
-    model,
-    data,
-    return_index: bool = False,
-    return_decoder_lengths: bool = False,
-    batch_size: int = 64,
-    num_workers: int = 0,
-    fast_dev_run: bool = False,
-    show_progress_bar: bool = False,
-    return_x: bool = False,
-    **kwargs,
-    ):
+        model,
+        data,
+        return_index: bool = False,
+        return_decoder_lengths: bool = False,
+        batch_size: int = 64,
+        num_workers: int = 0,
+        fast_dev_run: bool = False,
+        show_progress_bar: bool = False,
+        return_x: bool = False,
+        **kwargs,
+):
     """
     Extract embeddings from the model given input data.
     The function will call `embedding_tensor(model, x, **kwargs)`, make sure it is defined
@@ -226,11 +227,10 @@ def predict_embeddings(
             progress_bar.update()
             if fast_dev_run:
                 break
-    
 
     # concatenate output (of different batches)
     output = _torch_cat_na(output)
-    
+
     # generate output
     if return_x or return_index or return_decoder_lengths:
         output = [output]
@@ -242,6 +242,7 @@ def predict_embeddings(
         output.append(torch.cat(decode_lenghts, dim=0))
     return output
 
+
 def create_model(dataset, params):
     """
     Create model from dataset and params dictionary.
@@ -252,21 +253,21 @@ def create_model(dataset, params):
         if loss_type.startswith("mae"):
             loss_lambda = lambda: MAE()
         elif loss_type.startswith("quantile"):
-            quantiles = [float(x) for x in loss_type.split('_')[1:]] 
+            quantiles = [float(x) for x in loss_type.split('_')[1:]]
             loss_lambda = lambda: QuantileLoss(quantiles)
         else:
-            raise(Exception(f"loss {loss_type} not supported"))
-        
+            raise (Exception(f"loss {loss_type} not supported"))
+
     is_multi_target = True if isinstance(params["features"]["targets"], list) else False
-    
+
     if model_type == "TFT":
         if loss_type is None:
-            loss_lambda = lambda: QuantileLoss([0.1, 0.25, 0.5, 0.75, 0.9])  
+            loss_lambda = lambda: QuantileLoss([0.1, 0.25, 0.5, 0.75, 0.9])
         if is_multi_target:
             loss = MultiLoss([loss_lambda() for _ in params["features"]["targets"]])
         else:
             loss = loss_lambda()
-            
+
         model = TemporalFusionTransformer.from_dataset(
             dataset,
             learning_rate=params["train"]["learning_rate"],
@@ -276,9 +277,9 @@ def create_model(dataset, params):
             dropout=params["train"]["dropout"],
             hidden_continuous_size=params["model"]["hidden_continuous_size"],
             logging_metrics=[MASE(), MAE(), MAPE(), RMSE(), SMAPE()],
-            optimizer = params["train"]["optimizer"],
+            optimizer=params["train"]["optimizer"],
             loss=loss,
-            )
+        )
 
     elif model_type in ["LSTM", "GRU"]:
         if loss_type is None:
@@ -287,17 +288,17 @@ def create_model(dataset, params):
             loss = MultiLoss([loss_lambda() for _ in params["features"]["targets"]])
         else:
             loss = loss_lambda()
-        
+
         model = RecurrentNetwork.from_dataset(
-                dataset,
-                cell_type = model_type,
-                learning_rate=params["train"]["learning_rate"],
-                hidden_size=params["model"]["hidden_size"],
-                rnn_layers=params["model"]["rnn_layers"],
-                dropout=params["train"]["dropout"],
-                optimizer = params["train"]["optimizer"],
-                loss=loss,
-                )
+            dataset,
+            cell_type=model_type,
+            learning_rate=params["train"]["learning_rate"],
+            hidden_size=params["model"]["hidden_size"],
+            rnn_layers=params["model"]["rnn_layers"],
+            dropout=params["train"]["dropout"],
+            optimizer=params["train"]["optimizer"],
+            loss=loss,
+        )
 
     elif model_type == "DeepAR":
         if loss_type is None:
@@ -306,18 +307,16 @@ def create_model(dataset, params):
             loss = MultiLoss([loss_lambda() for _ in params["features"]["targets"]])
         else:
             loss = loss_lambda()
-        
+
         model = DeepAR.from_dataset(
-                dataset,
-                learning_rate=params["train"]["learning_rate"],
-                hidden_size=params["model"]["hidden_size"],
-                rnn_layers=params["model"]["rnn_layers"],
-                dropout=params["train"]["dropout"],
-                optimizer = params["train"]["optimizer"],
-                loss=NormalDistributionLoss(),
+            dataset,
+            learning_rate=params["train"]["learning_rate"],
+            hidden_size=params["model"]["hidden_size"],
+            rnn_layers=params["model"]["rnn_layers"],
+            dropout=params["train"]["dropout"],
+            optimizer=params["train"]["optimizer"],
+            loss=NormalDistributionLoss(),
         )
     else:
         raise Exception(f"Model type {model_type} not supported")
     return model
-
-

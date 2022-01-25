@@ -7,15 +7,15 @@ if os.path.abspath(os.path.join('..')) not in sys.path:
 
 import syrto
 
-sys.modules[
-    'inverse_log'] = syrto.utils  # For retro-compatibility when loading checkpoint. Not used for classic baseline models
+# For retro-compatibility when loading checkpoint. Not used for classic baseline models
+sys.modules['inverse_log'] = syrto.utils
 
 # Companies sectors. Do not change if not specified
 sector_level = 'sector_level1'
 sector = ['C']
 
 
-def read(data_file, data_dir, min_cutoff={"Turnover": 1e4}, max_cutoff={"Turnover": 1e8}):
+def read(data_file, data_dir, min_cutoff, max_cutoff):
     """
     Dataset loading.
 
@@ -32,10 +32,9 @@ def read(data_file, data_dir, min_cutoff={"Turnover": 1e4}, max_cutoff={"Turnove
     Returns:
         A dataframe containing all data samples.
     """
-    df = syrto.utils.read_dataset(data_dir, data_file, logspace=False, min_cutoff={"Turnover": 1e4},
-                                  max_cutoff={"Turnover": 1e8})
+    df = syrto.utils.read_dataset(data_dir, data_file, logspace=False, min_cutoff=min_cutoff,
+                                  max_cutoff=max_cutoff)
     if sector_level is not None:
         df = df[df[sector_level].isin(sector)]
     return df
-
 

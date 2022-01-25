@@ -12,11 +12,15 @@ targets = ["FixedAssets",
            "CurrRatio",
            "LiqRatio",
            "Turnover"]
+new_targets = ["EBIT",
+               "WorkCap_Turn_ratio",
+               "Turn_FixAs_ratio",
+               "EBIT_Turn_ratio"]
 key = ["id",
        "bilancio_year"]
 
 # Change this to false if you want to import the dataset from the parquet file
-csv = True
+csv = False
 
 # Select the regressors (True to select, False the opposite)
 regressors_list = {
@@ -24,23 +28,23 @@ regressors_list = {
     "ridge": False,  # Ridge Regressor
     "lasso": False,  # Lasso Regressor
     "elastic": False,  # Elastic Net Regressor
-    "lars": False,  # Lars Regressor
-    "bayesian": False,  # Bayesian Regressor
+    "lars": True,  # Lars Regressor
+    "bayesian": True,  # Bayesian Regressor
     "stochastic": False,  # Stochastic Gradient Descent Regressor
     "passive": False,  # Passive Aggressive Regressor
-    "kernel": True,  # Kernel Ridge Regressor
+    "kernel": False,  # Kernel Ridge Regressor
     "svr": True,  # Support Vector Regressor
     "nn": True,  # Nearest Neighbour Regressor
-    "gauss": True,  # Gaussian Process Regressor
+    "gauss": False,  # Gaussian Process Regressor
     "decision": True,  # Decision Tree Regressor
-    "random": False,  # Random Forest Regressor
-    "ada": False,  # Ada Boost Regressor
-    "gradient": False,  # Gradient Boost Regressor
+    "random": True,  # Random Forest Regressor
+    "ada": True,  # Ada Boost Regressor
+    "gradient": True,  # Gradient Boost Regressor
     "ensemble": False  # Ensemble Regressor
 }
 
 if __name__ == "__main__":
-    df = import_dataset(csv, key, targets)
+    df = import_dataset(csv, key, targets + new_targets)
     df.info()
     # Get training, validation and test sets
     training, validation, test = split_dataset(df)

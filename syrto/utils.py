@@ -2,6 +2,11 @@ import numpy as np
 import torch as th
 import pandas as pd
 import sys, os
+import math
+
+
+def label_ratios(row, target1, target2):
+    return row[target1] / row[target2]
 
 
 def inverse_logModulus(x):
@@ -50,7 +55,6 @@ def read_dataset(dir, file, *,
                         'CurrRatio', 'LiqRatio', "Turnover", "incorporationdate_converted",
                         "age", "sector_level1", "sector_level2", "bilancio_year"]
 
-
     for col in relevant_columns:
         assert df[col].isna().sum() == 0
     df["bilancio_year"] = df["bilancio_year"].astype(int)
@@ -90,6 +94,11 @@ def read_dataset(dir, file, *,
             print(f"Keeping {len(validID)} min_cutoff {name}")
             to_keep = to_keep.intersection(validID)
 
+    s1 = df.groupby("id")["EBIT"].apply(lambda x: x.isnull().any())
+    validID5 = set(s1[s1 == False].index.tolist())
+    print(f"Keeping {len(validID5)} with valid EBIT")
+    to_keep = to_keep.intersection(validID5)
+
     if max_cutoff is not None:
         for name, val in max_cutoff.items():
             max_byID = df.groupby("id")[name].max()
@@ -110,11 +119,14 @@ def read_dataset(dir, file, *,
     gdp_df = gdp_df.pivot(columns='Country Code', index="year", values="gdp_deflated")
     gdp_df.columns = ["GDP_" + name for name in gdp_df.columns]
     df = df.merge(gdp_df, how="left", left_on="bilancio_year", right_on="year")
+    df["WorkCap_Turn_ratio"] = df.apply(lambda row: label_ratios(row, "WorkingCap", "Turnover"), axis=1)
+    df["Turn_FixAs_ratio"] = df.apply(lambda row: label_ratios(row, "Turnover", "FixedAssets"), axis=1)
+    df["EBIT_Turn_ratio"] = df.apply(lambda row: label_ratios(row, "EBIT", "Turnover"), axis=1)
 
     if logspace:
         for col in ["FixedAssets", "CurrAssets", "CurrLiab",
                     "Cash", "Capital", "LTdebt", "WorkingCap",
-                    "Turnover", "AvgTurnoverLev1", "AvgTurnoverLev2",
+                    "Turnover", "AvgTurnoverLev1", "AvgTurnoverLev2", "EBIT",
                     "Debtors", "age",
                     "GDP_ITA", "GDP_USA", "GDP_EUU"]:  # transform all reals except ratios (they are already small)
 

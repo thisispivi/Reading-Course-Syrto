@@ -15,7 +15,8 @@ def import_dataset(csv, key, targets):
         df: (Pandas Dataframe) The dataset
     """
     if not csv:
-        df = rd.read('data_full_1.3.parquet', 'dataset')
+        df = rd.read('data_full_1.3.parquet', 'dataset', min_cutoff={"Turnover": 1e4, "FixedAssets": 1e4},
+                     max_cutoff={"Turnover": 1e8, "FixedAssets": 1e8})
         columns = key + targets
         df = df[columns]
         df = add_future_turnover(df)
