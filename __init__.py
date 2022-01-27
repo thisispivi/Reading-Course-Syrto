@@ -21,6 +21,8 @@ key = ["id",
 
 # Change this to false if you want to import the dataset from the parquet file
 csv = True
+# Change this to True if you want to perform the classification
+classification = True
 
 # Select the regressors (True to select, False the opposite)
 regressors_list = {
@@ -43,6 +45,13 @@ regressors_list = {
     "ensemble": False  # Ensemble Regressor
 }
 
+# The name of the field that you want to predict (Select 1) (Uncomment to select)
+field_name = "future_Turnover"
+# field_name = "future_EBIT"
+# field_name = "future_WorkCap_Turn_ratio"
+# field_name = "future_Turn_FixAs_ratio"
+# field_name = "future_EBIT_Turn_ratio"
+
 if __name__ == "__main__":
     df = import_dataset(csv, key, targets)
     df.info()
@@ -51,5 +60,4 @@ if __name__ == "__main__":
     # Check correlation between data
     correlation(df, "corr.png")
     # Perform the regression using all the regressors
-    perform_regression(training, validation, regressors_list, "future_EBIT", False)
-
+    perform_regression(training, validation, regressors_list, field_name, classification)

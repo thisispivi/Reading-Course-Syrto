@@ -20,8 +20,8 @@ def ordinary_least_squares(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = lm.LinearRegression()
     model.fit(x_train, y_train)
@@ -40,8 +40,8 @@ def ridge_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = lm.Ridge(alpha=0.5)
     model.fit(x_train, y_train)
@@ -60,8 +60,8 @@ def lasso_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
         """
     model = lm.Lasso()
     model.fit(x_train, y_train)
@@ -80,8 +80,8 @@ def elastic_net_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = lm.ElasticNet(random_state=0)
     model.fit(x_train, y_train)
@@ -100,8 +100,8 @@ def lars_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = lm.Lars(n_nonzero_coefs=1, normalize=False)
     model.fit(x_train, y_train)
@@ -120,8 +120,8 @@ def bayesian_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = lm.BayesianRidge()
     model.fit(x_train, y_train)
@@ -140,8 +140,8 @@ def stochastic_gradient_descent(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = lm.SGDRegressor(max_iter=100000, tol=0.0001, epsilon=0.001)
     model.fit(x_train, y_train)
@@ -160,8 +160,8 @@ def passive_aggresive_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = lm.PassiveAggressiveRegressor(max_iter=100, random_state=0, tol=1e-3)
     model.fit(x_train, y_train)
@@ -180,8 +180,8 @@ def kernel_ridge_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = kr.KernelRidge(alpha=1.0)
     model.fit(x_train, y_train)
@@ -200,8 +200,8 @@ def support_vector_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = svm.SVR()
     model.fit(x_train, y_train)
@@ -220,8 +220,8 @@ def nearest_neighbor_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = nei.KNeighborsRegressor(n_neighbors=2)
     model.fit(x_train, y_train)
@@ -240,8 +240,8 @@ def gaussian_process_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     kernel = DotProduct() + WhiteKernel()
     model = gs.GaussianProcessRegressor(kernel=kernel, random_state=0)
@@ -261,8 +261,8 @@ def decision_tree_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = tree.DecisionTreeRegressor()
     model.fit(x_train, y_train)
@@ -281,8 +281,8 @@ def random_forest_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = en.RandomForestRegressor(max_depth=2, random_state=0)
     model.fit(x_train, y_train)
@@ -301,8 +301,8 @@ def ada_boost_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = en.AdaBoostRegressor(random_state=0, n_estimators=100)
     model.fit(x_train, y_train)
@@ -321,8 +321,8 @@ def gradient_boost_regression(x_train, y_train, x_valid, y_valid):
             y_valid: (Dataframe) The labels of the validation set
 
         Returns:
-            y_valid: (float) The right turnover
-            pred: (float) The predicted turnover
+            y_valid: (float) The right value
+            pred: (float) The predicted value
     """
     model = en.GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=1, random_state=0,
                                          loss='squared_error')
