@@ -19,7 +19,7 @@ def import_dataset(csv, key, targets):
                      max_cutoff={"Turnover": 1e8})
         columns = key + targets
         df = df[columns]
-        df = add_future_turnover(df)
+        df = add_future_values(df)
         df.to_csv("dataset/dataset.csv")
     else:
         df = pd.read_csv("dataset/dataset.csv")
@@ -27,17 +27,22 @@ def import_dataset(csv, key, targets):
     return df
 
 
-def add_future_turnover(df):
+def add_future_values(df):
     """
-    Adds a column in the turnover dataframe containing the turnover of the next year
+    Adds a column in the dataframe containing the turnover, EBIT, WorkCap_Turn_ratio,
+    EBIT_Turn_ratio, Turn_FixAs_ratio of the next year
 
     Args:
         df: (Pandas Dataframe) the dataset
 
     Returns:
-        (Pandas Dataframe) The dataset with the new columns future_turnover
+        (Pandas Dataframe) The dataset with the new columns
     """
-    return df.assign(future_turnover=df.groupby('id')['Turnover'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_Turnover=df.groupby('id')['Turnover'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_EBIT=df.groupby('id')['EBIT'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_WorkCap_Turn_ratio=df.groupby('id')['WorkCap_Turn_ratio'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_EBIT_Turn_ratio=df.groupby('id')['EBIT_Turn_ratio'].transform(lambda group: group.shift(-1)))
+    return df.assign(future_Turn_FixAs_ratio=df.groupby('id')['Turn_FixAs_ratio'].transform(lambda group: group.shift(-1)))
 
 
 def split_dataset(df):
@@ -75,7 +80,17 @@ def split_feature_label(df, parameter):
     return x, y
 
 
-def classfication_operation(x, y):
+def binarization(x, y):
+    """
+    Perform the binarization
+
+    Args:
+        x: (Number)
+        y: (Number)
+
+    Returns:
+        Return 0 if the difference between the x value and the y value is greater equal 0, 1 otherwise
+    """
     if (x-y) < 0:
         return 0
     else:

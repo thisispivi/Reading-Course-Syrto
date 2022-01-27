@@ -13,3 +13,5 @@ __pycache__/regression.cpython-37.pyc
 Documentazione/Performance.txt
 __pycache__/metrics.cpython-37.pyc
 *.pyc
+__pycache__/eda.cpython-39.pyc
+dataset/dataset.csv

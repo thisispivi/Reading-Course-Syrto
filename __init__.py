@@ -11,16 +11,16 @@ targets = ["FixedAssets",
            "WorkingCap",
            "CurrRatio",
            "LiqRatio",
-           "Turnover"]
-new_targets = ["EBIT",
-               "WorkCap_Turn_ratio",
-               "Turn_FixAs_ratio",
-               "EBIT_Turn_ratio"]
+           "Turnover",
+           "EBIT",
+           "WorkCap_Turn_ratio",
+           "Turn_FixAs_ratio",
+           "EBIT_Turn_ratio"]
 key = ["id",
        "bilancio_year"]
 
 # Change this to false if you want to import the dataset from the parquet file
-csv = True
+csv = False
 
 # Select the regressors (True to select, False the opposite)
 regressors_list = {
@@ -44,12 +44,12 @@ regressors_list = {
 }
 
 if __name__ == "__main__":
-    df = import_dataset(csv, key, targets + new_targets)
+    df = import_dataset(csv, key, targets)
     df.info()
     # Get training, validation and test sets
     training, validation, test = split_dataset(df)
     # Check correlation between data
     correlation(df, "corr.png")
     # Perform the regression using all the regressors
-    perform_regression(training, validation, regressors_list, "future_turnover")
+    perform_regression(training, validation, regressors_list, "future_Turnover", False)
 
