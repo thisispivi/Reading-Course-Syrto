@@ -35,7 +35,7 @@ def perform_regression(training, validation, regressors_list, parameter, classif
     previous_year = []
 
     count = 0
-    for company_id in company_ids:
+    for company_id in company_ids[:1]:
         # Print percentage
         print(str(count) + " / " + str(len(company_ids) - 1) + " / " + str(
             round(((count / (len(company_ids) - 1)) * 100), 2)) + "%")

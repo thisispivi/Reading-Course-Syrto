@@ -76,7 +76,7 @@ def split_feature_label(df, parameter):
         y: (Pandas Dataframe) Labels
     """
     x = df.drop(['id', parameter], axis=1).values
-    y = df.future_turnover.values
+    y = df[parameter].values
     return x, y
 
 
