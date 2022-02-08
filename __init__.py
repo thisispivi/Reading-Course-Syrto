@@ -22,7 +22,7 @@ key = ["id",
 # Change this to false if you want to import the dataset from the parquet file
 csv = True
 # Change this to True if you want to perform the classification
-classification = False
+classification = True
 
 # Select the regressors (True to select, False the opposite)
 regressors_list = {

@@ -1,5 +1,3 @@
-import pandas as pd
-
 from metrics import *
 from regressors import *
 
@@ -21,7 +19,9 @@ def perform_regression(training, validation, regressors_list, parameter, classif
     """
     # Create lists in which, for each company, the correct values and the prediction will be saved
     # Correct Values Lists
-    right_y = []
+    ols_right, ridge_right, lasso_right, elastic_right, lars_right, bayesian_right = [], [], [], [], [], []
+    stochastic_right, passive_right, kernel_right, svr_right, nn_right, gauss_right = [], [], [], [], [], []
+    decision_right, random_right, ada_right, gradient_right, ensemble_right = [], [], [], [], []
     # Prediction Lists
     ols_pred, ridge_pred, lasso_pred, elastic_pred, lars_pred, bayesian_pred = [], [], [], [], [], []
     stochastic_pred, passive_pred, kernel_pred, svr_pred, nn_pred, gauss_pred = [], [], [], [], [], []
@@ -29,6 +29,7 @@ def perform_regression(training, validation, regressors_list, parameter, classif
 
     # Get the ids of all the companies
     company_ids = list(training.groupby('id').groups.keys())
+
     # The list with the previous year values (Only Classification)
     previous_year = []
 
@@ -45,131 +46,147 @@ def perform_regression(training, validation, regressors_list, parameter, classif
         if classification:
             previous_year.append(validation[validation.id == company_id][parameter[7:]].values[0])
 
-        right_y.append(y_valid)
-
         if regressors_list["ols"]:
-            var = ordinary_least_squares(x_train, y_train, x_valid)
-            ols_pred.append(var[0])
+            var = ordinary_least_squares(x_train, y_train, x_valid, y_valid)
+            ols_right.append(var[0][0])
+            ols_pred.append(var[1][0])
         if regressors_list["ridge"]:
-            var = ridge_regression(x_train, y_train, x_valid)
-            ridge_pred.append(var[0])
+            var = ridge_regression(x_train, y_train, x_valid, y_valid)
+            ridge_right.append(var[0][0])
+            ridge_pred.append(var[1][0])
         if regressors_list["lasso"]:
-            var = lasso_regression(x_train, y_train, x_valid)
-            lasso_pred.append(var[0])
+            var = lasso_regression(x_train, y_train, x_valid, y_valid)
+            lasso_right.append(var[0][0])
+            lasso_pred.append(var[1][0])
         if regressors_list["elastic"]:
-            var = elastic_net_regression(x_train, y_train, x_valid)
-            elastic_pred.append(var[0])
+            var = elastic_net_regression(x_train, y_train, x_valid, y_valid)
+            elastic_right.append(var[0][0])
+            elastic_pred.append(var[1][0])
         if regressors_list["lars"]:
-            var = lars_regression(x_train, y_train, x_valid)
-            lars_pred.append(var[0])
+            var = lars_regression(x_train, y_train, x_valid, y_valid)
+            lars_right.append(var[0][0])
+            lars_pred.append(var[1][0])
         if regressors_list["bayesian"]:
-            var = bayesian_regression(x_train, y_train, x_valid)
-            bayesian_pred.append(var[0])
+            var = bayesian_regression(x_train, y_train, x_valid, y_valid)
+            bayesian_right.append(var[0][0])
+            bayesian_pred.append(var[1][0])
         if regressors_list["stochastic"]:
-            var = stochastic_gradient_descent(x_train, y_train, x_valid)
-            stochastic_pred.append(var[0])
+            var = stochastic_gradient_descent(x_train, y_train, x_valid, y_valid)
+            stochastic_right.append(var[0][0])
+            stochastic_pred.append(var[1][0])
         if regressors_list["passive"]:
-            var = passive_aggresive_regression(x_train, y_train, x_valid)
-            passive_pred.append(var[0])
+            var = passive_aggresive_regression(x_train, y_train, x_valid, y_valid)
+            passive_right.append(var[0][0])
+            passive_pred.append(var[1][0])
         if regressors_list["kernel"]:
-            var = kernel_ridge_regression(x_train, y_train, x_valid)
-            kernel_pred.append(var[0])
+            var = kernel_ridge_regression(x_train, y_train, x_valid, y_valid)
+            kernel_right.append(var[0][0])
+            kernel_pred.append(var[1][0])
         if regressors_list["svr"]:
-            var = support_vector_regression(x_train, y_train, x_valid)
-            svr_pred.append(var[0])
+            var = support_vector_regression(x_train, y_train, x_valid, y_valid)
+            svr_right.append(var[0][0])
+            svr_pred.append(var[1][0])
         if regressors_list["nn"]:
-            var = nearest_neighbor_regression(x_train, y_train, x_valid)
-            nn_pred.append(var[0])
+            var = nearest_neighbor_regression(x_train, y_train, x_valid, y_valid)
+            nn_right.append(var[0][0])
+            nn_pred.append(var[1][0])
         if regressors_list["gauss"]:
-            var = gaussian_process_regression(x_train, y_train, x_valid)
-            gauss_pred.append(var[0])
+            var = gaussian_process_regression(x_train, y_train, x_valid, y_valid)
+            gauss_right.append(var[0][0])
+            gauss_pred.append(var[1][0])
         if regressors_list["decision"]:
-            var = decision_tree_regression(x_train, y_train, x_valid)
-            decision_pred.append(var[0])
+            var = decision_tree_regression(x_train, y_train, x_valid, y_valid)
+            decision_right.append(var[0][0])
+            decision_pred.append(var[1][0])
         if regressors_list["random"]:
-            var = random_forest_regression(x_train, y_train, x_valid)
-            random_pred.append(var[0])
+            var = random_forest_regression(x_train, y_train, x_valid, y_valid)
+            random_right.append(var[0][0])
+            random_pred.append(var[1][0])
         if regressors_list["ada"]:
-            var = ada_boost_regression(x_train, y_train, x_valid)
-            ada_pred.append(var[0])
+            var = ada_boost_regression(x_train, y_train, x_valid, y_valid)
+            ada_right.append(var[0][0])
+            ada_pred.append(var[1][0])
         if regressors_list["gradient"]:
-            var = gradient_boost_regression(x_train, y_train, x_valid)
-            gradient_pred.append(var[0])
+            var = gradient_boost_regression(x_train, y_train, x_valid, y_valid)
+            gradient_right.append(var[0][0])
+            gradient_pred.append(var[1][0])
         if regressors_list["ensemble"]:
-            var = ensemble_method_regression(x_train, y_train, x_valid)
-            ensemble_pred.append(var[0])
+            var = ensemble_method_regression(x_train, y_train, x_valid, y_valid)
+            ensemble_right.append(var[0][0])
+            ensemble_pred.append(var[1][0])
         count = count + 1
 
     if not classification:
         if regressors_list["ols"]:
-            print_regression_metrics(right_y, ols_pred, "\nOrdinary Least Square")
+            print_regression_metrics(ols_right, ols_pred, "\nOrdinary Least Square")
         if regressors_list["ridge"]:
-            print_regression_metrics(right_y, ridge_pred, "\nRidge Regressor")
+            print_regression_metrics(ridge_right, ridge_pred, "\nRidge Regressor")
         if regressors_list["lasso"]:
-            print_regression_metrics(right_y, lasso_pred, "\nLasso Regressor")
+            print_regression_metrics(lasso_right, lasso_pred, "\nLasso Regressor")
         if regressors_list["elastic"]:
-            print_regression_metrics(right_y, elastic_pred, "\nElastic Regressor")
+            print_regression_metrics(elastic_right, elastic_pred, "\nElastic Regressor")
         if regressors_list["lars"]:
-            print_regression_metrics(right_y, lars_pred, "\nLars Regressor")
+            print_regression_metrics(lars_right, lars_pred, "\nLars Regressor")
         if regressors_list["bayesian"]:
-            print_regression_metrics(right_y, bayesian_pred, "\nBayesian Regressor")
+            print_regression_metrics(bayesian_right, bayesian_pred, "\nBayesian Regressor")
         if regressors_list["stochastic"]:
-            print_regression_metrics(right_y, stochastic_pred, "\nStochastic Gradient Descent Regressor")
+            print_regression_metrics(stochastic_right, stochastic_pred, "\nStochastic Gradient Descent Regressor")
         if regressors_list["passive"]:
-            print_regression_metrics(right_y, passive_pred, "\nPassive Aggressive Regressor")
+            print_regression_metrics(passive_right, passive_pred, "\nPassive Aggressive Regressor")
         if regressors_list["kernel"]:
-            print_regression_metrics(right_y, kernel_pred, "\nKernel Ridge Regressor")
+            print_regression_metrics(kernel_right, kernel_pred, "\nKernel Ridge Regressor")
         if regressors_list["svr"]:
-            print_regression_metrics(right_y, svr_pred, "\nSVR Regressor")
+            print_regression_metrics(svr_right, svr_pred, "\nSVR Regressor")
         if regressors_list["nn"]:
-            print_regression_metrics(right_y, nn_pred, "\nNearest Neighbour Regressor")
+            print_regression_metrics(nn_right, nn_pred, "\nNearest Neighbour Regressor")
         if regressors_list["gauss"]:
-            print_regression_metrics(right_y, gauss_pred, "\nGaussian Process Regressor")
+            print_regression_metrics(gauss_right, gauss_pred, "\nGaussian Process Regressor")
         if regressors_list["decision"]:
-            print_regression_metrics(right_y, decision_pred, "\nDecision Tree Regressor")
+            print_regression_metrics(decision_right, decision_pred, "\nDecision Tree Regressor")
         if regressors_list["random"]:
-            print_regression_metrics(right_y, random_pred, "\nRandom Forest Regressor")
+            print_regression_metrics(random_right, random_pred, "\nRandom Forest Regressor")
         if regressors_list["ada"]:
-            print_regression_metrics(right_y, ada_pred, "\nAda Boost Regressor")
+            print_regression_metrics(ada_right, ada_pred, "\nAda Boost Regressor")
         if regressors_list["gradient"]:
-            print_regression_metrics(right_y, gradient_pred, "\nGradient Boost Regressor")
+            print_regression_metrics(gradient_right, gradient_pred, "\nGradient Boost Regressor")
         if regressors_list["ensemble"]:
-            print_regression_metrics(right_y, ensemble_pred, "\nEnsemble Regressor")
+            print_regression_metrics(ensemble_right, ensemble_pred, "\nEnsemble Regressor")
     else:
         if regressors_list["ols"]:
-            perform_classification(right_y, ols_pred, previous_year, "\nOrdinary Least Square")
+            perform_classification(ols_right, ols_pred, previous_year, "\nOrdinary Least Square")
         if regressors_list["ridge"]:
-            perform_classification(right_y, ridge_pred, previous_year, "\nRidge Regressor")
+            perform_classification(ridge_right, ridge_pred, previous_year, "\nRidge Regressor")
         if regressors_list["lasso"]:
-            perform_classification(right_y, lasso_pred, previous_year, "\nLasso Regressor")
+            perform_classification(lasso_right, lasso_pred, previous_year, "\nLasso Regressor")
         if regressors_list["elastic"]:
-            perform_classification(right_y, elastic_pred, previous_year, "\nElastic Regressor")
+            perform_classification(elastic_right, elastic_pred, previous_year, "\nElastic Regressor")
         if regressors_list["lars"]:
-            perform_classification(right_y, lars_pred, previous_year, "\nLars Regressor")
+            perform_classification(lars_right, lars_pred, previous_year, "\nLars Regressor")
         if regressors_list["bayesian"]:
-            perform_classification(right_y, bayesian_pred, previous_year, "\nBayesian Regressor")
+            perform_classification(bayesian_right, bayesian_pred, previous_year, "\nBayesian Regressor")
         if regressors_list["stochastic"]:
-            perform_classification(right_y, stochastic_pred, previous_year, "\nStochastic Gradient Descent Regressor")
+            perform_classification(stochastic_right, stochastic_pred, previous_year,
+                                   "\nStochastic Gradient Descent Regressor")
         if regressors_list["passive"]:
-            perform_classification(right_y, passive_pred, previous_year, "\nPassive Aggressive Regressor")
+            perform_classification(passive_right, passive_pred, previous_year, "\nPassive Aggressive Regressor")
         if regressors_list["kernel"]:
-            perform_classification(right_y, kernel_pred, previous_year, "\nKernel Ridge Regressor")
+            perform_classification(kernel_right, kernel_pred, previous_year, "\nKernel Ridge Regressor")
         if regressors_list["svr"]:
-            perform_classification(right_y, svr_pred, previous_year, "\nSVR Regressor")
+            perform_classification(svr_right, svr_pred, previous_year, "\nSVR Regressor")
         if regressors_list["nn"]:
-            perform_classification(right_y, nn_pred, previous_year, "\nNearest Neighbour Regressor")
+            perform_classification(nn_right, nn_pred, previous_year, "\nNearest Neighbour Regressor")
         if regressors_list["gauss"]:
-            perform_classification(right_y, gauss_pred, previous_year, "\nGaussian Process Regressor")
+            perform_classification(gauss_right, gauss_pred, previous_year, "\nGaussian Process Regressor")
         if regressors_list["decision"]:
-            perform_classification(right_y, decision_pred, previous_year, "\nDecision Tree Regressor")
+            perform_classification(decision_right, decision_pred, previous_year, "\nDecision Tree Regressor")
         if regressors_list["random"]:
-            perform_classification(right_y, random_pred, previous_year, "\nRandom Forest Regressor")
+            perform_classification(random_right, random_pred, previous_year, "\nRandom Forest Regressor")
         if regressors_list["ada"]:
-            perform_classification(right_y, ada_pred, previous_year, "\nAda Boost Regressor")
+            perform_classification(ada_right, ada_pred, previous_year, "\nAda Boost Regressor")
         if regressors_list["gradient"]:
-            perform_classification(right_y, gradient_pred, previous_year, "\nGradient Boost Regressor")
+            perform_classification(gradient_right, gradient_pred, previous_year, "\nGradient Boost Regressor")
         if regressors_list["ensemble"]:
-            perform_classification(right_y, ensemble_pred, previous_year, "\nEnsemble Regressor")
+            perform_classification(ensemble_right, ensemble_pred, previous_year, "\nEnsemble Regressor")
 
 
 def perform_classification(right, pred, previous_year, name):
