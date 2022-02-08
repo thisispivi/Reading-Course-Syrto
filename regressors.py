@@ -9,336 +9,303 @@ import sklearn.ensemble as en
 from utils import *
 
 
-def ordinary_least_squares(x_train, y_train, x_valid, y_valid):
+def ordinary_least_squares(train_x, train_y, valid_x):
     """
         Perform the linear regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = lm.LinearRegression()
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def ridge_regression(x_train, y_train, x_valid, y_valid):
+def ridge_regression(train_x, train_y, valid_x):
     """
         Perform the ridge regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = lm.Ridge(alpha=0.5)
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def lasso_regression(x_train, y_train, x_valid, y_valid):
+def lasso_regression(train_x, train_y, valid_x):
     """
         Perform the lasso regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
         """
     model = lm.Lasso()
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def elastic_net_regression(x_train, y_train, x_valid, y_valid):
+def elastic_net_regression(train_x, train_y, valid_x):
     """
         Perform the elastic net regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = lm.ElasticNet(random_state=0)
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def lars_regression(x_train, y_train, x_valid, y_valid):
+def lars_regression(train_x, train_y, valid_x):
     """
         Perform the least angle regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = lm.Lars(n_nonzero_coefs=1, normalize=False)
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def bayesian_regression(x_train, y_train, x_valid, y_valid):
+def bayesian_regression(train_x, train_y, valid_x):
     """
         Perform the bayesian regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = lm.BayesianRidge()
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def stochastic_gradient_descent(x_train, y_train, x_valid, y_valid):
+def stochastic_gradient_descent(train_x, train_y, valid_x):
     """
         Perform the stochastic gradient descent regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = lm.SGDRegressor(max_iter=100000, tol=0.0001, epsilon=0.001)
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def passive_aggresive_regression(x_train, y_train, x_valid, y_valid):
+def passive_aggresive_regression(train_x, train_y, valid_x):
     """
         Perform the passive aggressive regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = lm.PassiveAggressiveRegressor(max_iter=100, random_state=0, tol=1e-3)
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def kernel_ridge_regression(x_train, y_train, x_valid, y_valid):
+def kernel_ridge_regression(train_x, train_y, valid_x):
     """
         Perform the kernel ridge regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = kr.KernelRidge(alpha=1.0)
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def support_vector_regression(x_train, y_train, x_valid, y_valid):
+def support_vector_regression(train_x, train_y, valid_x):
     """
         Perform the Support Vector Regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = svm.SVR()
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def nearest_neighbor_regression(x_train, y_train, x_valid, y_valid):
+def nearest_neighbor_regression(train_x, train_y, valid_x):
     """
         Perform the Nearest Neighbour regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = nei.KNeighborsRegressor(n_neighbors=2)
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def gaussian_process_regression(x_train, y_train, x_valid, y_valid):
+def gaussian_process_regression(train_x, train_y, valid_x):
     """
         Perform the gaussian process regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     kernel = DotProduct() + WhiteKernel()
     model = gs.GaussianProcessRegressor(kernel=kernel, random_state=0)
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def decision_tree_regression(x_train, y_train, x_valid, y_valid):
+def decision_tree_regression(train_x, train_y, valid_x):
     """
         Perform the decision tree regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = tree.DecisionTreeRegressor()
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def random_forest_regression(x_train, y_train, x_valid, y_valid):
+def random_forest_regression(train_x, train_y, valid_x):
     """
         Perform the random forest regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = en.RandomForestRegressor(max_depth=2, random_state=0)
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def ada_boost_regression(x_train, y_train, x_valid, y_valid):
+def ada_boost_regression(train_x, train_y, valid_x):
     """
         Perform ada boost regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = en.AdaBoostRegressor(random_state=0, n_estimators=100)
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def gradient_boost_regression(x_train, y_train, x_valid, y_valid):
+def gradient_boost_regression(train_x, train_y, valid_x):
     """
         Perform the gradient boost regression
 
         Args:
-            x_train: (Dataframe) The features of the training set
-            y_train: (Dataframe) The labels of the training set
-            x_valid: (Dataframe) The features of the validation set
-            y_valid: (Dataframe) The labels of the validation set
+            train_x: (Dataframe) The features of the training set
+            train_y: (Dataframe) The labels of the training set
+            valid_x: (Dataframe) The features of the validation set
 
         Returns:
-            y_valid: (float) The right value
             pred: (float) The predicted value
     """
     model = en.GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=1, random_state=0,
                                          loss='squared_error')
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 
 
-def ensemble_method_regression(x_train, y_train, x_valid, y_valid):
+def ensemble_method_regression(train_x, train_y, valid_x):
     """
 
     Args:
-        x_train: (Dataframe) The features of the training set
-        y_train: (Dataframe) The labels of the training set
-        x_valid: (Dataframe) The features of the validation set
-        y_valid: (Dataframe) The labels of the validation set
+        train_x: (Dataframe) The features of the training set
+        train_y: (Dataframe) The labels of the training set
+        valid_x: (Dataframe) The features of the validation set
 
     Returns:
 
@@ -347,7 +314,7 @@ def ensemble_method_regression(x_train, y_train, x_valid, y_valid):
     reg2 = en.RandomForestRegressor(random_state=1)
     reg3 = lm.LinearRegression()
     model = en.VotingRegressor(estimators=[('gb', reg1), ('rf', reg2), ('lr', reg3)])
-    model.fit(x_train, y_train)
-    pred = model.predict(x_valid)
-    return y_valid, pred
+    model.fit(train_x, train_y)
+    pred = model.predict(valid_x)
+    return pred
 

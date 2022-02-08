@@ -75,7 +75,9 @@ def split_feature_label(df, parameter):
         x: (Pandas Dataframe) Features
         y: (Pandas Dataframe) Labels
     """
-    x = df.drop(['id', parameter], axis=1).values
+    x = df.drop(['id', "future_Turnover",
+                 "future_EBIT", "future_WorkCap_Turn_ratio",
+                 "future_Turn_FixAs_ratio", "future_EBIT_Turn_ratio"], axis=1).values
     y = df[parameter].values
     return x, y
 
