@@ -15,7 +15,8 @@ def smape(a, f):
     Returns:
         The Symmetric Mean Absolute Percentage Error
     """
-    return np.sum(np.abs(f-a)) / np.sum(f+a)
+    n = len(a)
+    return np.sum(np.abs(f-a)/(np.abs(a) + np.abs(f)))
 
 
 def print_regression_metrics(right, pred, name):

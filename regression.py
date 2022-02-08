@@ -33,7 +33,7 @@ def perform_regression(training, validation, regressors_list, parameter, classif
     previous_year = []
 
     count = 0
-    for company_id in company_ids:
+    for company_id in company_ids[:500]:
         # Print percentage
         print(str(count) + " / " + str(len(company_ids) - 1) + " / " + str(
             round(((count / (len(company_ids) - 1)) * 100), 2)) + "%")
@@ -184,6 +184,6 @@ def perform_classification(right, pred, previous_year, name):
     """
     right_series = pd.Series(right, name="Right")
     previous_year_series = pd.Series(previous_year, name="Previous")
-    classification_predict = right_series.combine(previous_year_series, lambda x, y: binarization(x, y)).values
-    classification_right = [binarization(x, y) for x, y in zip(pred, previous_year)]
+    classification_right = right_series.combine(previous_year_series, lambda x, y: binarization(x, y)).values
+    classification_predict = [binarization(x, y) for x, y in zip(pred, previous_year)]
     print_classification_metrics(classification_right, classification_predict, name)
