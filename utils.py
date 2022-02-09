@@ -24,6 +24,7 @@ def import_dataset(csv, key, targets):
     else:
         df = pd.read_csv("dataset/dataset.csv")
         df = df.drop(['Unnamed: 0'], axis=1)
+    df = df.sort_values(["id", "bilancio_year"], ascending=True)
     return df
 
 
@@ -75,10 +76,10 @@ def split_feature_label(df, parameter):
         x: (Pandas Dataframe) Features
         y: (Pandas Dataframe) Labels
     """
-    x = df.drop(['id', "future_Turnover",
+    x = df.drop(['id', "bilancio_year", "future_Turnover",
                  "future_EBIT", "future_WorkCap_Turn_ratio",
-                 "future_Turn_FixAs_ratio", "future_EBIT_Turn_ratio"], axis=1).values
-    y = df[parameter].values
+                 "future_Turn_FixAs_ratio", "future_EBIT_Turn_ratio"], axis=1)
+    y = df[parameter]
     return x, y
 
 
