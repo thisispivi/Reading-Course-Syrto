@@ -6,6 +6,8 @@ import sklearn.gaussian_process as gs
 from sklearn.gaussian_process.kernels import DotProduct, WhiteKernel
 from sklearn import tree
 import sklearn.ensemble as en
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
 from utils import *
 
 
@@ -97,7 +99,7 @@ def lars_regression(train_x, train_y, valid_x):
         Returns:
             pred: (float) The predicted value
     """
-    model = lm.Lars(n_nonzero_coefs=1, normalize=False)
+    model = lm.Lars(n_nonzero_coefs=1, normalize=False, verbose=True)
     model.fit(train_x, train_y)
     pred = model.predict(valid_x)
     pred = pred.astype('int32')
@@ -135,7 +137,7 @@ def stochastic_gradient_descent(train_x, train_y, valid_x):
         Returns:
             pred: (float) The predicted value
     """
-    model = lm.SGDRegressor(max_iter=100000, tol=0.0001, epsilon=0.001)
+    model = make_pipeline(StandardScaler(), lm.SGDRegressor(max_iter=100000, tol=0.0001, epsilon=0.001, verbose=True))
     model.fit(train_x, train_y)
     pred = model.predict(valid_x)
     pred = pred.astype('int32')
@@ -192,7 +194,7 @@ def support_vector_regression(train_x, train_y, valid_x):
         Returns:
             pred: (float) The predicted value
     """
-    model = svm.SVR()
+    model = make_pipeline(StandardScaler(), svm.SVR(kernel='rbf', max_iter=10000, verbose=True, tol=0.01))
     model.fit(train_x, train_y)
     pred = model.predict(valid_x)
     pred = pred.astype('int32')
@@ -211,7 +213,7 @@ def nearest_neighbor_regression(train_x, train_y, valid_x):
         Returns:
             pred: (float) The predicted value
     """
-    model = nei.KNeighborsRegressor(n_neighbors=2)
+    model = nei.KNeighborsRegressor(n_neighbors=7)
     model.fit(train_x, train_y)
     pred = model.predict(valid_x)
     pred = pred.astype('int32')
@@ -250,7 +252,7 @@ def decision_tree_regression(train_x, train_y, valid_x):
         Returns:
             pred: (float) The predicted value
     """
-    model = tree.DecisionTreeRegressor()
+    model = tree.DecisionTreeRegressor(max_depth=10, random_state=0)
     model.fit(train_x, train_y)
     pred = model.predict(valid_x)
     pred = pred.astype('int32')
@@ -269,7 +271,7 @@ def random_forest_regression(train_x, train_y, valid_x):
         Returns:
             pred: (float) The predicted value
     """
-    model = en.RandomForestRegressor(max_depth=2, random_state=0)
+    model = en.RandomForestRegressor()
     model.fit(train_x, train_y)
     pred = model.predict(valid_x)
     pred = pred.astype('int32')
@@ -307,8 +309,8 @@ def gradient_boost_regression(train_x, train_y, valid_x):
         Returns:
             pred: (float) The predicted value
     """
-    model = en.GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=1, random_state=0,
-                                         loss='squared_error')
+    model = en.GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=10, random_state=0,
+                                         loss='squared_error', verbose=True)
     model.fit(train_x, train_y)
     pred = model.predict(valid_x)
     pred = pred.astype('int32')

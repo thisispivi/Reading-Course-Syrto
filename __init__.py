@@ -22,7 +22,7 @@ key = ["id",
 # Change this to false if you want to import the dataset from the parquet file
 csv = True
 # Change this to True if you want to perform the classification
-classification = False
+classification = True
 
 # Select the regressors (True to select, False the opposite)
 regressors_list = {
@@ -35,7 +35,7 @@ regressors_list = {
     "stochastic": False,  # Stochastic Gradient Descent Regressor
     "passive": False,  # Passive Aggressive Regressor
     "kernel": False,  # Kernel Ridge Regressor
-    "svr": True,  # Support Vector Regressor
+    "svr": False,  # Support Vector Regressor
     "nn": True,  # Nearest Neighbour Regressor
     "gauss": False,  # Gaussian Process Regressor
     "decision": True,  # Decision Tree Regressor
@@ -51,6 +51,7 @@ field_name = "future_Turnover"
 # field_name = "future_WorkCap_Turn_ratio"
 # field_name = "future_Turn_FixAs_ratio"
 # field_name = "future_EBIT_Turn_ratio"
+# field_name = "LTdebt"
 
 if __name__ == "__main__":
     df = import_dataset(csv, key, targets)
