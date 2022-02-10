@@ -15,6 +15,10 @@ def smape(a, f):
     Returns:
         The Symmetric Mean Absolute Percentage Error
     """
+    ccc = np.sum(np.abs(f-a))
+    ccc2 = np.sum((np.abs(a) + np.abs(f)))
+    ccc3 = np.sum((np.abs(f)))
+    ccc4 = np.sum((np.abs(a)))
     return 1/len(a) * np.sum(np.abs(f-a) / (np.abs(a) + np.abs(f)))
 
 
