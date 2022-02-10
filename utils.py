@@ -43,6 +43,7 @@ def add_future_values(df):
     df = df.assign(future_EBIT=df.groupby('id')['EBIT'].transform(lambda group: group.shift(-1)))
     df = df.assign(future_WorkCap_Turn_ratio=df.groupby('id')['WorkCap_Turn_ratio'].transform(lambda group: group.shift(-1)))
     df = df.assign(future_EBIT_Turn_ratio=df.groupby('id')['EBIT_Turn_ratio'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_LTdebt=df.groupby('id')['LTdebt'].transform(lambda group: group.shift(-1)))
     return df.assign(future_Turn_FixAs_ratio=df.groupby('id')['Turn_FixAs_ratio'].transform(lambda group: group.shift(-1)))
 
 
@@ -78,7 +79,7 @@ def split_feature_label(df, parameter):
     """
     x = df.drop(['id', "bilancio_year", "future_Turnover",
                  "future_EBIT", "future_WorkCap_Turn_ratio",
-                 "future_Turn_FixAs_ratio", "future_EBIT_Turn_ratio"], axis=1)
+                 "future_Turn_FixAs_ratio", "future_EBIT_Turn_ratio", "future_LTdebt"], axis=1)
     y = df[parameter]
     return x, y
 
