@@ -113,7 +113,7 @@ def bayesian_regression(train_x, train_y, valid_x):
         Returns:
             pred: (float) The predicted value
     """
-    model = lm.BayesianRidge()
+    model = lm.BayesianRidge(verbose=True)
     model.fit(train_x, train_y)
     pred = model.predict(valid_x)
     return pred
@@ -258,7 +258,7 @@ def random_forest_regression(train_x, train_y, valid_x):
         Returns:
             pred: (float) The predicted value
     """
-    model = en.RandomForestRegressor()
+    model = en.RandomForestRegressor(max_depth=10, random_state=0, verbose=True)
     model.fit(train_x, train_y)
     pred = model.predict(valid_x)
     return pred
