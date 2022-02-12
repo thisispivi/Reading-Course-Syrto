@@ -12,7 +12,7 @@ def correlation(df, save_path=None):
         df: (Dataframe) The dataset
     """
     np.triu(df.corr())
-    plt.subplots(figsize=(15, 12))
+    plt.subplots(figsize=(18, 12))
     sns.heatmap(df.corr(), annot=True, linewidth=.01, cmap=sns.cubehelix_palette(as_cmap=True))
     if save_path is None:
         plt.show()

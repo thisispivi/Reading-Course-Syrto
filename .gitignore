@@ -3,15 +3,9 @@ Materiale/dataset/data_full_1.3.parquet
 dataset/data_full_1.3.parquet
 syrto/__pycache__/__init__.cpython-37.pyc
 syrto/__pycache__/utils.cpython-37.pyc
-__pycache__/dataset_analysis.cpython-37.pyc
-__pycache__/read_dataset.cpython-37.pyc
 ciao.csv
-__pycache__/utils.cpython-37.pyc
-__pycache__/regressors.cpython-37.pyc
-__pycache__/eda.cpython-37.pyc
-__pycache__/regression.cpython-37.pyc
 Documentazione/Performance.txt
-__pycache__/metrics.cpython-37.pyc
 *.pyc
-__pycache__/eda.cpython-39.pyc
+__pycache__/
 dataset/dataset.csv
+corr.png
