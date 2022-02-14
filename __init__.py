@@ -1,5 +1,11 @@
+import os
+
 from eda import *
 from regression import *
+from utils import *
+
+# Change this to false if you want to import the dataset from the parquet file
+csv = True
 
 targets = ["FixedAssets",
            "CurrAssets",
@@ -18,11 +24,6 @@ targets = ["FixedAssets",
            "EBIT_Turn_ratio"]
 key = ["id",
        "bilancio_year"]
-
-# Change this to false if you want to import the dataset from the parquet file
-csv = True
-# Change this to True if you want to perform the classification
-classification = True
 
 # Select the regressors (True to select, False the opposite)
 regressors_list = {
@@ -46,13 +47,18 @@ regressors_list = {
 }
 
 # The name of the field that you want to predict (Select 1) (Uncomment to select)
-
 # field_name = "future_Turnover"
-field_name = "future_EBIT"
+# field_name = "future_EBIT"
 # field_name = "future_WorkCap_Turn_ratio"
 # field_name = "future_Turn_FixAs_ratio"
 # field_name = "future_EBIT_Turn_ratio"
-# field_name = "LTdebt"
+field_name = "future_LTdebt"
+
+# The name of the export file
+file_name = generate_file_name(field_name)
+# file_name = "export.csv"  # Uncomment to use custom file names
+
+path = os.path.join("export", file_name)
 
 if __name__ == "__main__":
     df = import_dataset(csv, key, targets)
@@ -60,6 +66,6 @@ if __name__ == "__main__":
     # Get training, validation and test sets
     training, validation, test = split_dataset(df)
     # Check correlation between data
-    correlation(df, "corr.png")
+    correlation(df, "export/corr.png")
     # Perform the regression using all the regressors
-    perform_regression(training, validation, regressors_list, field_name, classification)
+    perform_regression(training, validation, regressors_list, field_name, True, path)

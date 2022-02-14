@@ -8,4 +8,4 @@ Documentazione/Performance.txt
 *.pyc
 __pycache__/
 dataset/dataset.csv
-corr.png
+export/

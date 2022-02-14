@@ -1,5 +1,6 @@
 import read_dataset as rd
 import pandas as pd
+from time import gmtime, strftime
 
 
 def import_dataset(csv, key, targets):
@@ -89,8 +90,8 @@ def binarization(x, y):
     Perform the binarization
 
     Args:
-        x: (Number)
-        y: (Number)
+        x: (Number) The actual value
+        y: (Number) The value of the previous year
 
     Returns:
         Return 0 if the difference between the x value and the y value is greater equal 0, 1 otherwise
@@ -99,3 +100,39 @@ def binarization(x, y):
         return 0
     else:
         return 1
+
+
+def correct_zero_division_smape(a, f, value):
+    """
+    Change the value of the a, f list if for an index i, both a and f are 0. So, it's possible to compute smape,
+    otherwise it will perform a division by 0, and it will crash.
+
+    Args:
+        a: (list of numbers) The correct values
+        f: (list of numbers) The predicted values
+        value: (number) The value to substitute
+
+    Returns:
+        a: (list of numbers) The new correct values
+        f: (list of numbers) The new predicted values
+    """
+    for i in range(len(a)):
+        if a[i] == 0 and f[i] == 0:
+            a[i] = value
+            f[i] = value
+    return a, f
+
+
+def generate_file_name(prediction):
+    """
+    Autogenerate export file name. The file name will be in this format:
+    variable_to_predict + timestamp + .csv
+
+    Args:
+        prediction: (String) The field that will be predicted
+
+    Returns:
+        (String) The name and path of the file
+    """
+    return prediction[7:] + " " + strftime("%Y-%m-%d %H-%M-%S", gmtime()) + ".csv"
+

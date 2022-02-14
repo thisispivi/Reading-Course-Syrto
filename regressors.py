@@ -25,8 +25,7 @@ def ordinary_least_squares(train_x, train_y, valid_x):
     """
     model = lm.LinearRegression()
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def ridge_regression(train_x, train_y, valid_x):
@@ -43,8 +42,7 @@ def ridge_regression(train_x, train_y, valid_x):
     """
     model = lm.Ridge(alpha=0.5)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def lasso_regression(train_x, train_y, valid_x):
@@ -61,8 +59,7 @@ def lasso_regression(train_x, train_y, valid_x):
         """
     model = lm.Lasso()
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def elastic_net_regression(train_x, train_y, valid_x):
@@ -79,8 +76,7 @@ def elastic_net_regression(train_x, train_y, valid_x):
     """
     model = lm.ElasticNet(random_state=0)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def lars_regression(train_x, train_y, valid_x):
@@ -97,8 +93,7 @@ def lars_regression(train_x, train_y, valid_x):
     """
     model = lm.Lars(n_nonzero_coefs=1, normalize=False, verbose=True)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def bayesian_regression(train_x, train_y, valid_x):
@@ -115,8 +110,7 @@ def bayesian_regression(train_x, train_y, valid_x):
     """
     model = lm.BayesianRidge(verbose=True)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def stochastic_gradient_descent(train_x, train_y, valid_x):
@@ -133,8 +127,7 @@ def stochastic_gradient_descent(train_x, train_y, valid_x):
     """
     model = make_pipeline(StandardScaler(), lm.SGDRegressor(max_iter=100000, tol=0.0001, epsilon=0.001, verbose=True))
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def passive_aggresive_regression(train_x, train_y, valid_x):
@@ -151,8 +144,7 @@ def passive_aggresive_regression(train_x, train_y, valid_x):
     """
     model = lm.PassiveAggressiveRegressor(max_iter=100, random_state=0, tol=1e-3)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def kernel_ridge_regression(train_x, train_y, valid_x):
@@ -169,8 +161,7 @@ def kernel_ridge_regression(train_x, train_y, valid_x):
     """
     model = kr.KernelRidge(alpha=1.0)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def support_vector_regression(train_x, train_y, valid_x):
@@ -187,8 +178,7 @@ def support_vector_regression(train_x, train_y, valid_x):
     """
     model = make_pipeline(StandardScaler(), svm.SVR(kernel='rbf', max_iter=10000, verbose=True, tol=0.01))
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def nearest_neighbor_regression(train_x, train_y, valid_x):
@@ -205,8 +195,7 @@ def nearest_neighbor_regression(train_x, train_y, valid_x):
     """
     model = nei.KNeighborsRegressor(n_neighbors=7)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def gaussian_process_regression(train_x, train_y, valid_x):
@@ -224,8 +213,7 @@ def gaussian_process_regression(train_x, train_y, valid_x):
     kernel = DotProduct() + WhiteKernel()
     model = gs.GaussianProcessRegressor(kernel=kernel, random_state=0)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def decision_tree_regression(train_x, train_y, valid_x):
@@ -242,8 +230,7 @@ def decision_tree_regression(train_x, train_y, valid_x):
     """
     model = tree.DecisionTreeRegressor(max_depth=10, random_state=0)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def random_forest_regression(train_x, train_y, valid_x):
@@ -260,8 +247,7 @@ def random_forest_regression(train_x, train_y, valid_x):
     """
     model = en.RandomForestRegressor(max_depth=10, random_state=0, verbose=True)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def ada_boost_regression(train_x, train_y, valid_x):
@@ -278,8 +264,7 @@ def ada_boost_regression(train_x, train_y, valid_x):
     """
     model = en.AdaBoostRegressor(random_state=0, n_estimators=100)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def gradient_boost_regression(train_x, train_y, valid_x):
@@ -297,8 +282,7 @@ def gradient_boost_regression(train_x, train_y, valid_x):
     model = en.GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_depth=10, random_state=0,
                                          loss='squared_error', verbose=True)
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
 
 
 def ensemble_method_regression(train_x, train_y, valid_x):
@@ -317,5 +301,4 @@ def ensemble_method_regression(train_x, train_y, valid_x):
     reg3 = lm.LinearRegression()
     model = en.VotingRegressor(estimators=[('gb', reg1), ('rf', reg2), ('lr', reg3)])
     model.fit(train_x, train_y)
-    pred = model.predict(valid_x)
-    return pred
+    return model.predict(valid_x)
