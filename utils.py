@@ -66,6 +66,22 @@ def split_dataset(df):
     return training, validation, test
 
 
+def split_dataset_benchmark(df):
+    """
+    Split the dataset in Training Set year(2016), Validation Set year(2017). This is used for the benchmark
+
+    Args:
+        df: (Pandas Dataframe) the dataset
+
+    Returns:
+        training: (Pandas Dataframe) Training Set (2016 data)
+        validation: (Pandas Dataframe) Validation Set (2017 data)
+    """
+    training = df[df.bilancio_year == 2015]
+    validation = df[df.bilancio_year == 2016]
+    return training, validation
+
+
 def split_feature_label(df, parameter):
     """
     Split the dataframe into label and features
@@ -123,16 +139,20 @@ def correct_zero_division_smape(a, f, value):
     return a, f
 
 
-def generate_file_name(prediction):
+def generate_file_name(prediction, benchmark):
     """
     Autogenerate export file name. The file name will be in this format:
     variable_to_predict + timestamp + .csv
 
     Args:
         prediction: (String) The field that will be predicted
+        benchmark: (boolean) True: benchmark mode (add benchmark to the end of the file) / False: normal
 
     Returns:
         (String) The name and path of the file
     """
-    return prediction[7:] + " " + strftime("%Y-%m-%d %H-%M-%S", gmtime()) + ".csv"
+    if benchmark:
+        return prediction[7:] + " " + strftime("%Y-%m-%d %H-%M-%S", gmtime()) + " benchmark.csv"
+    else:
+        return prediction[7:] + " " + strftime("%Y-%m-%d %H-%M-%S", gmtime()) + ".csv"
 

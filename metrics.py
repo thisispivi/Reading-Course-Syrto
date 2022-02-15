@@ -40,16 +40,39 @@ def save_metrics(r_right, r_pred, c_right, c_pred, name, verbose=True):
            accuracy_score(c_right, c_pred), precision_score(c_right, c_pred), recall_score(c_right, c_pred),
            roc_auc_score(c_right, c_pred)]
     if verbose:
-        print_metrics(row)
+        print_metrics(row, False)
     return row
 
 
-def print_metrics(row):
+def save_metrics_benchmark(r_right, r_pred, name, verbose=True):
+    """
+    Returns the metrics into a list. This is only for benchmark mode. Classification in benchmark mode is not
+    useful
+
+    Args:
+        r_right: (list of numbers) The correct values of the regression
+        r_pred: (list of numbers) The predicted values of the regression
+        name: (String) The name of the regressor
+        verbose: (boolean) True: print all the result / False: don't print all the result
+
+    Returns: (list) all the metrics
+    """
+    row = [name, mean_absolute_error(r_right, r_pred), mean_squared_error(r_right, r_pred),
+           math.sqrt(mean_squared_error(r_right, r_pred)), r2_score(r_right, r_pred),
+           mean_absolute_percentage_error(r_right, r_pred), smape(np.array(r_right), np.array(r_pred))]
+    if verbose:
+        print_metrics(row, True)
+    return row
+
+
+def print_metrics(row, benchmark):
     """
     Print all the regression metrics
 
     Args:
         row: (list) All the data
+        benchmark: (boolean) True: benchmark mode, don't print accuracy, recall, precision and AUC ROC / False:
+                Print everything
     """
     print("\n"+str(row[0]))
     print("MAE: " + str(row[1]))
@@ -58,7 +81,9 @@ def print_metrics(row):
     print("R2: " + str(row[4]))
     print("MAPE: " + str(row[5]))
     print("SMAPE: " + str(row[6]))
-    print("Accuracy: " + str(row[7]))
-    print("Precision: " + str(row[8]))
-    print("Recall: " + str(row[9]))
-    print("AUC ROC: " + str(row[10]))
+    if not benchmark:
+        print("Accuracy: " + str(row[7]))
+        print("Precision: " + str(row[8]))
+        print("Recall: " + str(row[9]))
+        print("AUC ROC: " + str(row[10]))
+

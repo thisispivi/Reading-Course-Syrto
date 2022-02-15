@@ -153,3 +153,12 @@ def perform_classification(right, pred, previous_year):
     classification_right = right_series.combine(previous_year_series, lambda x, y: binarization(x, y)).values
     classification_predict = [binarization(x, y) for x, y in zip(pred, previous_year)]
     return classification_right, classification_predict
+
+
+def perform_benchmark(training, validation, parameter, verbose, file_name=None):
+    train_x, train_y = split_feature_label(training, parameter)
+    valid_x, valid_y = split_feature_label(validation, parameter)
+
+    results = [save_metrics_benchmark(valid_y, train_y, "Benchmark", verbose)]
+    results = pd.DataFrame(results, columns=["Name", "MAE", "MSE", "RMSE", "R2", "MAPE", "SMAPE"])
+    results.to_csv(file_name)
