@@ -31,7 +31,13 @@ csv = False
 ---
 
 ## Configure the variables
-1. The variable ```targets``` represents the data of the companies that will be taken from the parquet file
+1. The variable ```benchmark``` activate the benchmark mode. This mode will take as prediction the data from 2016 and as
+correct values the data from 2017, then it will compute the metrics. This mode won't perform the regression. To perform 
+the regression this variable must be *False*.
+```python
+benchmark = False
+```
+2. The variable ```targets``` represents the data of the companies that will be taken from the parquet file
 ```python
 targets = ["FixedAssets",
            "CurrAssets",
@@ -49,12 +55,12 @@ targets = ["FixedAssets",
            "Turn_FixAs_ratio",
            "EBIT_Turn_ratio"]
 ```
-2. The variable ```keys``` represents the id of the companies that will be taken from the parquet file
+3. The variable ```keys``` represents the id of the companies that will be taken from the parquet file
 ```python
 key = ["id",
        "bilancio_year"]
 ```
-3. The variable ```regressors_list``` represents all the regressors available. To select one just set it value to True. 
+4. The variable ```regressors_list``` represents all the regressors available. To select one just set it value to True. 
 False otherwise. These are the regressors available:
    1. Ordinary Least Squares
    2. Ridge Regressor
@@ -95,7 +101,7 @@ regressors_list = {
     "ensemble": False  # Ensemble Regressor
 }
 ```
-4. The variable ```field_name``` represents the name of the variable that will be predicted. To select one just 
+5. The variable ```field_name``` represents the name of the variable that will be predicted. To select one just 
 uncomment one row
 ```python
 # The name of the field that you want to predict (Select 1) (Uncomment to select)
@@ -106,7 +112,7 @@ uncomment one row
 # field_name = "future_EBIT_Turn_ratio"
 field_name = "future_LTdebt"
 ```
-5. The variable ```file_name``` represents the name of the file in which the results of the regression and 
+6. The variable ```file_name``` represents the name of the file in which the results of the regression and 
 classification will be saved. There is a function that creates the file name. The names will be like:
 ```
 field_name day time.csv
