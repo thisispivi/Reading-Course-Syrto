@@ -262,7 +262,7 @@ def ada_boost_regression(train_x, train_y, valid_x):
         Returns:
             pred: (float) The predicted value
     """
-    model = en.AdaBoostRegressor(random_state=0, n_estimators=100)
+    model = en.AdaBoostRegressor(random_state=0, n_estimators=300, learning_rate=0.01, loss='linear')
     model.fit(train_x, train_y)
     return model.predict(valid_x)
 

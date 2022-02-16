@@ -1,6 +1,6 @@
 import read_dataset as rd
 import pandas as pd
-from time import gmtime, strftime
+from time import strftime, localtime
 
 
 def import_dataset(csv, key, targets):
@@ -152,7 +152,7 @@ def generate_file_name(prediction, benchmark):
         (String) The name and path of the file
     """
     if benchmark:
-        return prediction[7:] + " " + strftime("%Y-%m-%d %H-%M-%S", gmtime()) + " benchmark.csv"
+        return prediction[7:] + " " + strftime("%Y-%m-%d %H-%M-%S", localtime()) + " benchmark.csv"
     else:
-        return prediction[7:] + " " + strftime("%Y-%m-%d %H-%M-%S", gmtime()) + ".csv"
+        return prediction[7:] + " " + strftime("%Y-%m-%d %H-%M-%S", localtime()) + ".csv"
 

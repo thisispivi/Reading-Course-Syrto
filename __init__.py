@@ -8,7 +8,7 @@ from utils import *
 csv = True
 
 # Change this to true if you want to perform the benchmark
-benchmark = True
+benchmark = False
 
 targets = ["FixedAssets",
            "CurrAssets",
@@ -50,10 +50,10 @@ regressors_list = {
 }
 
 # The name of the field that you want to predict (Select 1) (Uncomment to select)
-field_name = "future_Turnover"
+# field_name = "future_Turnover"
 # field_name = "future_EBIT"
 # field_name = "future_WorkCap_Turn_ratio"
-# field_name = "future_Turn_FixAs_ratio"
+field_name = "future_Turn_FixAs_ratio"
 # field_name = "future_EBIT_Turn_ratio"
 # field_name = "future_LTdebt"
 
