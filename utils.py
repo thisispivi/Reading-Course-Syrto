@@ -16,8 +16,7 @@ def import_dataset(csv, key, targets):
         df: (Pandas Dataframe) The dataset
     """
     if not csv:
-        df = rd.read('data_full_1.3.parquet', 'dataset', min_cutoff={"Turnover": 1e4, "FixedAssets": 1},
-                     max_cutoff={"Turnover": 1e8})
+        df = rd.read('data_3.0.parquet', 'dataset', min_cutoff={}, max_cutoff={})
         columns = key + targets
         df = df[columns]
         df = add_future_values(df)
@@ -25,14 +24,23 @@ def import_dataset(csv, key, targets):
     else:
         df = pd.read_csv("dataset/dataset.csv")
         df = df.drop(['Unnamed: 0'], axis=1)
+    df = df.rename(columns={'TOTALE IMMOBILIZZAZIONI': 'TOTALE_IMMOBILIZZAZIONI',
+                            'ATTIVO CIRCOLANTE': 'ATTIVO_CIRCOLANTE', 'TOTALE ATTIVO': 'TOTALE_ATTIVO',
+                            'TOTALE PATRIMONIO NETTO': 'TOTALE_PATRIMONIO_NETTO',
+                            'DEBITI A BREVE': 'DEBITI_A_BREVE', 'DEBITI A OLTRE': 'DEBITI_A_OLTRE',
+                            'TOTALE DEBITI': 'TOTALE_DEBITI', 'TOTALE PASSIVO': 'TOTALE_PASSIVO',
+                            'TOT VAL PRODUZIONE': 'TOT_VAL_PRODUZIONE',
+                            'RISULTATO OPERATIVO': 'RISULTATO_OPERATIVO',
+                            'RISULTATO PRIMA DELLE IMPOSTE': 'RISULTATO_PRIMA_DELLE_IMPOSTE',
+                            'UTILE/PERDITA DI ESERCIZIO': 'UTILE_PERDITA_DI_ESERCIZIO'
+                            })
     df = df.sort_values(["id", "bilancio_year"], ascending=True)
     return df
 
 
 def add_future_values(df):
     """
-    Adds a column in the dataframe containing the turnover, EBIT, WorkCap_Turn_ratio,
-    EBIT_Turn_ratio, Turn_FixAs_ratio of the next year
+    Adds a column in the dataframe containing the value of each column for the next year
 
     Args:
         df: (Pandas Dataframe) the dataset
@@ -40,12 +48,25 @@ def add_future_values(df):
     Returns:
         (Pandas Dataframe) The dataset with the new columns
     """
-    df = df.assign(future_Turnover=df.groupby('id')['Turnover'].transform(lambda group: group.shift(-1)))
-    df = df.assign(future_EBIT=df.groupby('id')['EBIT'].transform(lambda group: group.shift(-1)))
-    df = df.assign(future_WorkCap_Turn_ratio=df.groupby('id')['WorkCap_Turn_ratio'].transform(lambda group: group.shift(-1)))
-    df = df.assign(future_EBIT_Turn_ratio=df.groupby('id')['EBIT_Turn_ratio'].transform(lambda group: group.shift(-1)))
-    df = df.assign(future_LTdebt=df.groupby('id')['LTdebt'].transform(lambda group: group.shift(-1)))
-    return df.assign(future_Turn_FixAs_ratio=df.groupby('id')['Turn_FixAs_ratio'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_TOTALE_IMMOBILIZZAZIONI=df.groupby('id')['TOTALE IMMOBILIZZAZIONI'].transform(
+        lambda group: group.shift(-1)))
+    df = df.assign(
+        future_ATTIVO_CIRCOLANTE=df.groupby('id')['ATTIVO CIRCOLANTE'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_TOTALE_ATTIVO=df.groupby('id')['TOTALE ATTIVO'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_TOTALE_PATRIMONIO_NETTO=df.groupby('id')['TOTALE PATRIMONIO NETTO'].transform(
+        lambda group: group.shift(-1)))
+    df = df.assign(future_DEBITI_A_BREVE=df.groupby('id')['DEBITI A BREVE'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_DEBITI_A_OLTRE=df.groupby('id')['DEBITI A OLTRE'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_TOTALE_DEBITI=df.groupby('id')['TOTALE DEBITI'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_TOTALE_PASSIVO=df.groupby('id')['TOTALE PASSIVO'].transform(lambda group: group.shift(-1)))
+    df = df.assign(
+        future_TOT_VAL_PRODUZIONE=df.groupby('id')['TOT VAL PRODUZIONE'].transform(lambda group: group.shift(-1)))
+    df = df.assign(
+        future_RISULTATO_OPERATIVO=df.groupby('id')['RISULTATO OPERATIVO'].transform(lambda group: group.shift(-1)))
+    df = df.assign(future_RISULTATO_PRIMA_DELLE_IMPOSTE=df.groupby('id')['RISULTATO PRIMA DELLE IMPOSTE'].transform(
+        lambda group: group.shift(-1)))
+    return df.assign(future_UTILE_PERDITA_DI_ESERCIZIO=df.groupby('id')['UTILE/PERDITA DI ESERCIZIO'].transform(
+        lambda group: group.shift(-1)))
 
 
 def split_dataset(df):
@@ -60,9 +81,9 @@ def split_dataset(df):
         validation: (Pandas Dataframe) Validation Set
         test: (Pandas Dataframe) Test Set
     """
-    training = df[df.bilancio_year < 2016]
-    validation = df[df.bilancio_year == 2016]
-    test = df[df.bilancio_year == 2017]
+    training = df[df.bilancio_year < 2019]
+    validation = df[df.bilancio_year == 2019]
+    test = df[df.bilancio_year == 2020]
     return training, validation, test
 
 
@@ -77,8 +98,8 @@ def split_dataset_benchmark(df):
         training: (Pandas Dataframe) Training Set (2016 data)
         validation: (Pandas Dataframe) Validation Set (2017 data)
     """
-    training = df[df.bilancio_year == 2015]
-    validation = df[df.bilancio_year == 2016]
+    training = df[df.bilancio_year == 2019]
+    validation = df[df.bilancio_year == 2020]
     return training, validation
 
 
@@ -94,9 +115,12 @@ def split_feature_label(df, parameter):
         x: (Pandas Dataframe) Features
         y: (Pandas Dataframe) Labels
     """
-    x = df.drop(['id', "bilancio_year", "future_Turnover",
-                 "future_EBIT", "future_WorkCap_Turn_ratio",
-                 "future_Turn_FixAs_ratio", "future_EBIT_Turn_ratio", "future_LTdebt"], axis=1)
+    x = df.drop(['id', "bilancio_year", "future_TOTALE_IMMOBILIZZAZIONI",
+                 "future_ATTIVO_CIRCOLANTE", "future_TOTALE_ATTIVO", "future_TOTALE_PATRIMONIO_NETTO",
+                 "future_DEBITI_A_BREVE",
+                 "future_DEBITI_A_OLTRE", "future_TOTALE_DEBITI", "future_TOTALE_PASSIVO", "future_TOT_VAL_PRODUZIONE",
+                 "future_RISULTATO_OPERATIVO", "future_RISULTATO_PRIMA_DELLE_IMPOSTE",
+                 "future_UTILE_PERDITA_DI_ESERCIZIO"], axis=1)
     y = df[parameter]
     return x, y
 
@@ -112,7 +136,7 @@ def binarization(x, y):
     Returns:
         Return 0 if the difference between the x value and the y value is greater equal 0, 1 otherwise
     """
-    if (x-y) < 0:
+    if (x - y) < 0:
         return 0
     else:
         return 1
@@ -155,4 +179,3 @@ def generate_file_name(prediction, benchmark):
         return prediction[7:] + " " + strftime("%Y-%m-%d %H-%M-%S", localtime()) + " benchmark.csv"
     else:
         return prediction[7:] + " " + strftime("%Y-%m-%d %H-%M-%S", localtime()) + ".csv"
-

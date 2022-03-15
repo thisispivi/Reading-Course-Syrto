@@ -9,3 +9,4 @@ Documentazione/Performance.txt
 __pycache__/
 dataset/dataset.csv
 export/
+dataset/data_3.0.parquet

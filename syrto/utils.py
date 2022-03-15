@@ -4,6 +4,13 @@ import pandas as pd
 import sys, os
 import math
 
+BASE_RELEVANT_COLUMNS = ['TOTALE IMMOBILIZZAZIONI',
+                         'ATTIVO CIRCOLANTE', 'TOTALE ATTIVO', 'TOTALE PATRIMONIO NETTO',
+                         'DEBITI A BREVE', 'DEBITI A OLTRE', 'TOTALE DEBITI', 'TOTALE PASSIVO',
+                         'TOT VAL PRODUZIONE', 'RISULTATO OPERATIVO',
+                         'RISULTATO PRIMA DELLE IMPOSTE', 'UTILE/PERDITA DI ESERCIZIO',
+                         ]
+
 
 def label_ratios(row, target1, target2):
     return row[target1] / row[target2]
@@ -47,43 +54,47 @@ def to_list(x):
 def read_dataset(dir, file, *,
                  logspace=False,
                  min_cutoff=None,
-                 max_cutoff=None):
+                 max_cutoff=None,
+                 relevant_columns=BASE_RELEVANT_COLUMNS):
     assert file.endswith("parquet")
     df = pd.read_parquet(os.path.join(dir, file))
-    relevant_columns = ['FixedAssets', 'CurrAssets', 'Debtors', 'Cash',
-                        'Capital', 'LTdebt', 'CurrLiab', 'WorkingCap',
-                        'CurrRatio', 'LiqRatio', "Turnover", "incorporationdate_converted",
-                        "age", "sector_level1", "sector_level2", "bilancio_year"]
+    df = df.rename(columns={'Anno': 'bilancio_year', 'BvD ID number': 'id'})
+    print(df.describe())
+
+    df = df[relevant_columns + ['bilancio_year', 'id']]
+    print(f'before drop: {len(df)}')
+    df = df.dropna()
+    print(f'after drop: {len(df)}')
+
+    df["bilancio_year"] = df["bilancio_year"].astype(int)
 
     for col in relevant_columns:
         assert df[col].isna().sum() == 0
-    df["bilancio_year"] = df["bilancio_year"].astype(int)
 
-    company_change = (df.groupby(["id", "sector_level1"]).count() != df["bilancio_year"].max() -
-                      df["bilancio_year"].min() + 1).iloc[:, 0]
-    company_change = company_change[company_change].reset_index()["id"].tolist()
-    assert len(company_change) == 0
-    # TODO check that level 2 doesn't change
-
-    df["AvgTurnoverLev1"] = df.groupby(["sector_level1", "bilancio_year"])["Turnover"].transform("mean")
-    df["AvgTurnoverLev2"] = df.groupby(["sector_level1", "sector_level2", "bilancio_year"])["Turnover"].transform(
-        "mean")
+    df = df.drop_duplicates(
+        subset=['bilancio_year', 'id'],
+        keep='first').reset_index(drop=True)
+    # company_change = (df.groupby(["id"]).count() != df["bilancio_year"].max() - 
+    #                     df["bilancio_year"].min()+1).iloc[:, 0]
+    # company_change = company_change[company_change].reset_index()["id"].tolist()
+    # assert len(company_change) == 0
 
     to_keep = set(df["id"].unique())
     print("NUM IDs: ", len(to_keep))
     bilancio_year_byID = df.groupby("id")["bilancio_year"]
     maxYear_byID = bilancio_year_byID.max()
-    validID1 = set(maxYear_byID[maxYear_byID == 2017].index.tolist())
-    print(f"Keeping {len(validID1)} MaxYear")
+    validID1 = set(maxYear_byID[maxYear_byID == 2020].index.tolist())
     to_keep = to_keep.intersection(validID1)
+    print(f"Keeping {len(to_keep)} MaxYear")
 
     rangeYear_byID = bilancio_year_byID.max() - bilancio_year_byID.min() + 1
+    print(rangeYear_byID)
     validID2 = set(rangeYear_byID[rangeYear_byID == df.groupby("id")["bilancio_year"].count()].index.tolist())
     print(f"Keeping {len(validID2)} RangeYear")
     to_keep = to_keep.intersection(validID2)
 
     numYear_byID = bilancio_year_byID.count()
-    validID3 = set(numYear_byID[numYear_byID == 9].index.tolist())
+    validID3 = set(numYear_byID[numYear_byID == 10].index.tolist())
     print(f"Keeping {len(validID3)} numYear")
     to_keep = to_keep.intersection(validID3)
 
@@ -94,10 +105,10 @@ def read_dataset(dir, file, *,
             print(f"Keeping {len(validID)} min_cutoff {name}")
             to_keep = to_keep.intersection(validID)
 
-    s1 = df.groupby("id")["EBIT"].apply(lambda x: x.isnull().any())
-    validID5 = set(s1[s1 == False].index.tolist())
-    print(f"Keeping {len(validID5)} with valid EBIT")
-    to_keep = to_keep.intersection(validID5)
+    # s1 = df.groupby("id")["EBITDA"].apply(lambda x: x.isnull().any())
+    # validID5 = set(s1[s1==False].index.tolist())
+    # print(f"Keeping {len(validID5)} with valid EBITDA")
+    # to_keep = to_keep.intersection(validID5)
 
     if max_cutoff is not None:
         for name, val in max_cutoff.items():
@@ -119,15 +130,13 @@ def read_dataset(dir, file, *,
     gdp_df = gdp_df.pivot(columns='Country Code', index="year", values="gdp_deflated")
     gdp_df.columns = ["GDP_" + name for name in gdp_df.columns]
     df = df.merge(gdp_df, how="left", left_on="bilancio_year", right_on="year")
-    df["WorkCap_Turn_ratio"] = df.apply(lambda row: label_ratios(row, "WorkingCap", "Turnover"), axis=1)
-    df["Turn_FixAs_ratio"] = df.apply(lambda row: label_ratios(row, "Turnover", "FixedAssets"), axis=1)
-    df["EBIT_Turn_ratio"] = df.apply(lambda row: label_ratios(row, "EBIT", "Turnover"), axis=1)
 
     if logspace:
-        for col in ["FixedAssets", "CurrAssets", "CurrLiab",
-                    "Cash", "Capital", "LTdebt", "WorkingCap",
-                    "Turnover", "AvgTurnoverLev1", "AvgTurnoverLev2", "EBIT",
-                    "Debtors", "age",
+        for col in ['TOTALE IMMOBILIZZAZIONI',
+                    'ATTIVO CIRCOLANTE', 'TOTALE ATTIVO', 'TOTALE PATRIMONIO NETTO',
+                    'DEBITI A BREVE', 'DEBITI A OLTRE', 'TOTALE DEBITI', 'TOTALE PASSIVO',
+                    'TOT VAL PRODUZIONE', 'RISULTATO OPERATIVO',
+                    'RISULTATO PRIMA DELLE IMPOSTE', 'UTILE/PERDITA DI ESERCIZIO',
                     "GDP_ITA", "GDP_USA", "GDP_EUU"]:  # transform all reals except ratios (they are already small)
 
             df[col] = logModulus(df[col])

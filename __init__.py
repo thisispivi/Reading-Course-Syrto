@@ -5,26 +5,23 @@ from regression import *
 from utils import *
 
 # Change this to false if you want to import the dataset from the parquet file
-csv = True
+csv = False
 
 # Change this to true if you want to perform the benchmark
 benchmark = False
 
-targets = ["FixedAssets",
-           "CurrAssets",
-           "Debtors",
-           "Cash",
-           "Capital",
-           "LTdebt",
-           "CurrLiab",
-           "WorkingCap",
-           "CurrRatio",
-           "LiqRatio",
-           "Turnover",
-           "EBIT",
-           "WorkCap_Turn_ratio",
-           "Turn_FixAs_ratio",
-           "EBIT_Turn_ratio"]
+targets = ["TOTALE IMMOBILIZZAZIONI",
+           "ATTIVO CIRCOLANTE",
+           "TOTALE ATTIVO",
+           "TOTALE PATRIMONIO NETTO",
+           "DEBITI A BREVE",
+           "DEBITI A OLTRE",
+           "TOTALE DEBITI",
+           "TOTALE PASSIVO",
+           "TOT VAL PRODUZIONE",
+           "RISULTATO OPERATIVO",
+           "RISULTATO PRIMA DELLE IMPOSTE",
+           "UTILE/PERDITA DI ESERCIZIO"]
 key = ["id",
        "bilancio_year"]
 
@@ -50,12 +47,18 @@ regressors_list = {
 }
 
 # The name of the field that you want to predict (Select 1) (Uncomment to select)
-# field_name = "future_Turnover"
-# field_name = "future_EBIT"
-# field_name = "future_WorkCap_Turn_ratio"
-field_name = "future_Turn_FixAs_ratio"
-# field_name = "future_EBIT_Turn_ratio"
-# field_name = "future_LTdebt"
+field_name = "future_TOTALE_IMMOBILIZZAZIONI"
+# field_name = "future_ATTIVO_CIRCOLANTE"
+# field_name = "future_TOTALE_ATTIVO"
+# field_name = "future_TOTALE_PATRIMONIO_NETTO"
+# field_name = "future_DEBITI_A_BREVE"
+# field_name = "future_DEBITI_A_OLTRE"
+# field_name = "future_TOTALE_DEBITI"
+# field_name = "future_TOTALE_PASSIVO"
+# field_name = "future_TOT_VAL_PRODUZIONE"
+# field_name = "future_RISULTATO_OPERATIVO"
+# field_name = "future_RISULTATO_PRIMA_DELLE_IMPOSTE"
+# field_name = "future_UTILE_PERDITA_DI_ESERCIZIO"
 
 # The name of the export file
 file_name = generate_file_name(field_name, benchmark)
@@ -65,8 +68,8 @@ path = os.path.join("export", file_name)
 
 if __name__ == "__main__":
     df = import_dataset(csv, key, targets)
-    df.info()    # Check correlation between data
-    correlation(df, "export/corr.png")
+    df.info()  # Check info
+    # correlation(df, "export/corr.png")
     if benchmark:
         # Get training, validation and test sets
         training, validation = split_dataset_benchmark(df)

@@ -34,7 +34,7 @@ def read(data_file, data_dir, min_cutoff, max_cutoff):
     """
     df = syrto.utils.read_dataset(data_dir, data_file, logspace=False, min_cutoff=min_cutoff,
                                   max_cutoff=max_cutoff)
-    if sector_level is not None:
-        df = df[df[sector_level].isin(sector)]
+    #if sector_level is not None:
+    #    df = df[df[sector_level].isin(sector)]
     return df
 
