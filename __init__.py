@@ -5,7 +5,7 @@ from regression import *
 from utils import *
 
 # Change this to false if you want to import the dataset from the parquet file
-csv = False
+csv = True
 
 # Change this to true if you want to perform the benchmark
 benchmark = False
@@ -31,18 +31,18 @@ regressors_list = {
     "ridge": False,  # Ridge Regressor
     "lasso": False,  # Lasso Regressor
     "elastic": False,  # Elastic Net Regressor
-    "lars": False,  # Lars Regressor
-    "bayesian": False,  # Bayesian Regressor
+    "lars": True,  # Lars Regressor
+    "bayesian": True,  # Bayesian Regressor
     "stochastic": False,  # Stochastic Gradient Descent Regressor
     "passive": False,  # Passive Aggressive Regressor
     "kernel": False,  # Kernel Ridge Regressor
     "svr": False,  # Support Vector Regressor
-    "nn": False,  # Nearest Neighbour Regressor
+    "nn": True,  # Nearest Neighbour Regressor
     "gauss": False,  # Gaussian Process Regressor
-    "decision": False,  # Decision Tree Regressor
-    "random": False,  # Random Forest Regressor
+    "decision": True,  # Decision Tree Regressor
+    "random": True,  # Random Forest Regressor
     "ada": True,  # Ada Boost Regressor
-    "gradient": False,  # Gradient Boost Regressor
+    "gradient": True,  # Gradient Boost Regressor
     "ensemble": False  # Ensemble Regressor
 }
 
