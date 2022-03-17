@@ -98,8 +98,8 @@ def split_dataset_benchmark(df):
         training: (Pandas Dataframe) Training Set (2016 data)
         validation: (Pandas Dataframe) Validation Set (2017 data)
     """
-    training = df[df.bilancio_year == 2019]
-    validation = df[df.bilancio_year == 2020]
+    training = df[df.bilancio_year == 2018]
+    validation = df[df.bilancio_year == 2019]
     return training, validation
 
 

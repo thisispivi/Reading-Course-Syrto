@@ -8,7 +8,11 @@ from utils import *
 csv = True
 
 # Change this to true if you want to perform the benchmark
-benchmark = False
+benchmark = True
+
+# Change this to true if you want the metrics for each column of the file
+# Else select one column to predict
+all_fields = True
 
 targets = ["TOTALE IMMOBILIZZAZIONI",
            "ATTIVO CIRCOLANTE",
@@ -60,6 +64,12 @@ field_name = "future_TOTALE_IMMOBILIZZAZIONI"
 # field_name = "future_RISULTATO_PRIMA_DELLE_IMPOSTE"
 # field_name = "future_UTILE_PERDITA_DI_ESERCIZIO"
 
+field_array = ["future_TOTALE_IMMOBILIZZAZIONI", "future_ATTIVO_CIRCOLANTE", "future_TOTALE_ATTIVO",
+               "future_TOTALE_PATRIMONIO_NETTO", "future_DEBITI_A_BREVE", "future_DEBITI_A_OLTRE",
+               "future_TOTALE_DEBITI", "future_TOTALE_PASSIVO", "future_TOT_VAL_PRODUZIONE",
+               "future_RISULTATO_OPERATIVO", "future_RISULTATO_PRIMA_DELLE_IMPOSTE",
+               "future_UTILE_PERDITA_DI_ESERCIZIO"]
+
 # The name of the export file
 file_name = generate_file_name(field_name, benchmark)
 # file_name = "export.csv"  # Uncomment to use custom file names
@@ -70,13 +80,28 @@ if __name__ == "__main__":
     df = import_dataset(csv, key, targets)
     df.info()  # Check info
     # correlation(df, "export/corr.png")
-    if benchmark:
-        # Get training, validation and test sets
-        training, validation = split_dataset_benchmark(df)
-        # Benchmark Value
-        perform_benchmark(training, validation, field_name, True, path)
+    if all_fields:
+        for field in field_array:
+            file_name = generate_file_name(field, benchmark)
+            path = os.path.join("export", file_name)
+            if benchmark:
+                # Get training, validation and test sets
+                training, validation = split_dataset_benchmark(df)
+                # Benchmark Value
+                perform_benchmark(training, validation, field, True, path)
+            else:
+                # Get training, validation and test sets
+                training, validation, test = split_dataset(df)
+                # Perform the regression using all the regressors
+                perform_regression(training, validation, regressors_list, field, True, path)
     else:
-        # Get training, validation and test sets
-        training, validation, test = split_dataset(df)
-        # Perform the regression using all the regressors
-        perform_regression(training, validation, regressors_list, field_name, True, path)
+        if benchmark:
+            # Get training, validation and test sets
+            training, validation = split_dataset_benchmark(df)
+            # Benchmark Value
+            perform_benchmark(training, validation, field_name, True, path)
+        else:
+            # Get training, validation and test sets
+            training, validation, test = split_dataset(df)
+            # Perform the regression using all the regressors
+            perform_regression(training, validation, regressors_list, field_name, True, path)

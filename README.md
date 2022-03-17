@@ -31,36 +31,38 @@ csv = False
 ---
 
 ## Configure the variables
-1. The variable ```benchmark``` activate the benchmark mode. This mode will take as prediction the data from 2016 and as
+1. The variable ```all_fields``` is useful if you want to generate the metrics for each column of the csv file. When it 
+is *False* you have to select a column to select.
+```python
+all_fields = True
+```
+2. The variable ```benchmark``` activate the benchmark mode. This mode will take as prediction the data from 2016 and as
 correct values the data from 2017, then it will compute the metrics. This mode won't perform the regression. To perform 
 the regression this variable must be *False*.
 ```python
 benchmark = False
 ```
-2. The variable ```targets``` represents the data of the companies that will be taken from the parquet file
+3. The variable ```targets``` represents the data of the companies that will be taken from the parquet file
 ```python
-targets = ["FixedAssets",
-           "CurrAssets",
-           "Debtors",
-           "Cash",
-           "Capital",
-           "LTdebt",
-           "CurrLiab",
-           "WorkingCap",
-           "CurrRatio",
-           "LiqRatio",
-           "Turnover",
-           "EBIT",
-           "WorkCap_Turn_ratio",
-           "Turn_FixAs_ratio",
-           "EBIT_Turn_ratio"]
+targets = ["TOTALE IMMOBILIZZAZIONI",
+           "ATTIVO CIRCOLANTE",
+           "TOTALE ATTIVO",
+           "TOTALE PATRIMONIO NETTO",
+           "DEBITI A BREVE",
+           "DEBITI A OLTRE",
+           "TOTALE DEBITI",
+           "TOTALE PASSIVO",
+           "TOT VAL PRODUZIONE",
+           "RISULTATO OPERATIVO",
+           "RISULTATO PRIMA DELLE IMPOSTE",
+           "UTILE/PERDITA DI ESERCIZIO"]
 ```
-3. The variable ```keys``` represents the id of the companies that will be taken from the parquet file
+4. The variable ```keys``` represents the id of the companies that will be taken from the parquet file
 ```python
 key = ["id",
        "bilancio_year"]
 ```
-4. The variable ```regressors_list``` represents all the regressors available. To select one just set it value to True. 
+5. The variable ```regressors_list``` represents all the regressors available. To select one just set it value to True. 
 False otherwise. These are the regressors available:
    1. Ordinary Least Squares
    2. Ridge Regressor
@@ -101,23 +103,28 @@ regressors_list = {
     "ensemble": False  # Ensemble Regressor
 }
 ```
-5. The variable ```field_name``` represents the name of the variable that will be predicted. To select one just 
+6. If you chose *all_fields = False* then select the variable ```field_name```. It represents the name of the variable that will be predicted. To select one just 
 uncomment one row
 ```python
-# The name of the field that you want to predict (Select 1) (Uncomment to select)
-# field_name = "future_Turnover"
-# field_name = "future_EBIT"
-# field_name = "future_WorkCap_Turn_ratio"
-# field_name = "future_Turn_FixAs_ratio"
-# field_name = "future_EBIT_Turn_ratio"
-field_name = "future_LTdebt"
+field_name = "future_TOTALE_IMMOBILIZZAZIONI"
+# field_name = "future_ATTIVO_CIRCOLANTE"
+# field_name = "future_TOTALE_ATTIVO"
+# field_name = "future_TOTALE_PATRIMONIO_NETTO"
+# field_name = "future_DEBITI_A_BREVE"
+# field_name = "future_DEBITI_A_OLTRE"
+# field_name = "future_TOTALE_DEBITI"
+# field_name = "future_TOTALE_PASSIVO"
+# field_name = "future_TOT_VAL_PRODUZIONE"
+# field_name = "future_RISULTATO_OPERATIVO"
+# field_name = "future_RISULTATO_PRIMA_DELLE_IMPOSTE"
+# field_name = "future_UTILE_PERDITA_DI_ESERCIZIO"
 ```
 6. The variable ```file_name``` represents the name of the file in which the results of the regression and 
 classification will be saved. There is a function that creates the file name. The names will be like:
 ```
 field_name day time.csv
 
-Example: LTdebt 2022-02-14 12-54-48.csv
+Example: TOTALE_IMMOBILIZZAZIONI 2022-02-14 12-54-48.csv
 ```
 
 ## Run the code
