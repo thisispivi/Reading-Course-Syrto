@@ -8,11 +8,11 @@ from utils import *
 csv = True
 
 # Change this to true if you want to perform the benchmark
-benchmark = True
+benchmark = False
 
 # Change this to true if you want the metrics for each column of the file
 # Else select one column to predict
-all_fields = True
+all_fields = False
 
 targets = ["TOTALE IMMOBILIZZAZIONI",
            "ATTIVO CIRCOLANTE",
@@ -29,30 +29,31 @@ targets = ["TOTALE IMMOBILIZZAZIONI",
 key = ["id",
        "bilancio_year"]
 
+
 # Select the regressors (True to select, False the opposite)
 regressors_list = {
     "ols": False,  # Ordinary Least Squares
     "ridge": False,  # Ridge Regressor
     "lasso": False,  # Lasso Regressor
     "elastic": False,  # Elastic Net Regressor
-    "lars": True,  # Lars Regressor
-    "bayesian": True,  # Bayesian Regressor
+    "lars": False,  # Lars Regressor
+    "bayesian": False,  # Bayesian Regressor
     "stochastic": False,  # Stochastic Gradient Descent Regressor
     "passive": False,  # Passive Aggressive Regressor
     "kernel": False,  # Kernel Ridge Regressor
     "svr": False,  # Support Vector Regressor
-    "nn": True,  # Nearest Neighbour Regressor
+    "nn": False,  # Nearest Neighbour Regressor
     "gauss": False,  # Gaussian Process Regressor
-    "decision": True,  # Decision Tree Regressor
-    "random": True,  # Random Forest Regressor
-    "ada": True,  # Ada Boost Regressor
+    "decision": False,  # Decision Tree Regressor
+    "random": False,  # Random Forest Regressor
+    "ada": False,  # Ada Boost Regressor
     "gradient": True,  # Gradient Boost Regressor
     "ensemble": False  # Ensemble Regressor
 }
 
 # The name of the field that you want to predict (Select 1) (Uncomment to select)
-field_name = "future_TOTALE_IMMOBILIZZAZIONI"
-# field_name = "future_ATTIVO_CIRCOLANTE"
+# field_name = "future_TOTALE_IMMOBILIZZAZIONI"
+field_name = "future_ATTIVO_CIRCOLANTE"
 # field_name = "future_TOTALE_ATTIVO"
 # field_name = "future_TOTALE_PATRIMONIO_NETTO"
 # field_name = "future_DEBITI_A_BREVE"
