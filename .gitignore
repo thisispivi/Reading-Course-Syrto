@@ -11,3 +11,5 @@ dataset/dataset.csv
 export/
 dataset/data_3.0.parquet
 export_old/
+dataset/data_4.1.csv
+dataset/dataset.csv

@@ -16,57 +16,58 @@ def import_dataset(csv, key, targets):
         df: (Pandas Dataframe) The dataset
     """
     if not csv:
-        df = rd.read('data_3.0.parquet', 'dataset', min_cutoff={}, max_cutoff={})
+        df = rd.read('data_4.1.csv', 'dataset', min_cutoff={}, max_cutoff={})
         columns = key + targets
         df = df[columns]
-        df = add_future_values(df)
+        df = df.sort_values(["id", "bilancio_year"], ascending=True)
+        df = add_future_values(df, targets)
         df.to_csv("dataset/dataset.csv")
     else:
         df = pd.read_csv("dataset/dataset.csv")
         df = df.drop(['Unnamed: 0'], axis=1)
-    df = df.rename(columns={'TOTALE IMMOBILIZZAZIONI': 'TOTALE_IMMOBILIZZAZIONI',
-                            'ATTIVO CIRCOLANTE': 'ATTIVO_CIRCOLANTE', 'TOTALE ATTIVO': 'TOTALE_ATTIVO',
-                            'TOTALE PATRIMONIO NETTO': 'TOTALE_PATRIMONIO_NETTO',
-                            'DEBITI A BREVE': 'DEBITI_A_BREVE', 'DEBITI A OLTRE': 'DEBITI_A_OLTRE',
-                            'TOTALE DEBITI': 'TOTALE_DEBITI', 'TOTALE PASSIVO': 'TOTALE_PASSIVO',
-                            'TOT VAL PRODUZIONE': 'TOT_VAL_PRODUZIONE',
-                            'RISULTATO OPERATIVO': 'RISULTATO_OPERATIVO',
-                            'RISULTATO PRIMA DELLE IMPOSTE': 'RISULTATO_PRIMA_DELLE_IMPOSTE',
-                            'UTILE/PERDITA DI ESERCIZIO': 'UTILE_PERDITA_DI_ESERCIZIO'
-                            })
+    df = rename_columns(df)
     df = df.sort_values(["id", "bilancio_year"], ascending=True)
+    df.to_csv("dataset/dataset2.csv")
     return df
 
 
-def add_future_values(df):
+def rename_columns(df):
+    """
+    Take a df and rename all the columns removing spaces and /
+
+    Args:
+        df: (Pandas DataFrame) The dataframe
+
+    Returns:
+        (Pandas DataFrame): The dataframe with the renamed columns
+    """
+    columns = {}
+    for t in df.columns:
+        new_col = t.replace(" ", "_")
+        new_col = new_col.replace("/", "_")
+        new_col = new_col.replace(",", "")
+        columns[t] = new_col
+    print(columns)
+    return df.rename(columns=columns)
+
+
+def add_future_values(df, targets):
     """
     Adds a column in the dataframe containing the value of each column for the next year
 
     Args:
+        targets:
         df: (Pandas Dataframe) the dataset
 
     Returns:
         (Pandas Dataframe) The dataset with the new columns
     """
-    df = df.assign(future_TOTALE_IMMOBILIZZAZIONI=df.groupby('id')['TOTALE IMMOBILIZZAZIONI'].transform(
-        lambda group: group.shift(-1)))
-    df = df.assign(
-        future_ATTIVO_CIRCOLANTE=df.groupby('id')['ATTIVO CIRCOLANTE'].transform(lambda group: group.shift(-1)))
-    df = df.assign(future_TOTALE_ATTIVO=df.groupby('id')['TOTALE ATTIVO'].transform(lambda group: group.shift(-1)))
-    df = df.assign(future_TOTALE_PATRIMONIO_NETTO=df.groupby('id')['TOTALE PATRIMONIO NETTO'].transform(
-        lambda group: group.shift(-1)))
-    df = df.assign(future_DEBITI_A_BREVE=df.groupby('id')['DEBITI A BREVE'].transform(lambda group: group.shift(-1)))
-    df = df.assign(future_DEBITI_A_OLTRE=df.groupby('id')['DEBITI A OLTRE'].transform(lambda group: group.shift(-1)))
-    df = df.assign(future_TOTALE_DEBITI=df.groupby('id')['TOTALE DEBITI'].transform(lambda group: group.shift(-1)))
-    df = df.assign(future_TOTALE_PASSIVO=df.groupby('id')['TOTALE PASSIVO'].transform(lambda group: group.shift(-1)))
-    df = df.assign(
-        future_TOT_VAL_PRODUZIONE=df.groupby('id')['TOT VAL PRODUZIONE'].transform(lambda group: group.shift(-1)))
-    df = df.assign(
-        future_RISULTATO_OPERATIVO=df.groupby('id')['RISULTATO OPERATIVO'].transform(lambda group: group.shift(-1)))
-    df = df.assign(future_RISULTATO_PRIMA_DELLE_IMPOSTE=df.groupby('id')['RISULTATO PRIMA DELLE IMPOSTE'].transform(
-        lambda group: group.shift(-1)))
-    return df.assign(future_UTILE_PERDITA_DI_ESERCIZIO=df.groupby('id')['UTILE/PERDITA DI ESERCIZIO'].transform(
-        lambda group: group.shift(-1)))
+
+    for t in targets:
+        col_name = "future_" + t
+        df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-1))
+
+    return df
 
 
 def split_dataset(df):
@@ -115,13 +116,34 @@ def split_feature_label(df, parameter):
         x: (Pandas Dataframe) Features
         y: (Pandas Dataframe) Labels
     """
-    x = df.drop(['id', "bilancio_year", "future_TOTALE_IMMOBILIZZAZIONI",
-                 "future_ATTIVO_CIRCOLANTE", "future_TOTALE_ATTIVO", "future_TOTALE_PATRIMONIO_NETTO",
+    x = df.drop(['id', "bilancio_year", "future_TOTALE_IMMOB_IMMATERIALI",
+                 "future_TOTALE_IMMOB_MATERIALI",
+                 "future_TOTALE_IMMOB_FINANZIARIE",
+                 "future_TOTALE_RIMANENZE",
+                 "future_ATTIVO_CIRCOLANTE",
+                 "future_TOTALE_CREDITI",
+                 "future_Capitale_sociale",
+                 "future_TOTALE_PATRIMONIO_NETTO",
                  "future_DEBITI_A_BREVE",
-                 "future_DEBITI_A_OLTRE", "future_TOTALE_DEBITI", "future_TOTALE_PASSIVO", "future_TOT_VAL_PRODUZIONE",
-                 "future_RISULTATO_OPERATIVO", "future_RISULTATO_PRIMA_DELLE_IMPOSTE",
-                 "future_UTILE_PERDITA_DI_ESERCIZIO"], axis=1)
+                 "future_DEBITI_A_OLTRE",
+                 "future_TOTALE_PASSIVO",
+                 "future_TOT_VAL_DELLA_PRODUZIONE",
+                 "future_Ricavi_vendite_e_prestazioni",
+                 "future_COSTI_DELLA_PRODUZIONE",
+                 "future_RISULTATO_OPERATIVO",
+                 "future_TOTALE_PROVENTI_E_ONERI_FINANZIARI",
+                 "future_TOTALE_PROVENTI_ONERI_STRAORDINARI",
+                 "future_RISULTATO_PRIMA_DELLE_IMPOSTE",
+                 "future_Totale_Imposte_sul_reddito_correnti_differite_e_anticipate",
+                 "future_UTILE_PERDITA_DI_ESERCIZIO",
+                 "future_EBITDA",
+                 "future_Capitale_circolante_netto",
+                 "future_Materie_prime_e_consumo",
+                 "future_Totale_costi_del_personale",
+                 "future_TOT_Ammortamenti_e_svalut",
+                 "future_Valore_Aggiunto"], axis=1)
     y = df[parameter]
+
     return x, y
 
 

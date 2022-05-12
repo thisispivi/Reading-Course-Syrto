@@ -4,11 +4,32 @@ import pandas as pd
 import sys, os
 import math
 
-BASE_RELEVANT_COLUMNS = ['TOTALE IMMOBILIZZAZIONI',
-                         'ATTIVO CIRCOLANTE', 'TOTALE ATTIVO', 'TOTALE PATRIMONIO NETTO',
-                         'DEBITI A BREVE', 'DEBITI A OLTRE', 'TOTALE DEBITI', 'TOTALE PASSIVO',
-                         'TOT VAL PRODUZIONE', 'RISULTATO OPERATIVO',
-                         'RISULTATO PRIMA DELLE IMPOSTE', 'UTILE/PERDITA DI ESERCIZIO',
+BASE_RELEVANT_COLUMNS = ['TOTALE IMMOB IMMATERIALI',
+                         'TOTALE IMMOB MATERIALI',
+                         'TOTALE IMMOB FINANZIARIE',
+                         'TOTALE RIMANENZE',
+                         'ATTIVO CIRCOLANTE',
+                         'TOTALE CREDITI',
+                         'Capitale sociale',
+                         'TOTALE PATRIMONIO NETTO',
+                         'DEBITI A BREVE',
+                         'DEBITI A OLTRE',
+                         'TOTALE PASSIVO',
+                         'TOT VAL DELLA PRODUZIONE',
+                         'Ricavi vendite e prestazioni',
+                         'COSTI DELLA PRODUZIONE',
+                         'RISULTATO OPERATIVO',
+                         'TOTALE PROVENTI E ONERI FINANZIARI',
+                         'TOTALE PROVENTI ONERI STRAORDINARI',
+                         'RISULTATO PRIMA DELLE IMPOSTE',
+                         'Totale Imposte sul reddito correnti, differite e anticipate',
+                         'UTILE/PERDITA DI ESERCIZIO',
+                         'EBITDA',
+                         'Capitale circolante netto',
+                         'Materie prime e consumo',
+                         'Totale costi del personale',
+                         'TOT Ammortamenti e svalut',
+                         'Valore Aggiunto',
                          ]
 
 
@@ -56,8 +77,8 @@ def read_dataset(dir, file, *,
                  min_cutoff=None,
                  max_cutoff=None,
                  relevant_columns=BASE_RELEVANT_COLUMNS):
-    assert file.endswith("parquet")
-    df = pd.read_parquet(os.path.join(dir, file))
+    assert file.endswith("csv")
+    df = pd.read_csv(os.path.join(dir, file))
     df = df.rename(columns={'Anno': 'bilancio_year', 'BvD ID number': 'id'})
     print(df.describe())
 
@@ -74,7 +95,7 @@ def read_dataset(dir, file, *,
     df = df.drop_duplicates(
         subset=['bilancio_year', 'id'],
         keep='first').reset_index(drop=True)
-    # company_change = (df.groupby(["id"]).count() != df["bilancio_year"].max() - 
+    # company_change = (df.groupby(["id"]).count() != df["bilancio_year"].max() -
     #                     df["bilancio_year"].min()+1).iloc[:, 0]
     # company_change = company_change[company_change].reset_index()["id"].tolist()
     # assert len(company_change) == 0
@@ -94,7 +115,7 @@ def read_dataset(dir, file, *,
     to_keep = to_keep.intersection(validID2)
 
     numYear_byID = bilancio_year_byID.count()
-    validID3 = set(numYear_byID[numYear_byID == 10].index.tolist())
+    validID3 = set(numYear_byID[numYear_byID >= 10].index.tolist())
     print(f"Keeping {len(validID3)} numYear")
     to_keep = to_keep.intersection(validID3)
 
@@ -120,28 +141,21 @@ def read_dataset(dir, file, *,
     print(f"TOT NUM ID Kept: {len(to_keep)}")
     df = df[df['id'].isin(to_keep)]
 
-    ## ADD GDP
-    gdp_df = pd.read_csv(os.path.join(dir, "GDP_IT-EU-US", "gdp.csv"), skiprows=4)
-    gdp_df = gdp_df[gdp_df["Country Code"].isin(["ITA", "USA", "EUU"])] \
-        .melt(id_vars=["Country Code"], value_vars=[str(year) for year in range(1960, 2021)], var_name="year",
-              value_name="gdp_deflated").dropna()
-    # gdp_df["log_gdp"] = np.log(gdp_df["gdp_deflated"])
-    gdp_df["year"] = gdp_df["year"].astype("int")
-    gdp_df = gdp_df.pivot(columns='Country Code', index="year", values="gdp_deflated")
-    gdp_df.columns = ["GDP_" + name for name in gdp_df.columns]
-    df = df.merge(gdp_df, how="left", left_on="bilancio_year", right_on="year")
+    # ## ADD GDP
+    # gdp_df = pd.read_csv(os.path.join(dir,"GDP_IT-EU-US", "gdp.csv"), skiprows=4)
+    # gdp_df = gdp_df[gdp_df["Country Code"].isin(["ITA", "USA", "EUU"])]\
+    #                 .melt(id_vars=["Country Code"], value_vars=[str(year) for year in range(1960, 2021)], var_name="year", value_name="gdp_deflated").dropna()
+    # # gdp_df["log_gdp"] = np.log(gdp_df["gdp_deflated"])
+    # gdp_df["year"] = gdp_df["year"].astype("int")
+    # gdp_df = gdp_df.pivot(columns='Country Code', index="year", values="gdp_deflated")
+    # gdp_df.columns = ["GDP_" + name  for name in gdp_df.columns]
+    # df = df.merge(gdp_df, how="left", left_on="bilancio_year", right_on="year")
 
     if logspace:
-        for col in ['TOTALE IMMOBILIZZAZIONI',
-                    'ATTIVO CIRCOLANTE', 'TOTALE ATTIVO', 'TOTALE PATRIMONIO NETTO',
-                    'DEBITI A BREVE', 'DEBITI A OLTRE', 'TOTALE DEBITI', 'TOTALE PASSIVO',
-                    'TOT VAL PRODUZIONE', 'RISULTATO OPERATIVO',
-                    'RISULTATO PRIMA DELLE IMPOSTE', 'UTILE/PERDITA DI ESERCIZIO',
-                    "GDP_ITA", "GDP_USA", "GDP_EUU"]:  # transform all reals except ratios (they are already small)
-
+        for col in BASE_RELEVANT_COLUMNS:
             df[col] = logModulus(df[col])
 
     # df = df[["id", "bilancio_year", 'FixedAssets', 'CurrAssets', 'Debtors', 'Cash',
-    #         'Capital', 'LTdebt', 'CurrLiab', 'WorkingCap', 
+    #         'Capital', 'LTdebt', 'CurrLiab', 'WorkingCap',
     #         'CurrRatio', 'LiqRatio', "Turnover", "sector_level2", "listing", "age", "sector_level1"]]
-    return df
+    return df[BASE_RELEVANT_COLUMNS + ['id', "bilancio_year"]]

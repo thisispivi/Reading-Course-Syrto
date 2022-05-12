@@ -8,24 +8,38 @@ from utils import *
 csv = True
 
 # Change this to true if you want to perform the benchmark
-benchmark = True
+benchmark = False
 
 # Change this to true if you want the metrics for each column of the file
 # Else select one column to predict
 all_fields = True
 
-targets = ["TOTALE IMMOBILIZZAZIONI",
+targets = ["TOTALE IMMOB IMMATERIALI",
+           "TOTALE IMMOB MATERIALI",
+           "TOTALE IMMOB FINANZIARIE",
+           "TOTALE RIMANENZE",
            "ATTIVO CIRCOLANTE",
-           "TOTALE ATTIVO",
+           "TOTALE CREDITI",
+           "Capitale sociale",
            "TOTALE PATRIMONIO NETTO",
            "DEBITI A BREVE",
            "DEBITI A OLTRE",
-           "TOTALE DEBITI",
            "TOTALE PASSIVO",
-           "TOT VAL PRODUZIONE",
+           "TOT VAL DELLA PRODUZIONE",
+           "Ricavi vendite e prestazioni",
+           "COSTI DELLA PRODUZIONE",
            "RISULTATO OPERATIVO",
+           "TOTALE PROVENTI E ONERI FINANZIARI",
+           "TOTALE PROVENTI ONERI STRAORDINARI",
            "RISULTATO PRIMA DELLE IMPOSTE",
-           "UTILE/PERDITA DI ESERCIZIO"]
+           "Totale Imposte sul reddito correnti, differite e anticipate",
+           "UTILE/PERDITA DI ESERCIZIO",
+           "EBITDA",
+           "Capitale circolante netto",
+           "Materie prime e consumo",
+           "Totale costi del personale",
+           "TOT Ammortamenti e svalut",
+           "Valore Aggiunto"]
 key = ["id",
        "bilancio_year"]
 
@@ -64,11 +78,32 @@ field_name = "future_TOTALE_IMMOBILIZZAZIONI"
 # field_name = "future_RISULTATO_PRIMA_DELLE_IMPOSTE"
 # field_name = "future_UTILE_PERDITA_DI_ESERCIZIO"
 
-field_array = ["future_TOTALE_IMMOBILIZZAZIONI", "future_ATTIVO_CIRCOLANTE", "future_TOTALE_ATTIVO",
-               "future_TOTALE_PATRIMONIO_NETTO", "future_DEBITI_A_BREVE", "future_DEBITI_A_OLTRE",
-               "future_TOTALE_DEBITI", "future_TOTALE_PASSIVO", "future_TOT_VAL_PRODUZIONE",
-               "future_RISULTATO_OPERATIVO", "future_RISULTATO_PRIMA_DELLE_IMPOSTE",
-               "future_UTILE_PERDITA_DI_ESERCIZIO"]
+field_array = ["future_TOTALE_IMMOB_IMMATERIALI",
+               "future_TOTALE_IMMOB_MATERIALI",
+               "future_TOTALE_IMMOB_FINANZIARIE",
+               "future_TOTALE_RIMANENZE",
+               "future_ATTIVO_CIRCOLANTE",
+               "future_TOTALE_CREDITI",
+               "future_Capitale_sociale",
+               "future_TOTALE_PATRIMONIO_NETTO",
+               "future_DEBITI_A_BREVE",
+               "future_DEBITI_A_OLTRE",
+               "future_TOTALE_PASSIVO",
+               "future_TOT_VAL_DELLA_PRODUZIONE",
+               "future_Ricavi_vendite_e_prestazioni",
+               "future_COSTI_DELLA_PRODUZIONE",
+               "future_RISULTATO_OPERATIVO",
+               "future_TOTALE_PROVENTI_E_ONERI_FINANZIARI",
+               "future_TOTALE_PROVENTI_ONERI_STRAORDINARI",
+               "future_RISULTATO_PRIMA_DELLE_IMPOSTE",
+               "future_Totale_Imposte_sul_reddito_correnti_differite_e_anticipate",
+               "future_UTILE_PERDITA_DI_ESERCIZIO",
+               "future_EBITDA",
+               "future_Capitale_circolante_netto",
+               "future_Materie_prime_e_consumo",
+               "future_Totale_costi_del_personale",
+               "future_TOT_Ammortamenti_e_svalut",
+               "future_Valore_Aggiunto"]
 
 # The name of the export file
 file_name = generate_file_name(field_name, benchmark)

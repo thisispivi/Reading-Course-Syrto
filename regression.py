@@ -29,6 +29,7 @@ def perform_regression(training, validation, regressors_list, parameter, verbose
 
     train_x, train_y = split_feature_label(training, parameter)
     valid_x, valid_y = split_feature_label(validation, parameter)
+    print(valid_y)
 
     if regressors_list["ols"]:
         print("Ordinary Least Square")
