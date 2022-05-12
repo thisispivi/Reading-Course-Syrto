@@ -12,7 +12,7 @@ benchmark = False
 
 # Change this to true if you want the metrics for each column of the file
 # Else select one column to predict
-all_fields = False
+all_fields = True
 
 targets = ["TOTALE IMMOB IMMATERIALI",
            "TOTALE IMMOB MATERIALI",
@@ -50,17 +50,17 @@ regressors_list = {
     "ridge": False,  # Ridge Regressor
     "lasso": False,  # Lasso Regressor
     "elastic": False,  # Elastic Net Regressor
-    "lars": False,  # Lars Regressor
-    "bayesian": False,  # Bayesian Regressor
+    "lars": True,  # Lars Regressor
+    "bayesian": True,  # Bayesian Regressor
     "stochastic": False,  # Stochastic Gradient Descent Regressor
     "passive": False,  # Passive Aggressive Regressor
     "kernel": False,  # Kernel Ridge Regressor
     "svr": False,  # Support Vector Regressor
-    "nn": False,  # Nearest Neighbour Regressor
+    "nn": True,  # Nearest Neighbour Regressor
     "gauss": False,  # Gaussian Process Regressor
-    "decision": False,  # Decision Tree Regressor
-    "random": False,  # Random Forest Regressor
-    "ada": False,  # Ada Boost Regressor
+    "decision": True,  # Decision Tree Regressor
+    "random": True,  # Random Forest Regressor
+    "ada": True,  # Ada Boost Regressor
     "gradient": True,  # Gradient Boost Regressor
     "ensemble": False  # Ensemble Regressor
 }
