@@ -5,7 +5,7 @@ from regression import *
 from utils import *
 
 # Change this to false if you want to import the dataset from the parquet file
-csv = True
+csv = False
 
 # Change this to true if you want to perform the benchmark
 benchmark = False
