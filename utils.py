@@ -1,3 +1,5 @@
+import numpy as np
+
 import read_dataset as rd
 import pandas as pd
 from time import strftime, localtime
@@ -65,7 +67,8 @@ def add_future_values(df, targets):
 
     for t in targets:
         col_name = "future_" + t
-        df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-2))
+        # df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-2))
+        df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-1))
 
     return df
 
@@ -99,8 +102,8 @@ def split_dataset_benchmark(df):
         training: (Pandas Dataframe) Training Set (2016 data)
         validation: (Pandas Dataframe) Validation Set (2017 data)
     """
-    training = df[df.bilancio_year == 2018]
-    validation = df[df.bilancio_year == 2019]
+    training = df[df.bilancio_year == 2017]
+    validation = df[df.bilancio_year == 2018]
     return training, validation
 
 
@@ -178,11 +181,16 @@ def correct_zero_division_smape(a, f, value):
         a: (list of numbers) The new correct values
         f: (list of numbers) The new predicted values
     """
+    new_a = []
+    new_f = []
     for i in range(len(a)):
-        if a[i] == 0 and f[i] == 0:
+        if a[i] == 0.0 and f[i] == 0.0:
             a[i] = value
             f[i] = value
-    return a, f
+        else:
+            new_a.append(a[i])
+            new_f.append(f[i])
+    return np.array(new_a), np.array(new_f)
 
 
 def generate_file_name(prediction, benchmark):

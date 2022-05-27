@@ -20,7 +20,7 @@ BASE_RELEVANT_COLUMNS = ['TOTALE IMMOB IMMATERIALI',
                          'COSTI DELLA PRODUZIONE',
                          'RISULTATO OPERATIVO',
                          'TOTALE PROVENTI E ONERI FINANZIARI',
-                         'TOTALE PROVENTI ONERI STRAORDINARI',
+                         'TOTALE PROVENTI/ONERI STRAORDINARI',
                          'RISULTATO PRIMA DELLE IMPOSTE',
                          'Totale Imposte sul reddito correnti, differite e anticipate',
                          'UTILE/PERDITA DI ESERCIZIO',
@@ -73,12 +73,12 @@ def to_list(x):
 
 
 def read_dataset(dir, file, *,
-                 logspace=False,
+                 logspace=True,
                  min_cutoff=None,
                  max_cutoff=None,
                  relevant_columns=BASE_RELEVANT_COLUMNS):
     assert file.endswith("csv")
-    df = pd.read_csv(os.path.join(dir, file))
+    df = pd.read_csv('dataset/data_4.0.csv')
     df = df.rename(columns={'Anno': 'bilancio_year', 'BvD ID number': 'id'})
     print(df.describe())
 

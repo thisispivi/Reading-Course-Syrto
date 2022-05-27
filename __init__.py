@@ -5,10 +5,10 @@ from regression import *
 from utils import *
 
 # Change this to false if you want to import the dataset from the parquet file
-csv = False
+csv = True
 
 # Change this to true if you want to perform the benchmark
-benchmark = False
+benchmark = True
 
 # Change this to true if you want the metrics for each column of the file
 # Else select one column to predict
@@ -30,7 +30,7 @@ targets = ["TOTALE IMMOB IMMATERIALI",
            "COSTI DELLA PRODUZIONE",
            "RISULTATO OPERATIVO",
            "TOTALE PROVENTI E ONERI FINANZIARI",
-           "TOTALE PROVENTI ONERI STRAORDINARI",
+           "TOTALE PROVENTI/ONERI STRAORDINARI",
            "RISULTATO PRIMA DELLE IMPOSTE",
            "Totale Imposte sul reddito correnti, differite e anticipate",
            "UTILE/PERDITA DI ESERCIZIO",
@@ -66,8 +66,8 @@ regressors_list = {
 }
 
 # The name of the field that you want to predict (Select 1) (Uncomment to select)
-# field_name = "future_TOTALE_IMMOBILIZZAZIONI"
-field_name = "future_ATTIVO_CIRCOLANTE"
+field_name = "future_TOTALE_IMMOB_IMMATERIALI"
+# field_name = "future_ATTIVO_CIRCOLANTE"
 # field_name = "future_TOTALE_ATTIVO"
 # field_name = "future_TOTALE_PATRIMONIO_NETTO"
 # field_name = "future_DEBITI_A_BREVE"
