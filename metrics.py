@@ -2,6 +2,8 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error, mean_absolute_percentage_error
 import math
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
+
+from syrto.utils import inverse_logModulus
 from utils import *
 
 
@@ -20,7 +22,7 @@ def smape(a, f):
     return 1 / len(a) * np.sum(np.abs(f - a) / (np.abs(a) + np.abs(f)))
 
 
-def save_metrics(r_right, r_pred, c_right, c_pred, name, verbose=True):
+def save_metrics(r_right, r_pred, c_right, c_pred, name, verbose=True, logspace=False):
     """
     Returns the metrics into a list
 
@@ -31,9 +33,14 @@ def save_metrics(r_right, r_pred, c_right, c_pred, name, verbose=True):
         c_pred: (list of numbers) The predicted values of the classification
         name: (String) The name of the regressor
         verbose: (boolean) True: print all the result / False: don't print all the result
+        logspace (bool): True to use logspace / False otherwise
 
     Returns: (list) all the metrics
     """
+    if logspace:
+        r_right = list(map(inverse_logModulus, r_right))
+        r_pred = list(map(inverse_logModulus, r_pred))
+        print(r_right[:10])
     row = [name, mean_absolute_error(r_right, r_pred), mean_squared_error(r_right, r_pred),
            math.sqrt(mean_squared_error(r_right, r_pred)), r2_score(r_right, r_pred),
            mean_absolute_percentage_error(r_right, r_pred), smape(np.array(r_right), np.array(r_pred)),
@@ -74,7 +81,7 @@ def print_metrics(row, benchmark):
         benchmark: (boolean) True: benchmark mode, don't print accuracy, recall, precision and AUC ROC / False:
                 Print everything
     """
-    print("\n"+str(row[0]))
+    print("\n" + str(row[0]))
     print("MAE: " + str(row[1]))
     print("MSE: " + str(row[2]))
     print("RMSE: " + str(row[3]))
@@ -86,4 +93,3 @@ def print_metrics(row, benchmark):
         print("Precision: " + str(row[8]))
         print("Recall: " + str(row[9]))
         print("AUC ROC: " + str(row[10]))
-

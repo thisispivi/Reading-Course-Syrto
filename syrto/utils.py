@@ -78,7 +78,7 @@ def read_dataset(dir, file, *,
                  max_cutoff=None,
                  relevant_columns=BASE_RELEVANT_COLUMNS):
     assert file.endswith("csv")
-    df = pd.read_csv('dataset/data_4.0.csv')
+    df = pd.read_csv(os.path.join(dir, file))
     df = df.rename(columns={'Anno': 'bilancio_year', 'BvD ID number': 'id'})
     print(df.describe())
 

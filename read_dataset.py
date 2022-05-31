@@ -15,13 +15,14 @@ sector_level = 'sector_level1'
 sector = ['C']
 
 
-def read(data_file, data_dir, min_cutoff, max_cutoff):
+def read(data_file, data_dir, logspace, min_cutoff, max_cutoff):
     """
     Dataset loading.
 
     Args:
         data_file (str): The name of data file. Data file should be in .parquet format.
         data_dir (str): The folder (complete or relative path) containing the data file.
+        logspace (bool): True to use logspace / False otherwise
         min_cutoff (dict): Each key is a specified feature and the value is the minimum value for it.
                        All companies having, for the corresponding feature, values lesser than min_cutoff are not loaded.
                        Note: leave the default value in preliminary experiments.
@@ -32,7 +33,7 @@ def read(data_file, data_dir, min_cutoff, max_cutoff):
     Returns:
         A dataframe containing all data samples.
     """
-    df = syrto.utils.read_dataset(data_dir, data_file, logspace=True, min_cutoff=min_cutoff,
+    df = syrto.utils.read_dataset(data_dir, data_file, logspace=logspace, min_cutoff=min_cutoff,
                                   max_cutoff=max_cutoff)
     #if sector_level is not None:
     #    df = df[df[sector_level].isin(sector)]

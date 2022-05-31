@@ -4,11 +4,14 @@ from eda import *
 from regression import *
 from utils import *
 
+# Logspace
+logspace = True
+
 # Change this to false if you want to import the dataset from the parquet file
-csv = True
+csv = False
 
 # Change this to true if you want to perform the benchmark
-benchmark = True
+benchmark = False
 
 # Change this to true if you want the metrics for each column of the file
 # Else select one column to predict
@@ -113,7 +116,7 @@ file_name = generate_file_name(field_name, benchmark)
 path = os.path.join("export", file_name)
 
 if __name__ == "__main__":
-    df = import_dataset(csv, key, targets)
+    df = import_dataset(csv, key, targets, logspace)
     df.info()  # Check info
     # correlation(df, "export/corr.png")
     if all_fields:
@@ -129,7 +132,7 @@ if __name__ == "__main__":
                 # Get training, validation and test sets
                 training, validation, test = split_dataset(df)
                 # Perform the regression using all the regressors
-                perform_regression(training, validation, regressors_list, field, True, path)
+                perform_regression(training, validation, regressors_list, field, True, logspace, path)
     else:
         if benchmark:
             # Get training, validation and test sets
@@ -140,4 +143,4 @@ if __name__ == "__main__":
             # Get training, validation and test sets
             training, validation, test = split_dataset(df)
             # Perform the regression using all the regressors
-            perform_regression(training, validation, regressors_list, field_name, True, path)
+            perform_regression(training, validation, regressors_list, field_name, True, logspace, path)

@@ -4,7 +4,7 @@ from metrics import *
 from regressors import *
 
 
-def perform_regression(training, validation, regressors_list, parameter, verbose, file_name=None):
+def perform_regression(training, validation, regressors_list, parameter, verbose, logspace, file_name=None):
     """
     For each regressors with True value in the dict perform the regression using training and validation set.
     After perform the binarization of the validation set and the predicted set, using the previous year values.
@@ -15,6 +15,7 @@ def perform_regression(training, validation, regressors_list, parameter, verbose
         regressors_list: (Dict) A dict containing all the regressors. Their value means if the regressor has been chosen
         parameter: (String) The parameter that will be predicted
         verbose: (boolean) True: print all the result / False: don't print all the result
+        logspace (bool): True to use logspace / False otherwise
         file_name: (String) the name of the export csv file
     """
     # Prediction Lists
@@ -85,55 +86,55 @@ def perform_regression(training, validation, regressors_list, parameter, verbose
 
     if regressors_list["ols"]:
         right, predict = perform_classification(valid_y, ols_pred, previous_year)
-        results.append(save_metrics(valid_y, ols_pred, right, predict, "Ordinary Least Square", verbose))
+        results.append(save_metrics(valid_y, ols_pred, right, predict, "Ordinary Least Square", verbose, logspace))
     if regressors_list["ridge"]:
         right, predict = perform_classification(valid_y, ridge_pred, previous_year)
-        results.append(save_metrics(valid_y, ridge_pred, right, predict, "Ridge Regressor", verbose))
+        results.append(save_metrics(valid_y, ridge_pred, right, predict, "Ridge Regressor", verbose, logspace))
     if regressors_list["lasso"]:
         right, predict = perform_classification(valid_y, lasso_pred, previous_year)
-        results.append(save_metrics(valid_y, lasso_pred, right, predict, "Lasso Regressor", verbose))
+        results.append(save_metrics(valid_y, lasso_pred, right, predict, "Lasso Regressor", verbose, logspace))
     if regressors_list["elastic"]:
         right, predict = perform_classification(valid_y, elastic_pred, previous_year)
-        results.append(save_metrics(valid_y, elastic_pred, right, predict, "Elastic Regressor", verbose))
+        results.append(save_metrics(valid_y, elastic_pred, right, predict, "Elastic Regressor", verbose, logspace))
     if regressors_list["lars"]:
         right, predict = perform_classification(valid_y, lars_pred, previous_year)
-        results.append(save_metrics(valid_y, lars_pred, right, predict, "Lars Regressor", verbose))
+        results.append(save_metrics(valid_y, lars_pred, right, predict, "Lars Regressor", verbose, logspace))
     if regressors_list["bayesian"]:
         right, predict = perform_classification(valid_y, bayesian_pred, previous_year)
-        results.append(save_metrics(valid_y, bayesian_pred, right, predict, "Bayesian Regressor", verbose))
+        results.append(save_metrics(valid_y, bayesian_pred, right, predict, "Bayesian Regressor", verbose, logspace))
     if regressors_list["stochastic"]:
         right, predict = perform_classification(valid_y, stoch_pred, previous_year)
-        results.append(save_metrics(valid_y, stoch_pred, right, predict, "Stochastic Gradient Descent", verbose))
+        results.append(save_metrics(valid_y, stoch_pred, right, predict, "Stochastic Gradient Descent", verbose, logspace))
     if regressors_list["passive"]:
         right, predict = perform_classification(valid_y, passive_pred, previous_year)
-        results.append(save_metrics(valid_y, passive_pred, right, predict, "Passive Aggressive Regressor", verbose))
+        results.append(save_metrics(valid_y, passive_pred, right, predict, "Passive Aggressive Regressor", verbose, logspace))
     if regressors_list["kernel"]:
         right, predict = perform_classification(valid_y, kernel_pred, previous_year)
-        results.append(save_metrics(valid_y, kernel_pred, right, predict, "Kernel Ridge Regressor", verbose))
+        results.append(save_metrics(valid_y, kernel_pred, right, predict, "Kernel Ridge Regressor", verbose, logspace))
     if regressors_list["svr"]:
         right, predict = perform_classification(valid_y, svr_pred, previous_year)
-        results.append(save_metrics(valid_y, svr_pred, right, predict, "SVR Regressor", verbose))
+        results.append(save_metrics(valid_y, svr_pred, right, predict, "SVR Regressor", verbose, logspace))
     if regressors_list["nn"]:
         right, predict = perform_classification(valid_y, nn_pred, previous_year)
-        results.append(save_metrics(valid_y, nn_pred, right, predict, "Nearest Neighbour Regressor", verbose))
+        results.append(save_metrics(valid_y, nn_pred, right, predict, "Nearest Neighbour Regressor", verbose, logspace))
     if regressors_list["gauss"]:
         right, predict = perform_classification(valid_y, gauss_pred, previous_year)
-        results.append(save_metrics(valid_y, gauss_pred, right, predict, "Ridge Regressor", verbose))
+        results.append(save_metrics(valid_y, gauss_pred, right, predict, "Ridge Regressor", verbose, logspace))
     if regressors_list["decision"]:
         right, predict = perform_classification(valid_y, decision_pred, previous_year)
-        results.append(save_metrics(valid_y, decision_pred, right, predict, "Decision Tree Regressor", verbose))
+        results.append(save_metrics(valid_y, decision_pred, right, predict, "Decision Tree Regressor", verbose, logspace))
     if regressors_list["random"]:
         right, predict = perform_classification(valid_y, random_pred, previous_year)
-        results.append(save_metrics(valid_y, random_pred, right, predict, "Random Forest Regressor", verbose))
+        results.append(save_metrics(valid_y, random_pred, right, predict, "Random Forest Regressor", verbose, logspace))
     if regressors_list["ada"]:
         right, predict = perform_classification(valid_y, ada_pred, previous_year)
-        results.append(save_metrics(valid_y, ada_pred, right, predict, "Ada Boost Regressor", verbose))
+        results.append(save_metrics(valid_y, ada_pred, right, predict, "Ada Boost Regressor", verbose, logspace))
     if regressors_list["gradient"]:
         right, predict = perform_classification(valid_y, gradient_pred, previous_year)
-        results.append(save_metrics(valid_y, gradient_pred, right, predict, "Gradient Boost Regressor", verbose))
+        results.append(save_metrics(valid_y, gradient_pred, right, predict, "Gradient Boost Regressor", verbose, logspace))
     if regressors_list["ensemble"]:
         right, predict = perform_classification(valid_y, ensemble_pred, previous_year)
-        results.append(save_metrics(valid_y, ensemble_pred, right, predict, "Ensemble Regressor", verbose))
+        results.append(save_metrics(valid_y, ensemble_pred, right, predict, "Ensemble Regressor", verbose, logspace))
 
     results = pd.DataFrame(results, columns=["Name", "MAE", "MSE", "RMSE", "R2", "MAPE", "SMAPE", "Accuracy",
                                              "Precision", "Recall", "AUC ROC"])

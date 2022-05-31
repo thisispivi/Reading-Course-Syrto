@@ -5,7 +5,7 @@ import pandas as pd
 from time import strftime, localtime
 
 
-def import_dataset(csv, key, targets):
+def import_dataset(csv, key, targets, logspace):
     """
     Import the dataset
 
@@ -13,23 +13,29 @@ def import_dataset(csv, key, targets):
         csv: (boolean) If it is true the dataset will be import from a csv file, else it will be import from parquet
         key: (list of Strings) The id of the company and the budget year
         targets: (list of Strings) The fields of the dataset that will be used
+        logspace (bool): True to use logspace / False otherwise
 
     Returns:
         df: (Pandas Dataframe) The dataset
     """
     if not csv:
-        df = rd.read('data_4.1.csv', 'dataset', min_cutoff={}, max_cutoff={})
+        df = rd.read('data_4.0.csv', 'dataset', logspace, min_cutoff={}, max_cutoff={})
         columns = key + targets
         df = df[columns]
         df = df.sort_values(["id", "bilancio_year"], ascending=True)
         df = add_future_values(df, targets)
-        df.to_csv("dataset/dataset.csv")
+        if logspace:
+            df.to_csv("dataset/dataset.csv")
+        else:
+            df.to_csv("dataset/dataset_no_log.csv")
     else:
-        df = pd.read_csv("dataset/dataset.csv")
+        if logspace:
+            df = pd.read_csv("dataset/dataset.csv")
+        else:
+            df = pd.read_csv("dataset/dataset_no_log.csv")
         df = df.drop(['Unnamed: 0'], axis=1)
     df = rename_columns(df)
     df = df.sort_values(["id", "bilancio_year"], ascending=True)
-    df.to_csv("dataset/dataset2.csv")
     return df
 
 
@@ -85,8 +91,8 @@ def split_dataset(df):
         validation: (Pandas Dataframe) Validation Set
         test: (Pandas Dataframe) Test Set
     """
-    training = df[df.bilancio_year < 2018]
-    validation = df[df.bilancio_year == 2018]
+    training = df[df.bilancio_year < 2017]
+    validation = df[df.bilancio_year == 2017]
     test = df[df.bilancio_year == 2020]
     return training, validation, test
 
@@ -102,8 +108,8 @@ def split_dataset_benchmark(df):
         training: (Pandas Dataframe) Training Set (2016 data)
         validation: (Pandas Dataframe) Validation Set (2017 data)
     """
-    training = df[df.bilancio_year == 2017]
-    validation = df[df.bilancio_year == 2018]
+    training = df[df.bilancio_year == 2016]
+    validation = df[df.bilancio_year == 2017]
     return training, validation
 
 
@@ -169,7 +175,7 @@ def binarization(x, y):
 
 def correct_zero_division_smape(a, f, value):
     """
-    Change the value of the a, f list if for an index i, both a and f are 0. So, it's possible to compute smape,
+    Remove the value of the a, f list if for an index i, both a and f are 0. So, it's possible to compute smape,
     otherwise it will perform a division by 0, and it will crash.
 
     Args:
