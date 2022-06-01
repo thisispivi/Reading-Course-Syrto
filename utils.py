@@ -173,7 +173,7 @@ def binarization(x, y):
         return 1
 
 
-def correct_zero_division_smape(a, f, value):
+def correct_zero_division_smape(a, f):
     """
     Remove the value of the a, f list if for an index i, both a and f are 0. So, it's possible to compute smape,
     otherwise it will perform a division by 0, and it will crash.
@@ -181,7 +181,6 @@ def correct_zero_division_smape(a, f, value):
     Args:
         a: (list of numbers) The correct values
         f: (list of numbers) The predicted values
-        value: (number) The value to substitute
 
     Returns:
         a: (list of numbers) The new correct values
@@ -190,10 +189,7 @@ def correct_zero_division_smape(a, f, value):
     new_a = []
     new_f = []
     for i in range(len(a)):
-        if a[i] == 0.0 and f[i] == 0.0:
-            a[i] = value
-            f[i] = value
-        else:
+        if a[i] != 0.0 and f[i] != 0.0:
             new_a.append(a[i])
             new_f.append(f[i])
     return np.array(new_a), np.array(new_f)

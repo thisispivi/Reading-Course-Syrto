@@ -12,6 +12,8 @@ export/
 dataset/data_3.0.parquet
 export_old/
 dataset/data_4.1.csv
-dataset/dataset.csv
 dataset/data_4.0.csv
 dataset/dataset_no_log.csv
+latex/benchmark/
+latex/regressors/
+latex/tft/

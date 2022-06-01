@@ -18,7 +18,7 @@ def smape(a, f):
     Returns:
         The Symmetric Mean Absolute Percentage Error
     """
-    a, f = correct_zero_division_smape(a, f, 0.00000000000000000000000001)
+    a, f = correct_zero_division_smape(a, f)
     return 1 / len(a) * np.sum(np.abs(f - a) / (np.abs(a) + np.abs(f)))
 
 
@@ -40,7 +40,6 @@ def save_metrics(r_right, r_pred, c_right, c_pred, name, verbose=True, logspace=
     if logspace:
         r_right = list(map(inverse_logModulus, r_right))
         r_pred = list(map(inverse_logModulus, r_pred))
-        print(r_right[:10])
     row = [name, mean_absolute_error(r_right, r_pred), mean_squared_error(r_right, r_pred),
            math.sqrt(mean_squared_error(r_right, r_pred)), r2_score(r_right, r_pred),
            mean_absolute_percentage_error(r_right, r_pred), smape(np.array(r_right), np.array(r_pred)),

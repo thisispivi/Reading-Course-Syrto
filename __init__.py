@@ -5,13 +5,13 @@ from regression import *
 from utils import *
 
 # Logspace
-logspace = True
+logspace = False
 
 # Change this to false if you want to import the dataset from the parquet file
-csv = False
+csv = True
 
 # Change this to true if you want to perform the benchmark
-benchmark = False
+benchmark = True
 
 # Change this to true if you want the metrics for each column of the file
 # Else select one column to predict
