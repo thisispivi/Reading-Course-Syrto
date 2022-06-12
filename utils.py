@@ -73,8 +73,8 @@ def add_future_values(df, targets):
 
     for t in targets:
         col_name = "future_" + t
-        # df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-2))
-        df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-1))
+        df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-2))
+        # df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-1))
 
     return df
 
@@ -109,7 +109,7 @@ def split_dataset_benchmark(df):
         validation: (Pandas Dataframe) Validation Set (2017 data)
     """
     training = df[df.bilancio_year == 2016]
-    validation = df[df.bilancio_year == 2017]
+    validation = df[df.bilancio_year == 2018]
     return training, validation
 
 

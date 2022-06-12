@@ -5,7 +5,7 @@ from regression import *
 from utils import *
 
 # Logspace
-logspace = False
+logspace = True
 
 # Change this to false if you want to import the dataset from the parquet file
 csv = True
@@ -59,17 +59,17 @@ regressors_list = {
     "passive": False,  # Passive Aggressive Regressor
     "kernel": False,  # Kernel Ridge Regressor
     "svr": False,  # Support Vector Regressor
-    "nn": True,  # Nearest Neighbour Regressor
+    "nn": False,  # Nearest Neighbour Regressor
     "gauss": False,  # Gaussian Process Regressor
-    "decision": True,  # Decision Tree Regressor
-    "random": True,  # Random Forest Regressor
+    "decision": False,  # Decision Tree Regressor
+    "random": False,  # Random Forest Regressor
     "ada": True,  # Ada Boost Regressor
-    "gradient": True,  # Gradient Boost Regressor
+    "gradient": False,  # Gradient Boost Regressor
     "ensemble": False  # Ensemble Regressor
 }
 
 # The name of the field that you want to predict (Select 1) (Uncomment to select)
-field_name = "future_TOTALE_IMMOB_IMMATERIALI"
+# field_name = "future_TOTALE_IMMOB_IMMATERIALI"
 # field_name = "future_ATTIVO_CIRCOLANTE"
 # field_name = "future_TOTALE_ATTIVO"
 # field_name = "future_TOTALE_PATRIMONIO_NETTO"
@@ -81,6 +81,7 @@ field_name = "future_TOTALE_IMMOB_IMMATERIALI"
 # field_name = "future_RISULTATO_OPERATIVO"
 # field_name = "future_RISULTATO_PRIMA_DELLE_IMPOSTE"
 # field_name = "future_UTILE_PERDITA_DI_ESERCIZIO"
+field_name = "future_TOTALE_PROVENTI_ONERI_STRAORDINARI"
 
 field_array = ["future_TOTALE_IMMOB_IMMATERIALI",
                "future_TOTALE_IMMOB_MATERIALI",
@@ -116,6 +117,8 @@ file_name = generate_file_name(field_name, benchmark)
 path = os.path.join("export", file_name)
 
 if __name__ == "__main__":
+    if benchmark:
+        logspace = False
     df = import_dataset(csv, key, targets, logspace)
     df.info()  # Check info
     # correlation(df, "export/corr.png")

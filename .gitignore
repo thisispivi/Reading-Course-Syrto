@@ -17,3 +17,6 @@ dataset/dataset_no_log.csv
 latex/benchmark/
 latex/regressors/
 latex/tft/
+latex/dataset_no_log.csv
+latex/dataset_no_log2.csv
+latex/dataset_no_log3.csv

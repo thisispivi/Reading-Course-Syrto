@@ -311,15 +311,20 @@ def get_tft(file_name, var_name, regression):
     if var_name == "UTILE PERDITA DI ESERCIZIO":
         var_name = "UTILE/PERDITA DI ESERCIZIO"
 
+    df = df.sort_values(by=['id'])
+
+    right = pd.read_csv("dataset_no_log3.csv")
+
     if regression:
-        get_tft_metrics_regression(df[var_name], df[var_name + "_Prediction"])
+        get_tft_metrics_regression(right[var_name], df[var_name + "_Prediction"])
+        # get_tft_metrics_regression(right[var_name], df[var_name + "2018"])
     else:
         year = file_name[6:].split("_")[0]
-        get_tft_metrics_classification(df[var_name], df[var_name + "_Prediction"], df[var_name + year])
+        get_tft_metrics_classification(right[var_name], df[var_name + "_Prediction"], df[var_name + year])
 
 
 if __name__ == "__main__":
-    parquet_file_name = "cutoff2017_pred_2018_train2017_1yea.parquet"
+    parquet_file_name = "cutoff2018_pred_2020_train2018_2yea.parquet"
 
     for filename in os.listdir(os.getcwd() + "/regressors"):
         print_beginning_column(filename)
