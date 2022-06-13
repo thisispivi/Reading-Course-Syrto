@@ -60,12 +60,12 @@ So in the dataset for each year there will be another column with the value
 ```python
 logspace = True
 ```
-2. Csv: *(bool)* -> **True** use the previous generated csv file / **False** import the dataset from ```data_4.0.csv``` and generate new csv files.  
+2. Csv: *(bool)* &#8594; **True** use the previous generated csv file / **False** import the dataset from ```data_4.0.csv``` and generate new csv files.  
 **IMPORTANT: if you created a file csv using 1 year predictions, if you want to run 2 years predictions you have to set csv to False to generate new csv file**
 ```python
 csv = True
 ```
-3. Benchmark: *(bool)* -> **True** perform benchmark analysis / **False** Perform the regression  
+3. Benchmark: *(bool)* &#8594; **True** perform benchmark analysis / **False** Perform the regression  
 ```python
 benchmark = True
 ```
@@ -106,12 +106,12 @@ key = ["id",
        "bilancio_year"]
 ```
 
-6. All Fields: *(bool)* -> **True** To perform regression for all fields / **False** In another variable you will declare the field to predict  
+6. All Fields: *(bool)* &#8594; **True** To perform regression for all fields / **False** In another variable you will declare the field to predict  
 ```python
 all_fields = True
 ```
 
-7. Select field: *(str)* -> In case ```all_fields``` is false, select a field to predict. Uncomment to select one
+7. Select field: *(str)* &#8594; In case ```all_fields``` is false, select a field to predict. Uncomment to select one
 ```python
 # field_name = "future_TOTALE_IMMOB_IMMATERIALI"
 # field_name = "future_TOTALE_IMMOB_MATERIALI"
@@ -141,7 +141,7 @@ all_fields = True
 field_name = "future_Valore_Aggiunto"
 ```
 
-8. Select the regressors -> **True** to select / **False** the opposite
+8. Select the regressors &#8594; **True** to select / **False** the opposite
 ```python
 regressors_list = {
     "ols": False,  # Ordinary Least Squares
@@ -204,7 +204,7 @@ file_name = generate_file_name(field_name, benchmark)
 
 There are some parameters in the file ```utils.py``` that needs to be configured.
 
-1. Add Future Values -> Function that for each field create a new column in the dataframe that will contain the value of that field
+1. Add Future Values &#8594; Function that for each field create a new column in the dataframe that will contain the value of that field
 for the next year or for the next two years. To choose between the two types of predictions you'll have to uncomment a specific row
 ```python
 def add_future_values(df, targets):
@@ -231,7 +231,7 @@ def add_future_values(df, targets):
     return df
 ```
 
-2. Split Dataset -> This function will split the dataset in training, validation e test set (this one is not used). 
+2. Split Dataset &#8594; This function will split the dataset in training, validation e test set (this one is not used). 
 It's important to notice that the code will consider the future values, so, for example, if we want to perform one year predictions
 when we take training set from 2017, we are actually taking the data from 2011  to 2016 with 2017 labels. The same for the validation set.
 
@@ -255,7 +255,7 @@ def split_dataset(df):
     return training, validation, test
 ```
 
-3. Split Dataset Benhmark -> This function will split the dataset in training and validation set when benchmark mode is active.
+3. Split Dataset Benhmark &#8594; This function will split the dataset in training and validation set when benchmark mode is active.
 It's important to notice that the code will consider the future values, so, for example, if we want to perform two years predictions
 when we take training set from 2016, we are actually taking the 2016 data with the 2018 labels. The same for the validation set.
 
