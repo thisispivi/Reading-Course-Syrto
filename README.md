@@ -1,88 +1,148 @@
 # Reading-Course-Syrto
+Code of the regressors for the syrto project.
+
+To see how to generate the reports check the [link](REPORT_GENERATOR.md).
 
 # Index
+
+- [Folder structure](#folder-structure)
 - [How to run the project](#how-to-run-the-project)
-  * [Use the csv file](#use-the-csv-file)
-  * [Use the csv file](#use-the-csv-file-1)
-  * [Configure the variables](#configure-the-variables)
+  * [Parameters configuration](#parameters-configuration)
+  * [Utils Configuration](#utils-configuration)
+  * [Run the code](#run-the-code)
+
+# Folder structure
+```
+.gitignore
+eda.py
+metrics.py   ### File with all the functions to compute the metrics
+README.md
+read_dataset.py   ### File with the function to read the dataset
+regression.py   ### File that performs the regression
+regressors.py   ### FIle with all the regressors
+REPORT_GENERATOR.MD
+utils.py   ### File with useful fumctions
+__init__.py   ### Main
+         
++---dataset   ### Here insert the datasets
+            
++---Documentazione    ### Doc
+        Elenco materiale.pdf
+        Presentazione Syrto.pdf
+        Step2.pdf
+        Time Series Analysis Forecasting.pdf
+        
++---export   ### Folder in which the exports will be saved
+
++---latex   ### Folder with the program to generate latex reports
+    
+        edit.py
+        
+    +---benchmark
+    +---regressors
+    +---tft
+            
++---syrto   ### Syrto functions
+        pytorch_forecasting.py
+        utils.py
+        __init__.py
+```
 
 # How to run the project
-There are two ways to start:
-1. Use the *parquet* file
-2. Use the *csv* file  
+The main file is ```__init__.py```. The file has many parameters to configure before the run. Basically the code will take the dataset
+and for each field it will create a new column with the value of the field for the next year (1 year predictions) or for the next
+two years (2 year prediction).
 
-After that the method is the same for both methods
+So in the dataset for each year there will be another column with the value
 
----
-
-## Use the csv file
-1. Extract the dataset from the ```dataset.rar``` file in the *dataset* folder
-2. Change the value of the variable *csv* to True from ```__init__.py``` file (line 8)
+## Parameters configuration
+1. Logspace: *(bool)* &#8594; **True** use logspace / **False** otherwise
+```python
+logspace = True
+```
+2. Csv: *(bool)* -> **True** use the previous generated csv file / **False** import the dataset from ```data_4.0.csv``` and generate new csv files.  
+**IMPORTANT: if you created a file csv using 1 year predictions, if you want to run 2 years predictions you have to set csv to False to generate new csv file**
 ```python
 csv = True
 ```
-
-## Use the csv file
-1. Change the value of the variable *csv* to False from ```__init__.py``` file (line 8)
+3. Benchmark: *(bool)* -> **True** perform benchmark analysis / **False** Perform the regression  
 ```python
-csv = False
+benchmark = True
 ```
 
----
-
-## Configure the variables
-1. The variable ```all_fields``` is useful if you want to generate the metrics for each column of the csv file. When it 
-is *False* you have to select a column to select.
+4. Targets: *(List of str)* Columns of the file
 ```python
-all_fields = True
-```
-2. The variable ```benchmark``` activate the benchmark mode. This mode will take as prediction the data from 2016 and as
-correct values the data from 2017, then it will compute the metrics. This mode won't perform the regression. To perform 
-the regression this variable must be *False*.
-```python
-benchmark = False
-```
-3. The variable ```targets``` represents the data of the companies that will be taken from the parquet file
-```python
-targets = ["TOTALE IMMOBILIZZAZIONI",
+targets = ["TOTALE IMMOB IMMATERIALI",
+           "TOTALE IMMOB MATERIALI",
+           "TOTALE IMMOB FINANZIARIE",
+           "TOTALE RIMANENZE",
            "ATTIVO CIRCOLANTE",
-           "TOTALE ATTIVO",
+           "TOTALE CREDITI",
+           "Capitale sociale",
            "TOTALE PATRIMONIO NETTO",
            "DEBITI A BREVE",
            "DEBITI A OLTRE",
-           "TOTALE DEBITI",
            "TOTALE PASSIVO",
-           "TOT VAL PRODUZIONE",
+           "TOT VAL DELLA PRODUZIONE",
+           "Ricavi vendite e prestazioni",
+           "COSTI DELLA PRODUZIONE",
            "RISULTATO OPERATIVO",
+           "TOTALE PROVENTI E ONERI FINANZIARI",
+           "TOTALE PROVENTI/ONERI STRAORDINARI",
            "RISULTATO PRIMA DELLE IMPOSTE",
-           "UTILE/PERDITA DI ESERCIZIO"]
+           "Totale Imposte sul reddito correnti, differite e anticipate",
+           "UTILE/PERDITA DI ESERCIZIO",
+           "EBITDA",
+           "Capitale circolante netto",
+           "Materie prime e consumo",
+           "Totale costi del personale",
+           "TOT Ammortamenti e svalut",
+           "Valore Aggiunto"]
 ```
-4. The variable ```keys``` represents the id of the companies that will be taken from the parquet file
+
+5. Key: *(List of str)* The keys
 ```python
 key = ["id",
        "bilancio_year"]
 ```
-5. The variable ```regressors_list``` represents all the regressors available. To select one just set it value to True. 
-False otherwise. These are the regressors available:
-   1. Ordinary Least Squares
-   2. Ridge Regressor
-   3. Lasso Regressor
-   4. Elastic Net Regressor
-   5. Lars Regressor
-   6. Bayesian Regressor
-   7. Stochastic Gradient Descent Regressor
-   8. Passive Aggressive Regressor
-   9. Kernel Ridge Regressor
-   10. Support Vector Regressor
-   11. Nearest Neighbour Regressor
-   12. Gaussian Process Regressor
-   13. Decision Tree Regressor
-   14. Random Forest Regressor
-   15. Ada Boost Regressor
-   16. Gradient Boost Regressor
-   17. Ensemble Regressor
+
+6. All Fields: *(bool)* -> **True** To perform regression for all fields / **False** In another variable you will declare the field to predict  
 ```python
-# Select the regressors (True to select, False the opposite)
+all_fields = True
+```
+
+7. Select field: *(str)* -> In case ```all_fields``` is false, select a field to predict. Uncomment to select one
+```python
+# field_name = "future_TOTALE_IMMOB_IMMATERIALI"
+# field_name = "future_TOTALE_IMMOB_MATERIALI"
+# field_name = "future_TOTALE_IMMOB_FINANZIARIE"
+# field_name = "future_TOTALE_RIMANENZE"
+# field_name = "future_ATTIVO_CIRCOLANTE"
+# field_name = "future_TOTALE_CREDITI"
+# field_name = "future_Capitale_sociale"
+# field_name = "future_TOTALE_PATRIMONIO_NETTO"
+# field_name = "future_DEBITI_A_BREVE"
+# field_name = "future_DEBITI_A_OLTRE"
+# field_name = "future_TOTALE_PASSIVO"
+# field_name = "future_TOT_VAL_DELLA_PRODUZIONE"
+# field_name = "future_Ricavi_vendite_e_prestazioni"
+# field_name = "future_COSTI_DELLA_PRODUZIONE"
+# field_name = "future_RISULTATO_OPERATIVO"
+# field_name = "future_TOTALE_PROVENTI_E_ONERI_FINANZIARI"
+# field_name = "future_TOTALE_PROVENTI_ONERI_STRAORDINARI"
+# field_name = "future_RISULTATO_PRIMA_DELLE_IMPOSTE"
+# field_name = "future_Totale_Imposte_sul_reddito_correnti_differite_e_anticipate"
+# field_name = "future_UTILE_PERDITA_DI_ESERCIZIO"
+# field_name = "future_EBITDA"
+# field_name = "future_Capitale_circolante_netto"
+# field_name = "future_Materie_prime_e_consumo"
+# field_name = "future_Totale_costi_del_personale"
+# field_name = "future_TOT_Ammortamenti_e_svalut"
+field_name = "future_Valore_Aggiunto"
+```
+
+8. Select the regressors -> **True** to select / **False** the opposite
+```python
 regressors_list = {
     "ols": False,  # Ordinary Least Squares
     "ridge": False,  # Ridge Regressor
@@ -94,37 +154,127 @@ regressors_list = {
     "passive": False,  # Passive Aggressive Regressor
     "kernel": False,  # Kernel Ridge Regressor
     "svr": False,  # Support Vector Regressor
-    "nn": True,  # Nearest Neighbour Regressor
+    "nn": False,  # Nearest Neighbour Regressor
     "gauss": False,  # Gaussian Process Regressor
-    "decision": True,  # Decision Tree Regressor
-    "random": True,  # Random Forest Regressor
+    "decision": False,  # Decision Tree Regressor
+    "random": False,  # Random Forest Regressor
     "ada": True,  # Ada Boost Regressor
-    "gradient": True,  # Gradient Boost Regressor
+    "gradient": False,  # Gradient Boost Regressor
     "ensemble": False  # Ensemble Regressor
 }
 ```
-6. If you chose *all_fields = False* then select the variable ```field_name```. It represents the name of the variable that will be predicted. To select one just 
-uncomment one row
-```python
-field_name = "future_TOTALE_IMMOBILIZZAZIONI"
-# field_name = "future_ATTIVO_CIRCOLANTE"
-# field_name = "future_TOTALE_ATTIVO"
-# field_name = "future_TOTALE_PATRIMONIO_NETTO"
-# field_name = "future_DEBITI_A_BREVE"
-# field_name = "future_DEBITI_A_OLTRE"
-# field_name = "future_TOTALE_DEBITI"
-# field_name = "future_TOTALE_PASSIVO"
-# field_name = "future_TOT_VAL_PRODUZIONE"
-# field_name = "future_RISULTATO_OPERATIVO"
-# field_name = "future_RISULTATO_PRIMA_DELLE_IMPOSTE"
-# field_name = "future_UTILE_PERDITA_DI_ESERCIZIO"
-```
-6. The variable ```file_name``` represents the name of the file in which the results of the regression and 
-classification will be saved. There is a function that creates the file name. The names will be like:
-```
-field_name day time.csv
 
-Example: TOTALE_IMMOBILIZZAZIONI 2022-02-14 12-54-48.csv
+9. Field Array: *(List of str)* All the possible fields
+```python
+field_array = ["future_TOTALE_IMMOB_IMMATERIALI",
+               "future_TOTALE_IMMOB_MATERIALI",
+               "future_TOTALE_IMMOB_FINANZIARIE",
+               "future_TOTALE_RIMANENZE",
+               "future_ATTIVO_CIRCOLANTE",
+               "future_TOTALE_CREDITI",
+               "future_Capitale_sociale",
+               "future_TOTALE_PATRIMONIO_NETTO",
+               "future_DEBITI_A_BREVE",
+               "future_DEBITI_A_OLTRE",
+               "future_TOTALE_PASSIVO",
+               "future_TOT_VAL_DELLA_PRODUZIONE",
+               "future_Ricavi_vendite_e_prestazioni",
+               "future_COSTI_DELLA_PRODUZIONE",
+               "future_RISULTATO_OPERATIVO",
+               "future_TOTALE_PROVENTI_E_ONERI_FINANZIARI",
+               "future_TOTALE_PROVENTI_ONERI_STRAORDINARI",
+               "future_RISULTATO_PRIMA_DELLE_IMPOSTE",
+               "future_Totale_Imposte_sul_reddito_correnti_differite_e_anticipate",
+               "future_UTILE_PERDITA_DI_ESERCIZIO",
+               "future_EBITDA",
+               "future_Capitale_circolante_netto",
+               "future_Materie_prime_e_consumo",
+               "future_Totale_costi_del_personale",
+               "future_TOT_Ammortamenti_e_svalut",
+               "future_Valore_Aggiunto"]
+```
+
+10. File Name: *(str)* The name of the file. It's possible to use the file name generator or select a particular name
+```python
+file_name = generate_file_name(field_name, benchmark)
+# file_name = "export.csv"  # Uncomment to use custom file names
+```
+
+## Utils Configuration
+
+There are some parameters in the file ```utils.py``` that needs to be configured.
+
+1. Add Future Values -> Function that for each field create a new column in the dataframe that will contain the value of that field
+for the next year or for the next two years. To choose between the two types of predictions you'll have to uncomment a specific row
+```python
+def add_future_values(df, targets):
+    """
+    Adds a column in the dataframe containing the value of each column for the next year
+
+    Args:
+        targets:
+        df: (Pandas Dataframe) the dataset
+
+    Returns:
+        (Pandas Dataframe) The dataset with the new columns
+    """
+
+    for t in targets:
+        col_name = "future_" + t
+        
+        ### UNCOMMENT THIS ROW TO SELECT TWO YEARS PREDICTION ###
+        df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-2))
+        
+        ### UNCOMMENT THIS ROW TO SELECT ONE YEAR PREDICTION ###
+        # df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-1))
+
+    return df
+```
+
+2. Split Dataset -> This function will split the dataset in training, validation e test set (this one is not used). 
+It's important to notice that the code will consider the future values, so, for example, if we want to perform one year predictions
+when we take training set from 2017, we are actually taking the data from 2011  to 2016 with 2017 labels. The same for the validation set.
+
+The code below is the training from 2011 to 2017 with 1 year predictions.
+```python
+def split_dataset(df):
+    """
+    Split the dataset in Training Set, Validation Set and Test Set
+
+    Args:
+        df: (Pandas Dataframe) the dataset
+
+    Returns:
+        training: (Pandas Dataframe) Training Set
+        validation: (Pandas Dataframe) Validation Set
+        test: (Pandas Dataframe) Test Set
+    """
+    training = df[df.bilancio_year < 2017]
+    validation = df[df.bilancio_year == 2017]
+    test = df[df.bilancio_year == 2020]
+    return training, validation, test
+```
+
+3. Split Dataset Benhmark -> This function will split the dataset in training and validation set when benchmark mode is active.
+It's important to notice that the code will consider the future values, so, for example, if we want to perform two years predictions
+when we take training set from 2016, we are actually taking the 2016 data with the 2018 labels. The same for the validation set.
+
+For example this code is for the training of 2018 with 2 years predictions (2020).
+```python
+def split_dataset_benchmark(df):
+    """
+    Split the dataset in Training Set year(2016), Validation Set year(2017). This is used for the benchmark
+
+    Args:
+        df: (Pandas Dataframe) the dataset
+
+    Returns:
+        training: (Pandas Dataframe) Training Set (2016 data)
+        validation: (Pandas Dataframe) Validation Set (2017 data)
+    """
+    training = df[df.bilancio_year == 2016]
+    validation = df[df.bilancio_year == 2018]
+    return training, validation
 ```
 
 ## Run the code

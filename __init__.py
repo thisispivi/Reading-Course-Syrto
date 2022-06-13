@@ -13,10 +13,6 @@ csv = True
 # Change this to true if you want to perform the benchmark
 benchmark = True
 
-# Change this to true if you want the metrics for each column of the file
-# Else select one column to predict
-all_fields = True
-
 targets = ["TOTALE IMMOB IMMATERIALI",
            "TOTALE IMMOB MATERIALI",
            "TOTALE IMMOB FINANZIARIE",
@@ -47,6 +43,38 @@ key = ["id",
        "bilancio_year"]
 
 
+# Change this to true if you want the metrics for each column of the file
+# Else select one column to predict
+all_fields = True
+
+# The name of the field that you want to predict (Select 1) (Uncomment to select)
+# field_name = "future_TOTALE_IMMOB_IMMATERIALI"
+# field_name = "future_TOTALE_IMMOB_MATERIALI"
+# field_name = "future_TOTALE_IMMOB_FINANZIARIE"
+# field_name = "future_TOTALE_RIMANENZE"
+# field_name = "future_ATTIVO_CIRCOLANTE"
+# field_name = "future_TOTALE_CREDITI"
+# field_name = "future_Capitale_sociale"
+# field_name = "future_TOTALE_PATRIMONIO_NETTO"
+# field_name = "future_DEBITI_A_BREVE"
+# field_name = "future_DEBITI_A_OLTRE"
+# field_name = "future_TOTALE_PASSIVO"
+# field_name = "future_TOT_VAL_DELLA_PRODUZIONE"
+# field_name = "future_Ricavi_vendite_e_prestazioni"
+# field_name = "future_COSTI_DELLA_PRODUZIONE"
+# field_name = "future_RISULTATO_OPERATIVO"
+# field_name = "future_TOTALE_PROVENTI_E_ONERI_FINANZIARI"
+# field_name = "future_TOTALE_PROVENTI_ONERI_STRAORDINARI"
+# field_name = "future_RISULTATO_PRIMA_DELLE_IMPOSTE"
+# field_name = "future_Totale_Imposte_sul_reddito_correnti_differite_e_anticipate"
+# field_name = "future_UTILE_PERDITA_DI_ESERCIZIO"
+# field_name = "future_EBITDA"
+# field_name = "future_Capitale_circolante_netto"
+# field_name = "future_Materie_prime_e_consumo"
+# field_name = "future_Totale_costi_del_personale"
+# field_name = "future_TOT_Ammortamenti_e_svalut"
+# field_name = "future_Valore_Aggiunto"
+
 # Select the regressors (True to select, False the opposite)
 regressors_list = {
     "ols": False,  # Ordinary Least Squares
@@ -68,20 +96,7 @@ regressors_list = {
     "ensemble": False  # Ensemble Regressor
 }
 
-# The name of the field that you want to predict (Select 1) (Uncomment to select)
-# field_name = "future_TOTALE_IMMOB_IMMATERIALI"
-# field_name = "future_ATTIVO_CIRCOLANTE"
-# field_name = "future_TOTALE_ATTIVO"
-# field_name = "future_TOTALE_PATRIMONIO_NETTO"
-# field_name = "future_DEBITI_A_BREVE"
-# field_name = "future_DEBITI_A_OLTRE"
-# field_name = "future_TOTALE_DEBITI"
-# field_name = "future_TOTALE_PASSIVO"
-# field_name = "future_TOT_VAL_PRODUZIONE"
-# field_name = "future_RISULTATO_OPERATIVO"
-# field_name = "future_RISULTATO_PRIMA_DELLE_IMPOSTE"
-# field_name = "future_UTILE_PERDITA_DI_ESERCIZIO"
-field_name = "future_TOTALE_PROVENTI_ONERI_STRAORDINARI"
+
 
 field_array = ["future_TOTALE_IMMOB_IMMATERIALI",
                "future_TOTALE_IMMOB_MATERIALI",

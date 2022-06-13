@@ -293,7 +293,7 @@ def get_tft_metrics_classification(r_right, r_pred, prev):
     return row
 
 
-def get_tft(file_name, var_name, regression):
+def get_tft(file_name, var_name, regression, prediction_year, right_year_benchmark_file_name):
     """
     Load parquet file, compute the metrics and print
 
@@ -301,6 +301,8 @@ def get_tft(file_name, var_name, regression):
         file_name: (str) The name of the file
         var_name: (str) The name of the column
         regression: (bool) True to compute regression metrics / False to compute classification
+        prediction_year: (int) The number of year to predict
+        right_year_benchmark_file_name: (str) The file name with the correct data for the two years prediction benchmark
     """
     df = pd.read_parquet("tft/" + file_name)
 
@@ -311,20 +313,28 @@ def get_tft(file_name, var_name, regression):
     if var_name == "UTILE PERDITA DI ESERCIZIO":
         var_name = "UTILE/PERDITA DI ESERCIZIO"
 
-    df = df.sort_values(by=['id'])
-
-    right = pd.read_csv("dataset_no_log3.csv")
-
-    if regression:
-        get_tft_metrics_regression(right[var_name], df[var_name + "_Prediction"])
-        # get_tft_metrics_regression(right[var_name], df[var_name + "2018"])
+    if prediction_year == 2:
+        df = df.sort_values(by=['id'])
+        right = pd.read_csv(right_year_benchmark_file_name)
+        if regression:
+            get_tft_metrics_regression(right[var_name], df[var_name + "_Prediction"])
+            # Check if the benchmarks are equal / Remember to change the year
+            # get_tft_metrics_regression(right[var_name], df[var_name + "2018"])
+        else:
+            year = file_name[6:].split("_")[0]
+            get_tft_metrics_classification(right[var_name], df[var_name + "_Prediction"], df[var_name + year])
     else:
-        year = file_name[6:].split("_")[0]
-        get_tft_metrics_classification(right[var_name], df[var_name + "_Prediction"], df[var_name + year])
+        if regression:
+            get_tft_metrics_regression(df[var_name], df[var_name + "_Prediction"])
+        else:
+            year = file_name[6:].split("_")[0]
+            get_tft_metrics_classification(df[var_name], df[var_name + "_Prediction"], df[var_name + year])
 
 
 if __name__ == "__main__":
+    pred_year = 1
     parquet_file_name = "cutoff2018_pred_2020_train2018_2yea.parquet"
+    benchmark_file_name = "dataset_no_log3.csv"
 
     for filename in os.listdir(os.getcwd() + "/regressors"):
         print_beginning_column(filename)
@@ -333,12 +343,12 @@ if __name__ == "__main__":
 
         regression_regressors(filename)
 
-        get_tft(parquet_file_name, filename.split(" ")[0].replace("_", " "), True)
+        get_tft(parquet_file_name, filename.split(" ")[0].replace("_", " "), True, pred_year, benchmark_file_name)
 
         print_end_regression()
 
         classification_regressors(filename)
 
-        get_tft(parquet_file_name, filename.split(" ")[0].replace("_", " "), False)
+        get_tft(parquet_file_name, filename.split(" ")[0].replace("_", " "), False, pred_year, benchmark_file_name)
 
         print_end_classification()

@@ -73,7 +73,11 @@ def add_future_values(df, targets):
 
     for t in targets:
         col_name = "future_" + t
+
+        ### UNCOMMENT THIS ROW TO SELECT TWO YEARS PREDICTION ###
         df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-2))
+
+        ### UNCOMMENT THIS ROW TO SELECT ONE YEAR PREDICTION ###
         # df.loc[:, col_name] = df.groupby('id')[t].transform(lambda group: group.shift(-1))
 
     return df
